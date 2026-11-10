@@ -73,7 +73,7 @@
   .btn[disabled], .btn-ghost[disabled] { opacity: 0.6; cursor: progress; }
   :focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
 
-  input[type="email"], input[type="password"], input[type="search"], select {
+  input[type="email"], input[type="password"], input[type="text"], input[type="search"], select {
     width: 100%;
     min-height: 46px;
     padding: 10px 14px;
@@ -88,20 +88,136 @@
   input::placeholder { color: rgba(185, 200, 230, 0.55); }
   label { display: block; margin: 0 0 6px; font-size: 0.8rem; font-weight: 600; }
 
-  /* ---------- Login ---------- */
-  .login { min-height: 100vh; display: grid; place-items: center; padding: 24px 16px; }
+  /* ---------- Login: the same jersey world as the public page ---------- */
+  .login {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 16px calc(28px + env(safe-area-inset-bottom));
+    background: linear-gradient(180deg, var(--navy-900) 0%, var(--navy-800) 30%, var(--navy-700) 55%, #1f6fae 82%, var(--sky-400) 100%);
+  }
+  .login::before { /* halftone dots, as on the jersey */
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-image: radial-gradient(circle, rgba(8, 16, 42, 0.75) 32%, transparent 34%);
+    background-size: 18px 18px;
+    -webkit-mask-image: linear-gradient(180deg, transparent 20%, #000 55%, #000 80%, transparent 100%);
+            mask-image: linear-gradient(180deg, transparent 20%, #000 55%, #000 80%, transparent 100%);
+    pointer-events: none;
+  }
+  .login::after { /* the jersey's diagonal panels */
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      linear-gradient(115deg, transparent 55%, rgba(255, 255, 255, 0.05) 55%, rgba(255, 255, 255, 0.05) 70%, transparent 70%),
+      linear-gradient(245deg, transparent 62%, rgba(255, 255, 255, 0.04) 62%, rgba(255, 255, 255, 0.04) 80%, transparent 80%);
+    pointer-events: none;
+  }
+
+  .login-brand { text-align: center; margin-bottom: 26px; }
+  .login-brand svg { display: block; width: 150px; height: auto; margin: 0 auto 6px; overflow: visible; }
+  .login-brand .paddle rect, .login-brand .paddle path { stroke-width: 2.4; }
+  .login-brand .paddle > rect:first-child, .login-brand .paddle > rect:nth-of-type(2) { fill: #101d45; }
+  .wordmark { margin: 0; font: 500 2.6rem/1 var(--serif); }
+  .club {
+    display: inline-block;
+    margin: 8px -0.42em 0 0;
+    padding-bottom: 7px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.42em;
+    border-bottom: 2px solid var(--gold);
+  }
+
   .login-card {
     width: 100%;
     max-width: 400px;
-    padding: 30px 24px;
-    background: var(--panel);
+    padding: 28px 22px 24px;
+    background: rgba(9, 18, 46, 0.86);
     border: 1px solid var(--line);
-    border-radius: 18px;
+    border-radius: 20px;
+    box-shadow: 0 24px 60px rgba(2, 6, 20, 0.45);
+    -webkit-backdrop-filter: blur(6px);
+            backdrop-filter: blur(6px);
   }
-  .login-card form { display: grid; gap: 16px; margin-top: 26px; }
-  .login-card .btn { width: 100%; min-height: 48px; margin-top: 4px; }
+  .login-card h1 { margin: 0; font-size: 1.3rem; font-weight: 700; line-height: 1.25; }
+  .login-card .lede { margin: 6px 0 0; font-size: 0.9rem; color: var(--muted); text-wrap: pretty; }
+  .login-card form { display: grid; gap: 16px; margin-top: 22px; }
+  .login-card .btn { width: 100%; min-height: 50px; margin-top: 4px; font-size: 0.85rem; letter-spacing: 0.12em; }
+  .login-card .btn:not([disabled]):hover { filter: brightness(1.04); box-shadow: 0 8px 22px rgba(0, 0, 0, 0.3); }
+  .login-card .btn:not([disabled]):active { transform: translateY(1px); }
+  .login-card input { min-height: 48px; border-color: rgba(169, 222, 250, 0.45); caret-color: var(--sky-200); }
+  .login-card input:hover { background: rgba(255, 255, 255, 0.11); }
+  .login-card input:focus { outline: 2px solid var(--sky-400); outline-offset: 1px; border-color: transparent; }
+
+  .pw { position: relative; }
+  .pw input { padding-right: 52px; }
+  .pw-toggle {
+    position: absolute;
+    top: 50%;
+    right: 4px;
+    width: 44px;
+    height: 44px;
+    margin-top: -22px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    color: var(--sky-200);
+    background: none;
+    border: 0;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .pw-toggle:hover { color: var(--white); }
+  .pw-toggle svg { width: 20px; height: 20px; }
+  .pw-toggle .i-hide, .pw-toggle[aria-pressed="true"] .i-show { display: none; }
+  .pw-toggle[aria-pressed="true"] .i-hide { display: block; }
+
   .msg { margin: 0; font-size: 0.88rem; color: var(--error); }
   .msg:empty { display: none; }
+  .login-card .msg {
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: rgba(255, 180, 168, 0.1);
+    border: 1px solid rgba(255, 180, 168, 0.35);
+  }
+
+  .login-help { margin: 18px 0 0; padding-top: 16px; border-top: 1px solid var(--line); font-size: 0.82rem; color: var(--muted); }
+  .back {
+    margin-top: 22px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 18px 0 14px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--white);
+    text-decoration: none;
+    background: rgba(11, 21, 51, 0.82);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+  }
+  .back:hover { background: var(--navy-900); }
+  .back svg { width: 16px; height: 16px; }
+
+  ::selection { color: var(--navy-900); background: var(--sky-200); }
+
+  @media (min-width: 640px) {
+    .login-brand svg { width: 180px; }
+    .wordmark { font-size: 3rem; }
+    .login-card { padding: 34px 32px 28px; }
+  }
 
   /* ---------- Dashboard ---------- */
   .top {
@@ -202,22 +318,62 @@
 <body>
 
 <!-- Login -->
-<main class="login" id="login" hidden>
+<main class="login" id="login">
+  <div class="login-brand">
+    <svg viewBox="0 0 200 142" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <g class="paddle" transform="translate(100 108) rotate(-54)">
+          <rect x="-4.5" y="-24" width="9" height="52" rx="3" />
+          <path d="M-4.5 6h9M-4.5 13h9M-4.5 20h9" stroke-width="1.4" />
+          <rect x="-22" y="-90" width="44" height="64" rx="19" />
+          <rect x="-15.5" y="-83.5" width="31" height="51" rx="13" stroke-width="1.2" opacity="0.45" />
+        </g>
+        <g class="paddle" transform="translate(100 108) rotate(54)">
+          <rect x="-4.5" y="-24" width="9" height="52" rx="3" />
+          <path d="M-4.5 6h9M-4.5 13h9M-4.5 20h9" stroke-width="1.4" />
+          <rect x="-22" y="-90" width="44" height="64" rx="19" />
+          <rect x="-15.5" y="-83.5" width="31" height="51" rx="13" stroke-width="1.2" opacity="0.45" />
+        </g>
+        <g transform="translate(57 8) scale(0.86)">
+          <circle cx="50" cy="50" r="49" fill="#0b1533" stroke="none" />
+          <circle cx="50" cy="50" r="46" stroke-width="2.5" />
+          <circle cx="50" cy="50" r="38" stroke-width="5" stroke-linecap="butt" stroke-dasharray="1.4 18.497" stroke-dashoffset="0.7" />
+          <line x1="50" y1="50" x2="50" y2="22" stroke-width="2.5" />
+          <line x1="50" y1="50" x2="60.5" y2="68.2" stroke-width="3.5" />
+          <circle cx="50" cy="50" r="2.5" fill="#fff" stroke="none" />
+        </g>
+    </svg>
+    <p class="wordmark">After 5</p>
+    <span class="club">PICKLEBALL CLUB</span>
+  </div>
+
   <div class="login-card">
-    <h1 class="brand">After 5 <small>Admin</small></h1>
-    <form id="login-form">
+    <h1>Officer sign-in</h1>
+    <p class="lede">See who has registered for the 1st Official Mini Tournament.</p>
+    <form id="login-form" novalidate>
       <div>
         <label for="email">Email</label>
-        <input id="email" type="email" autocomplete="username" required>
+        <input id="email" type="email" inputmode="email" autocomplete="username" autocapitalize="none" spellcheck="false" required>
       </div>
       <div>
         <label for="password">Password</label>
-        <input id="password" type="password" autocomplete="current-password" required>
+        <div class="pw">
+          <input id="password" type="password" autocomplete="current-password" required>
+          <button class="pw-toggle" type="button" id="pw-toggle" aria-label="Show password" aria-pressed="false">
+            <svg class="i-show" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z" /><circle cx="12" cy="12" r="3" /></svg>
+            <svg class="i-hide" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.6 5.1A10.7 10.7 0 0 1 12 5c6.4 0 10 7 10 7a17.6 17.6 0 0 1-2.9 3.9M6.6 6.6C3.7 8.4 2 12 2 12s3.6 7 10 7a10 10 0 0 0 5.4-1.6M9.9 9.9a3 3 0 0 0 4.2 4.2M3 3l18 18" /></svg>
+          </button>
+        </div>
       </div>
-      <button class="btn" type="submit" id="login-btn">Sign in</button>
       <p class="msg" id="login-msg" role="alert"></p>
+      <button class="btn" type="submit" id="login-btn" disabled>Checking sign-in…</button>
     </form>
+    <p class="login-help">For club officers only. Need access? Ask the club admin to add your email.</p>
   </div>
+
+  <a class="back" href="./">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3L5 8l5 5" /></svg>
+    Back to the tournament page
+  </a>
 </main>
 
 <!-- Dashboard -->
@@ -291,7 +447,19 @@
     dashView.hidden = true;
     loginView.hidden = false;
     loginMsg.textContent = message || "";
+    const btn = $("login-btn");
+    btn.disabled = false;
+    btn.textContent = "Sign in";
   }
+
+  $("pw-toggle").addEventListener("click", () => {
+    const t = $("pw-toggle"), pw = $("password");
+    const show = pw.type === "password";
+    pw.type = show ? "text" : "password";
+    t.setAttribute("aria-pressed", String(show));
+    t.setAttribute("aria-label", show ? "Hide password" : "Show password");
+    pw.focus();
+  });
 
   async function start(user) {
     // Only accounts listed in the "admins" table can read registrations.
@@ -312,12 +480,18 @@
   $("login-form").addEventListener("submit", async (e) => {
     e.preventDefault();
     loginMsg.textContent = "";
+    const email = $("email").value.trim();
+    if (!email || !$("password").value) {
+      loginMsg.textContent = "Enter your email and password.";
+      (email ? $("password") : $("email")).focus();
+      return;
+    }
     const btn = $("login-btn");
     btn.disabled = true;
     btn.textContent = "Signing in…";
     try {
       const { data, error } = await db.auth.signInWithPassword({
-        email: $("email").value.trim(),
+        email,
         password: $("password").value,
       });
       if (error) {
@@ -327,6 +501,10 @@
         return;
       }
       $("password").value = "";
+      $("password").type = "password";
+      $("pw-toggle").setAttribute("aria-pressed", "false");
+      $("pw-toggle").setAttribute("aria-label", "Show password");
+      btn.textContent = "Loading registrations…";
       await start(data.user);
     } finally {
       btn.disabled = false;
