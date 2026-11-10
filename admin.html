@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>After 5 Admin — Registrations</title>
+<meta name="theme-color" content="#0b1533">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Oxanium:wght@500;700&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy-900: #0b1533;
+    --navy-800: #101d45;
+    --navy-700: #16295c;
+    --sky-400: #45b4e8;
+    --sky-200: #a9defa;
+    --white: #ffffff;
+    --muted: #b9c8e6;
+    --gold: #d9a441;
+    --error: #ffb4a8;
+    --ok: #8fe3b0;
+    --panel: rgba(9, 18, 46, 0.78);
+    --line: rgba(169, 222, 250, 0.22);
+    --serif: "Playfair Display", Georgia, serif;
+    --sans: "Montserrat", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --tech: "Oxanium", "Montserrat", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: var(--sans);
+    color: var(--white);
+    line-height: 1.5;
+    background: linear-gradient(180deg, var(--navy-900) 0%, var(--navy-800) 45%, var(--navy-700) 100%) fixed;
+    -webkit-font-smoothing: antialiased;
+  }
+  [hidden] { display: none !important; }
+  .wrap { width: 100%; max-width: 980px; margin: 0 auto; padding: 0 16px; }
+
+  .brand { font-family: var(--serif); font-weight: 500; font-size: 1.6rem; line-height: 1; margin: 0; }
+  .brand small {
+    display: block;
+    margin-top: 6px;
+    font: 700 0.7rem var(--tech);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--sky-200);
+  }
+
+  .btn, .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    padding: 10px 18px;
+    font: 700 0.8rem var(--sans);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 999px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .btn { color: var(--navy-900); background: linear-gradient(180deg, #ffffff, var(--sky-200)); border: 0; }
+  .btn-ghost { color: var(--sky-200); background: none; border: 1px solid var(--line); }
+  .btn-ghost:hover { background: rgba(255, 255, 255, 0.08); }
+  .btn[disabled], .btn-ghost[disabled] { opacity: 0.6; cursor: progress; }
+  :focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+
+  input[type="email"], input[type="password"], input[type="search"], select {
+    width: 100%;
+    min-height: 46px;
+    padding: 10px 14px;
+    font: 500 1rem var(--sans);
+    color: var(--white);
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    color-scheme: dark;
+  }
+  select option { color: #111; }
+  input::placeholder { color: rgba(185, 200, 230, 0.55); }
+  label { display: block; margin: 0 0 6px; font-size: 0.8rem; font-weight: 600; }
+
+  /* ---------- Login ---------- */
+  .login { min-height: 100vh; display: grid; place-items: center; padding: 24px 16px; }
+  .login-card {
+    width: 100%;
+    max-width: 400px;
+    padding: 30px 24px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+  }
+  .login-card form { display: grid; gap: 16px; margin-top: 26px; }
+  .login-card .btn { width: 100%; min-height: 48px; margin-top: 4px; }
+  .msg { margin: 0; font-size: 0.88rem; color: var(--error); }
+  .msg:empty { display: none; }
+
+  /* ---------- Dashboard ---------- */
+  .top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 22px 0 18px;
+  }
+  .top-right { display: flex; align-items: center; justify-content: flex-end; gap: 12px; flex: 1; min-width: 0; }
+  .who { min-width: 0; font-size: 0.8rem; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  .stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .stat { padding: 14px 16px; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; }
+  .stat p { margin: 0; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+  .stat strong { display: block; font: 700 1.9rem/1.15 var(--tech); }
+
+  .tools { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; margin: 16px 0; }
+  .tools-btns { display: flex; gap: 10px; }
+  .tools-btns > * { flex: 1; }
+
+  .count { margin: 0 0 10px; font-size: 0.82rem; color: var(--muted); }
+  .list { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; scroll-margin-top: 12px; }
+  .pager { display: flex; align-items: center; justify-content: center; gap: 14px; margin-top: 18px; }
+  .pager span { font-size: 0.88rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .pager button[disabled] { opacity: 0.35; cursor: default; }
+  .bottom-space { height: 48px; }
+  .empty { padding: 36px 16px; text-align: center; color: var(--muted); border: 1px dashed var(--line); border-radius: 14px; }
+
+  .card { padding: 18px; background: var(--panel); border: 1px solid var(--line); border-radius: 16px; }
+  .card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+  .card-head h2 { margin: 0; font-size: 1.15rem; font-weight: 700; overflow-wrap: anywhere; }
+  .card-head time { display: block; margin-top: 2px; font-size: 0.78rem; color: var(--muted); }
+  .pill {
+    flex: none;
+    padding: 4px 11px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-radius: 999px;
+    border: 1px solid currentColor;
+  }
+  .pill.paid { color: var(--ok); }
+  .pill.unpaid { color: var(--gold); }
+  .pill.unknown { color: var(--muted); }
+  .pill.confirmed { color: var(--navy-900); background: var(--ok); border-color: var(--ok); }
+  .pills { flex: none; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; }
+  .card.is-confirmed { border-color: rgba(143, 227, 176, 0.55); }
+  .card-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px 16px;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+  }
+  .card-foot p { margin: 0; font-size: 0.85rem; color: var(--muted); }
+  .card-foot p.bad { color: var(--error); }
+  .card-foot button { min-height: 40px; }
+
+  .card-body { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
+  .fields { display: grid; grid-template-columns: 1fr; gap: 12px 24px; margin: 0; min-width: 0; }
+  .fields div { min-width: 0; }
+  .fields dt { font-size: 0.66rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+  .fields dd { margin: 1px 0 0; font-size: 0.95rem; overflow-wrap: anywhere; }
+  .fields a { color: var(--sky-200); }
+
+  .logo { display: flex; align-items: center; gap: 12px; }
+  .logo a.thumb {
+    flex: none;
+    width: 72px;
+    height: 72px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #fff;
+  }
+  .logo img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .logo .btn-ghost { min-height: 38px; padding: 8px 14px; font-size: 0.72rem; }
+  .no-logo { font-size: 0.82rem; color: var(--muted); }
+
+  @media (min-width: 640px) {
+    .stats { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .tools { grid-template-columns: minmax(0, 1fr) 180px auto; align-items: center; }
+    .tools-btns > * { flex: none; }
+    .fields { grid-template-columns: 1fr 1fr; }
+    .card-body { grid-template-columns: minmax(0, 1fr) auto; align-items: start; }
+    .logo { flex-direction: column; align-items: center; min-width: 130px; }
+    .logo a.thumb { width: 96px; height: 96px; }
+  }
+  @media (min-width: 900px) {
+    .fields { grid-template-columns: repeat(3, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- Login -->
+<main class="login" id="login" hidden>
+  <div class="login-card">
+    <h1 class="brand">After 5 <small>Admin</small></h1>
+    <form id="login-form">
+      <div>
+        <label for="email">Email</label>
+        <input id="email" type="email" autocomplete="username" required>
+      </div>
+      <div>
+        <label for="password">Password</label>
+        <input id="password" type="password" autocomplete="current-password" required>
+      </div>
+      <button class="btn" type="submit" id="login-btn">Sign in</button>
+      <p class="msg" id="login-msg" role="alert"></p>
+    </form>
+  </div>
+</main>
+
+<!-- Dashboard -->
+<div class="wrap" id="dash" hidden>
+  <header class="top">
+    <h1 class="brand">After 5 <small>Registrations</small></h1>
+    <div class="top-right">
+      <span class="who" id="who"></span>
+      <button class="btn-ghost" type="button" id="signout">Sign out</button>
+    </div>
+  </header>
+
+  <section class="stats" aria-label="Summary">
+    <div class="stat"><p>Registered</p><strong id="s-total">–</strong></div>
+    <div class="stat"><p>Tournament players</p><strong id="s-players">–</strong></div>
+    <div class="stat"><p>Said paid</p><strong id="s-paid">–</strong></div>
+    <div class="stat"><p>Confirmed</p><strong id="s-confirmed">–</strong></div>
+  </section>
+
+  <div class="tools">
+    <input type="search" id="search" placeholder="Search name, number, address…" aria-label="Search registrations">
+    <select id="filter" aria-label="Filter registrations">
+      <option value="all">All</option>
+      <option value="paid">Said paid</option>
+      <option value="unpaid">Not yet paid</option>
+      <option value="confirmed">Confirmed</option>
+      <option value="pending">Not yet confirmed</option>
+      <option value="logo">Has team logo</option>
+    </select>
+    <div class="tools-btns">
+      <button class="btn-ghost" type="button" id="refresh">Refresh</button>
+      <button class="btn" type="button" id="export">Export CSV</button>
+    </div>
+  </div>
+
+  <p class="msg" id="dash-msg" role="alert"></p>
+  <p class="count" id="count"></p>
+  <div class="list" id="list"></div>
+  <nav class="pager" id="pager" aria-label="Pages" hidden>
+    <button class="btn-ghost" type="button" id="prev">Previous</button>
+    <span id="page-label" aria-live="polite"></span>
+    <button class="btn-ghost" type="button" id="next">Next</button>
+  </nav>
+  <div class="bottom-space"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script>
+  // Same project as index.html. This key is public; what an account may read is decided by the database rules.
+  const SUPABASE_URL = "https://ouofkowntnzqbtxkjznj.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_OEPogZwyoCkAHxeek8Oj-A_K2BamcUV";
+  const LOGO_PREFIX = SUPABASE_URL + "/storage/v1/object/public/team-logos/";
+
+  const $ = (id) => document.getElementById(id);
+  const loginView = $("login"), dashView = $("dash");
+  const loginMsg = $("login-msg"), dashMsg = $("dash-msg");
+
+  if (!window.supabase) {
+    loginView.hidden = false;
+    loginMsg.textContent = "The page couldn't finish loading. Check your connection and reload.";
+    throw new Error("supabase-js failed to load");
+  }
+  const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  const PAGE_SIZE = 20;   // registrations shown per page
+  const FETCH_SIZE = 1000; // Supabase returns at most this many rows per request
+  let members = [];
+  let page = 1;
+
+  /* ---------- Sign in / out ---------- */
+  function showLogin(message) {
+    dashView.hidden = true;
+    loginView.hidden = false;
+    loginMsg.textContent = message || "";
+  }
+
+  async function start(user) {
+    // Only accounts listed in the "admins" table can read registrations.
+    const check = await db.from("admins").select("user_id").eq("user_id", user.id).limit(1);
+    if (check.error || !check.data.length) {
+      await db.auth.signOut();
+      showLogin(check.error
+        ? "Admin access isn't set up yet. Run supabase/setup.sql, then add this account as an admin."
+        : "This account doesn't have admin access.");
+      return;
+    }
+    $("who").textContent = user.email || "";
+    loginView.hidden = true;
+    dashView.hidden = false;
+    await load();
+  }
+
+  $("login-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    loginMsg.textContent = "";
+    const btn = $("login-btn");
+    btn.disabled = true;
+    btn.textContent = "Signing in…";
+    try {
+      const { data, error } = await db.auth.signInWithPassword({
+        email: $("email").value.trim(),
+        password: $("password").value,
+      });
+      if (error) {
+        loginMsg.textContent = error.status === 400
+          ? "Wrong email or password."
+          : "Couldn't sign in. Check your connection and try again.";
+        return;
+      }
+      $("password").value = "";
+      await start(data.user);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = "Sign in";
+    }
+  });
+
+  $("signout").addEventListener("click", async () => {
+    await db.auth.signOut();
+    members = [];
+    $("list").replaceChildren();
+    showLogin();
+  });
+
+  /* ---------- Data ---------- */
+  async function load() {
+    dashMsg.textContent = "";
+    $("count").textContent = "Loading…";
+    const all = [];
+    for (let from = 0; ; from += FETCH_SIZE) { // keep asking until a short batch, so nothing is cut off at 1,000
+      const { data, error } = await db.from("members").select("*")
+        .order("created_at", { ascending: false })
+        .order("id")
+        .range(from, from + FETCH_SIZE - 1);
+      if (error) {
+        console.error(error);
+        $("count").textContent = "";
+        dashMsg.textContent = "Couldn't load registrations. Check your connection and press Refresh.";
+        return;
+      }
+      all.push(...data);
+      if (data.length < FETCH_SIZE) break;
+    }
+    members = all;
+    stats();
+    render();
+  }
+
+  function stats() {
+    const playing = (m) => /tournament/i.test(m.registration || "");
+    $("s-total").textContent = members.length;
+    $("s-players").textContent = members.filter(playing).length;
+    $("s-paid").textContent = members.filter((m) => m.fees_paid === true).length;
+    $("s-confirmed").textContent = members.filter((m) => m.confirmed_at).length;
+  }
+
+  // Officers confirm a registration once they've checked it (e.g. payment received). Can be undone.
+  async function setConfirmed(m, on, btn, note) {
+    btn.disabled = true;
+    const { data, error } = await db.from("members")
+      .update({ confirmed_at: on ? new Date().toISOString() : null })
+      .eq("id", m.id)
+      .select("id, confirmed_at");
+    if (error || !data.length) {
+      console.error(error);
+      btn.disabled = false;
+      note.className = "bad";
+      note.textContent = "Couldn't save that. Check your connection, and that the latest supabase/setup.sql has been run.";
+      return;
+    }
+    m.confirmed_at = data[0].confirmed_at;
+    stats();
+    render();
+  }
+
+  // Only trust logo links that point at our own storage bucket.
+  const logoUrl = (m) => (typeof m.team_logo_url === "string" && m.team_logo_url.startsWith(LOGO_PREFIX)) ? m.team_logo_url : null;
+
+  function visible() {
+    const q = $("search").value.trim().toLowerCase();
+    const f = $("filter").value;
+    return members.filter((m) => {
+      if (f === "paid" && m.fees_paid !== true) return false;
+      if (f === "unpaid" && m.fees_paid === true) return false;
+      if (f === "confirmed" && !m.confirmed_at) return false;
+      if (f === "pending" && m.confirmed_at) return false;
+      if (f === "logo" && !logoUrl(m)) return false;
+      if (!q) return true;
+      return [m.full_name, m.address, m.contact_number, m.email, m.dupr_id, m.emergency_contact_name, m.emergency_contact_number]
+        .some((v) => (v || "").toLowerCase().includes(q));
+    });
+  }
+
+  /* ---------- Rendering (textContent only — these are values typed in by the public) ---------- */
+  function el(tag, props, ...children) {
+    const node = document.createElement(tag);
+    Object.assign(node, props || {});
+    node.append(...children.filter((c) => c != null));
+    return node;
+  }
+
+  const fmtWhen = new Intl.DateTimeFormat("en-PH", { timeZone: "Asia/Manila", dateStyle: "medium", timeStyle: "short" });
+  const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  function fmtBirthday(iso) {
+    const p = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || "");
+    return p ? MONTHS[+p[2] - 1] + " " + +p[3] + ", " + p[1] : (iso || "—");
+  }
+  const telHref = (n) => "tel:" + String(n).replace(/[^\d+]/g, "");
+  const fileSafe = (s) => String(s || "member").trim().replace(/[^\w-]+/g, "_").slice(0, 60) || "member";
+
+  function field(label, value, href) {
+    const dd = el("dd");
+    if (value && href) dd.append(el("a", { href, textContent: value }));
+    else dd.textContent = value || "—";
+    return el("div", null, el("dt", { textContent: label }), dd);
+  }
+
+  function card(m) {
+    const paid = m.fees_paid === true ? ["paid", "Paid: Yes"] : m.fees_paid === false ? ["unpaid", "Paid: No"] : ["unknown", "Paid: —"];
+    const head = el("div", { className: "card-head" },
+      el("div", null,
+        el("h2", { textContent: m.full_name }),
+        el("time", { textContent: "Registered " + fmtWhen.format(new Date(m.created_at)) })),
+      el("div", { className: "pills" },
+        m.confirmed_at ? el("span", { className: "pill confirmed", textContent: "Confirmed" }) : null,
+        el("span", { className: "pill " + paid[0], textContent: paid[1] })));
+
+    const fields = el("dl", { className: "fields" },
+      field("Registering for", m.registration),
+      field("Contact number", m.contact_number, m.contact_number && telHref(m.contact_number)),
+      field("Email", m.email, m.email && "mailto:" + m.email),
+      field("Address", m.address),
+      field("Birthday", fmtBirthday(m.birthday)),
+      field("DUPR ID", m.dupr_id),
+      field("Emergency contact", m.emergency_contact_name),
+      field("Emergency number", m.emergency_contact_number, m.emergency_contact_number && telHref(m.emergency_contact_number)));
+
+    const url = logoUrl(m);
+    let logo;
+    if (url) {
+      const ext = (url.split(".").pop() || "png").replace(/[^a-z0-9]/gi, "").slice(0, 5);
+      const filename = fileSafe(m.full_name) + "-team-logo." + ext;
+      const img = el("img", { src: url, alt: "Team logo of " + m.full_name, loading: "lazy" });
+      logo = el("div", { className: "logo" },
+        el("a", { className: "thumb", href: url, target: "_blank", rel: "noopener", title: "Open full size" }, img),
+        // ?download= makes Supabase send the file as an attachment, so the browser saves it instead of opening it.
+        el("a", { className: "btn-ghost", href: url + "?download=" + encodeURIComponent(filename), textContent: "Download logo" }));
+    } else {
+      logo = el("div", { className: "logo" }, el("span", { className: "no-logo", textContent: "No team logo" }));
+    }
+
+    const note = el("p", { textContent: m.confirmed_at
+      ? "Confirmed " + fmtWhen.format(new Date(m.confirmed_at))
+      : "Not yet confirmed" });
+    const btn = el("button", {
+      type: "button",
+      className: m.confirmed_at ? "btn-ghost" : "btn",
+      textContent: m.confirmed_at ? "Undo confirmation" : "Confirm registration",
+    });
+    btn.addEventListener("click", () => setConfirmed(m, !m.confirmed_at, btn, note));
+    const foot = el("div", { className: "card-foot" }, note, btn);
+
+    return el("article", { className: "card" + (m.confirmed_at ? " is-confirmed" : "") },
+      head, el("div", { className: "card-body" }, fields, logo), foot);
+  }
+
+  function render() {
+    const rows = visible();
+    const pages = Math.max(1, Math.ceil(rows.length / PAGE_SIZE));
+    page = Math.min(Math.max(1, page), pages);
+    const first = (page - 1) * PAGE_SIZE;
+    const shown = rows.slice(first, first + PAGE_SIZE);
+
+    const filtered = rows.length !== members.length;
+    $("count").textContent = !rows.length ? ""
+      : (pages > 1 ? "Showing " + (first + 1) + "–" + (first + shown.length) + " of " + rows.length
+                   : rows.length + (rows.length === 1 ? " registration" : " registrations"))
+        + (filtered ? " matching (" + members.length + " in total)" : "");
+
+    $("pager").hidden = pages < 2;
+    $("page-label").textContent = "Page " + page + " of " + pages;
+    $("prev").disabled = page <= 1;
+    $("next").disabled = page >= pages;
+
+    const list = $("list");
+    if (!rows.length) {
+      list.replaceChildren(el("p", { className: "empty", textContent: members.length ? "No registrations match." : "No one has registered yet." }));
+      return;
+    }
+    list.replaceChildren(...shown.map(card));
+  }
+
+  function goTo(n) {
+    page = n;
+    render();
+    $("list").scrollIntoView({ block: "start" });
+  }
+  $("prev").addEventListener("click", () => goTo(page - 1));
+  $("next").addEventListener("click", () => goTo(page + 1));
+
+  // Searching or filtering starts again from the first page; search, counts and export always cover every entry.
+  $("search").addEventListener("input", () => { page = 1; render(); });
+  $("filter").addEventListener("change", () => { page = 1; render(); });
+  $("refresh").addEventListener("click", load);
+
+  /* ---------- CSV export (what's currently shown) ---------- */
+  const COLS = [
+    ["Registered (Manila time)", (m) => fmtWhen.format(new Date(m.created_at))],
+    ["Full Name", (m) => m.full_name],
+    ["Address", (m) => m.address],
+    ["Birthday", (m) => m.birthday],
+    ["Contact Number", (m) => m.contact_number],
+    ["Email", (m) => m.email],
+    ["Emergency Contact Person", (m) => m.emergency_contact_name],
+    ["Emergency Contact Number", (m) => m.emergency_contact_number],
+    ["DUPR ID", (m) => m.dupr_id],
+    ["Registering For", (m) => m.registration],
+    ["Paid", (m) => m.fees_paid === true ? "Yes" : m.fees_paid === false ? "No" : ""],
+    ["Confirmed", (m) => m.confirmed_at ? "Yes" : "No"],
+    ["Confirmed At (Manila time)", (m) => m.confirmed_at ? fmtWhen.format(new Date(m.confirmed_at)) : ""],
+    ["Team Logo", (m) => logoUrl(m)],
+  ];
+  function csvCell(v) {
+    let s = v == null ? "" : String(v);
+    if (/^[=+\-@\t]/.test(s)) s = "'" + s; // keep spreadsheets from running a typed-in value as a formula
+    return '"' + s.replace(/"/g, '""') + '"';
+  }
+  $("export").addEventListener("click", () => {
+    const rows = visible();
+    const lines = [COLS.map((c) => csvCell(c[0])).join(",")]
+      .concat(rows.map((m) => COLS.map((c) => csvCell(c[1](m))).join(",")));
+    const blob = new Blob(["﻿" + lines.join("\r\n")], { type: "text/csv;charset=utf-8" });
+    const a = el("a", { href: URL.createObjectURL(blob), download: "after5-registrations-" + new Date().toISOString().slice(0, 10) + ".csv" });
+    document.body.append(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  });
+
+  /* ---------- Boot ---------- */
+  db.auth.getSession().then(({ data }) => {
+    if (data.session) start(data.session.user);
+    else showLogin();
+  });
+</script>
+</body>
+</html>

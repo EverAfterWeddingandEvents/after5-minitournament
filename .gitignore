@@ -1,0 +1,9 @@
+# Local AI-tool folders and editor/OS files: not part of the website
+.agent/
+.agents/
+.claude/
+.cursor/
+.gemini/
+.hermes/
+.impeccable/
+.DS_Store

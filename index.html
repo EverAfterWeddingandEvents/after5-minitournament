@@ -1,0 +1,1655 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Join the After 5 Mini Tournament — Nov 15, Dipolog City</title>
+  <meta name="description"
+    content="After 5 Pickleball Club's 1st Official Mini Tournament: Sunday, November 15, 2026 at Pickleboy, Dipolog City. Open doubles with blind pairing and ₱4,000 for the champion. Members only — join the club and register in about a minute.">
+
+  <!-- Link previews (Messenger, Facebook, Viber, etc.). og:image and og:url must be full addresses to work. -->
+  <meta property="og:url" content="https://after5-minitournament.everafterweddingsandevent.com/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="After 5 Pickleball Club">
+  <meta property="og:locale" content="en_PH">
+  <meta property="og:title" content="You're invited: After 5's 1st Official Mini Tournament">
+  <meta property="og:description"
+    content="Sunday, Nov 15 at Pickleboy, Dipolog City. Open doubles, blind pairing, ₱4,000 for the champion. Members only — tap to join and register in a minute.">
+  <meta property="og:image" content="https://after5-minitournament.everafterweddingsandevent.com/assets/share.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt"
+    content="After 5 Pickleball Club, 1st Official Mini Tournament. Sunday, November 15, 2026 at Pickleboy, Dipolog City. Cash prizes of ₱4,000, ₱3,000 and ₱2,000. Register now.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#0b1533">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Oxanium:wght@500;700&family=Playfair+Display:wght@500&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --navy-900: #0b1533;
+      --navy-800: #101d45;
+      --navy-700: #16295c;
+      --blue-500: #1f6fae;
+      --sky-400: #45b4e8;
+      --sky-200: #a9defa;
+      --white: #ffffff;
+      --muted: #b9c8e6;
+      --gold: #d9a441;
+      --error: #ffb4a8;
+      --panel: rgba(9, 18, 46, 0.78);
+      --line: rgba(169, 222, 250, 0.22);
+      --line-strong: rgba(169, 222, 250, 0.45); /* edges of things you can type in or press */
+      --field: rgba(255, 255, 255, 0.07);
+      --field-hover: rgba(255, 255, 255, 0.11);
+      --serif: "Playfair Display", Georgia, serif;
+      --sans: "Montserrat", system-ui, -apple-system, "Segoe UI", sans-serif;
+      --tech: "Oxanium", "Montserrat", sans-serif;
+      --ios-ease: cubic-bezier(0.32, 0.72, 0, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scrollbar-gutter: stable; /* no sideways jump when the join sheet locks scrolling */
+    }
+
+    ::selection {
+      color: var(--navy-900);
+      background: var(--sky-200);
+    }
+
+    html.sheet-open {
+      overflow: hidden;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--sans);
+      color: var(--white);
+      background: var(--navy-900);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* The jersey: navy shoulders fading down into sky blue, with halftone dots through the middle */
+    .jersey {
+      position: relative;
+      overflow: hidden;
+      min-height: 100vh;
+      background: linear-gradient(180deg,
+          var(--navy-900) 0%,
+          var(--navy-800) 18%,
+          var(--navy-700) 40%,
+          var(--blue-500) 68%,
+          var(--sky-400) 100%);
+    }
+
+    .jersey::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(8, 16, 42, 0.75) 32%, transparent 34%);
+      background-size: 18px 18px;
+      -webkit-mask-image: linear-gradient(180deg, transparent 8%, #000 38%, #000 62%, transparent 94%);
+      mask-image: linear-gradient(180deg, transparent 8%, #000 38%, #000 62%, transparent 94%);
+      pointer-events: none;
+    }
+
+    .jersey::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(115deg, transparent 55%, rgba(255, 255, 255, 0.05) 55%, rgba(255, 255, 255, 0.05) 70%, transparent 70%),
+        linear-gradient(245deg, transparent 62%, rgba(255, 255, 255, 0.04) 62%, rgba(255, 255, 255, 0.04) 80%, transparent 80%);
+      pointer-events: none;
+    }
+
+    .wrap {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      padding: 56px 0 40px;
+      text-align: center;
+    }
+
+    .clock {
+      width: 76px;
+      height: 76px;
+      margin: 0 auto 10px;
+      display: block;
+    }
+
+    .wordmark {
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: clamp(3rem, 13vw, 5.5rem);
+      line-height: 1;
+      margin: 0;
+      letter-spacing: 0.01em;
+    }
+
+    .club {
+      display: inline-block;
+      margin-top: 10px;
+      padding-bottom: 8px;
+      font-size: clamp(0.8rem, 3.2vw, 1.05rem);
+      font-weight: 500;
+      letter-spacing: 0.42em;
+      margin-right: -0.42em;
+      border-bottom: 2px solid var(--gold);
+    }
+
+    .event-title {
+      margin: 40px 0 0;
+      font-family: var(--tech);
+      font-weight: 700;
+      text-transform: uppercase;
+      line-height: 1.05;
+      text-wrap: balance;
+    }
+
+    .event-title small {
+      display: block;
+      font-size: clamp(1rem, 5.2vw, 2.2rem);
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      margin-bottom: 2px;
+    }
+
+    .event-title span {
+      font-size: clamp(1.75rem, 9.5vw, 4rem);
+      letter-spacing: 0.04em;
+    }
+
+    .badge {
+      display: inline-block;
+      margin-top: 18px;
+      padding: 6px 16px 6px calc(16px + 0.28em); /* balances the trailing letter-spacing */
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.28em;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      border-radius: 999px;
+    }
+
+    .hero-date {
+      margin: 22px 0 0;
+      font-size: clamp(1.05rem, 4.4vw, 1.4rem);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+
+    .hero-venue {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .btn {
+      display: inline-block;
+      margin-top: 28px;
+      padding: 15px 34px 15px calc(34px + 0.14em);
+      font: 700 0.95rem var(--sans);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--navy-900);
+      background: linear-gradient(180deg, #ffffff, var(--sky-200));
+      border: 0;
+      border-radius: 999px;
+      cursor: pointer;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    @media (hover: hover) {
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 14px 32px rgba(0, 0, 0, 0.4);
+      }
+    }
+
+    .btn:active {
+      transform: translateY(1px);
+      box-shadow: 0 5px 14px rgba(0, 0, 0, 0.35);
+    }
+
+    .btn:focus-visible,
+    a:focus-visible,
+    button:focus-visible {
+      outline: 3px solid var(--gold);
+      outline-offset: 3px;
+    }
+
+    .btn[disabled] {
+      opacity: 0.6;
+      cursor: progress;
+      transform: none;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+    }
+
+    /* ---------- Panels ---------- */
+    section {
+      padding: 14px 0;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 26px 20px;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+
+    h2 {
+      margin: 0 0 18px;
+      font-family: var(--tech);
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--sky-200);
+    }
+
+    .panel h2::after {
+      content: "";
+      display: block;
+      width: 44px;
+      height: 2px;
+      margin-top: 10px;
+      background: var(--gold);
+    }
+
+    .facts {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+      margin: 0;
+    }
+
+    .facts div {
+      min-width: 0;
+    }
+
+    .facts dt {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .facts dd {
+      margin: 2px 0 0;
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .facts dd small {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: var(--muted);
+    }
+
+    .prizes {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+
+    .prize {
+      padding: 16px 0;
+      text-align: center;
+      border-top: 1px solid var(--line);
+    }
+
+    .prize:first-child {
+      padding-top: 0;
+      border-top: 0;
+    }
+
+    .prize:last-child {
+      padding-bottom: 0;
+    }
+
+    .prize p {
+      margin: 0;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .prize strong {
+      display: block;
+      margin-top: 4px;
+      font-family: var(--tech);
+      font-size: 2.1rem;
+      line-height: 1.1;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .prize.top strong {
+      font-size: 2.9rem;
+      color: var(--gold);
+    }
+
+    .rows {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .rows li {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .rows li:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .rows li:first-child {
+      padding-top: 0;
+    }
+
+    .rows span {
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .rows strong {
+      font-family: var(--tech);
+      font-size: 1.05rem;
+      font-variant-numeric: tabular-nums;
+      text-align: right;
+      overflow-wrap: anywhere;
+    }
+
+    /* A value with a copy button beside it (payment details) */
+    .rows .val {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      min-width: 0;
+      margin-right: -8px; /* the button's icon, not its tap area, lines up with the panel edge */
+    }
+
+    .copy {
+      flex: none;
+      width: 40px;
+      height: 40px;
+      margin: -10px 0; /* a full-size tap area without making the row taller */
+      display: grid;
+      place-items: center;
+      padding: 0;
+      color: var(--sky-200);
+      background: none;
+      border: 0;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.15s ease, color 0.15s ease;
+    }
+
+    .copy:hover {
+      background: var(--field-hover);
+    }
+
+    .copy:active {
+      background: rgba(255, 255, 255, 0.18);
+    }
+
+    .copy svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .copy .i-done,
+    .copy.copied .i-copy {
+      display: none;
+    }
+
+    .copy.copied {
+      color: var(--gold);
+    }
+
+    .copy.copied .i-done {
+      display: block;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+    .two {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    .note {
+      margin: 16px 0 0;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .cta {
+      text-align: center;
+    }
+
+    .cta h2::after {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cta p {
+      margin: 0 auto;
+      max-width: 44ch;
+      color: var(--muted);
+      text-wrap: pretty;
+    }
+
+    .cta .btn {
+      margin-top: 20px;
+    }
+
+    /* ---------- Join sheet: iOS-style bottom drawer on phones, centered popup on larger screens ---------- */
+    dialog.sheet {
+      position: fixed;
+      inset: auto 0 0 0;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      max-width: 100%;
+      max-height: 92vh;
+      max-height: 92dvh;
+      border: 0;
+      border-radius: 22px 22px 0 0;
+      color: var(--white);
+      background: linear-gradient(180deg, var(--navy-800), var(--navy-700));
+      box-shadow: 0 -12px 48px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+      flex-direction: column;
+    }
+
+    dialog.sheet[open] {
+      display: flex;
+      animation: sheet-up 0.5s var(--ios-ease);
+    }
+
+    dialog.sheet.closing:not(.dragged) {
+      animation: sheet-down 0.3s ease-in forwards;
+    }
+
+    dialog.sheet::backdrop {
+      background: rgba(4, 9, 24, 0.62);
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+      animation: fade-in 0.35s ease-out;
+    }
+
+    dialog.sheet.closing::backdrop {
+      animation: fade-out 0.3s ease-in forwards;
+    }
+
+    @keyframes sheet-up {
+      from {
+        transform: translateY(100%);
+      }
+
+      to {
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes sheet-down {
+      from {
+        transform: translateY(0);
+      }
+
+      to {
+        transform: translateY(100%);
+      }
+    }
+
+    @keyframes pop-in {
+      from {
+        opacity: 0;
+        transform: translateY(24px) scale(0.96);
+      }
+
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    @keyframes pop-out {
+      from {
+        opacity: 1;
+        transform: none;
+      }
+
+      to {
+        opacity: 0;
+        transform: translateY(16px) scale(0.97);
+      }
+    }
+
+    @keyframes fade-in {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes fade-out {
+      from {
+        opacity: 1;
+      }
+
+      to {
+        opacity: 0;
+      }
+    }
+
+    .sheet-head {
+      position: relative;
+      flex: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 26px 20px 14px;
+      border-bottom: 1px solid var(--line);
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .sheet-head::before {
+      /* grab handle */
+      content: "";
+      position: absolute;
+      top: 9px;
+      left: 50%;
+      width: 40px;
+      height: 5px;
+      margin-left: -20px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.35);
+    }
+
+    .sheet-head h2 {
+      margin: 0;
+    }
+
+    .sheet-close {
+      flex: none;
+      width: 44px;
+      height: 44px;
+      margin: -4px -6px -4px 0;
+      display: grid;
+      place-items: center;
+      padding: 0;
+      color: var(--white);
+      background: rgba(255, 255, 255, 0.1);
+      border: 0;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .sheet-close:hover {
+      background: rgba(255, 255, 255, 0.18);
+    }
+
+    .sheet-close:active {
+      background: rgba(255, 255, 255, 0.26);
+    }
+
+    .sheet-close svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .sheet-body {
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      outline: none;
+      /* takes focus on open so the keyboard doesn't pop up on phones */
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      scrollbar-color: var(--line-strong) transparent;
+      padding: 20px 20px calc(24px + env(safe-area-inset-bottom));
+    }
+
+    /* ---------- Form ---------- */
+    form {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .field {
+      min-width: 0;
+    }
+
+    label,
+    .label {
+      display: block;
+      margin: 0 0 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+
+    label em,
+    .label em {
+      font-style: normal;
+      font-weight: 400;
+      color: var(--muted);
+    }
+
+    input[type="text"],
+    input[type="tel"],
+    input[type="email"],
+    input[type="date"],
+    select {
+      width: 100%;
+      min-height: 48px;
+      padding: 12px 14px;
+      font: 500 1rem var(--sans);
+      /* 16px+ keeps iOS from zooming on focus */
+      color: var(--white);
+      caret-color: var(--sky-200);
+      background-color: var(--field);
+      border: 1px solid var(--line-strong);
+      border-radius: 10px;
+      color-scheme: dark;
+      transition: background-color 0.15s ease, border-color 0.15s ease;
+    }
+
+    input[type="text"]:hover,
+    input[type="tel"]:hover,
+    input[type="email"]:hover,
+    input[type="date"]:hover,
+    select:hover {
+      background-color: var(--field-hover);
+    }
+
+    /* iOS centres date text and collapses an empty date field; keep it like its neighbours */
+    input[type="date"] {
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    input[type="date"]::-webkit-date-and-time-value {
+      text-align: left;
+    }
+
+    select {
+      -webkit-appearance: none;
+      appearance: none;
+      padding-right: 44px;
+      text-overflow: ellipsis;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8' fill='none' stroke='%23a9defa' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 1.5l5 5 5-5'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      background-size: 12px 8px;
+      cursor: pointer;
+    }
+
+    select option {
+      color: #111;
+    }
+
+    input::placeholder {
+      color: rgba(185, 200, 230, 0.82);
+      opacity: 1;
+    }
+
+    input:focus,
+    select:focus {
+      outline: 2px solid var(--sky-400);
+      outline-offset: 1px;
+      border-color: transparent;
+    }
+
+    input[aria-invalid="true"] {
+      border-color: var(--error);
+      box-shadow: inset 0 0 0 1px var(--error);
+    }
+
+    .err {
+      margin: 5px 0 0;
+      font-size: 0.8rem;
+      color: var(--error);
+    }
+
+    .err:empty {
+      display: none;
+    }
+
+    .yesno {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .yesno label {
+      position: relative;
+      margin: 0;
+    }
+
+    .yesno input {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .yesno span {
+      display: grid;
+      place-items: center;
+      min-height: 48px;
+      font-size: 1rem;
+      font-weight: 600;
+      border: 1px solid var(--line-strong);
+      border-radius: 10px;
+      background: var(--field);
+      transition: background-color 0.15s ease;
+    }
+
+    .yesno input:hover:not(:checked)+span {
+      background: var(--field-hover);
+    }
+
+    .yesno input:checked+span {
+      color: var(--navy-900);
+      background: linear-gradient(180deg, #ffffff, var(--sky-200));
+      border-color: transparent;
+    }
+
+    .yesno input:focus-visible+span {
+      outline: 2px solid var(--sky-400);
+      outline-offset: 2px;
+    }
+
+    .hp {
+      position: absolute;
+      left: -9999px;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+
+    .logo-picker {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-height: 76px;
+      padding: 10px 14px;
+      border: 1px dashed var(--line-strong);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.04);
+      transition: background-color 0.15s ease;
+    }
+
+    .logo-picker:hover {
+      background: var(--field);
+    }
+
+    .logo-picker:focus-within {
+      outline: 2px solid var(--sky-400);
+      outline-offset: 1px;
+    }
+
+    .logo-picker input[type="file"] {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .logo-thumb {
+      flex: none;
+      width: 54px;
+      height: 54px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+    }
+
+    .logo-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: #fff;
+    }
+
+    .logo-thumb svg {
+      width: 24px;
+      height: 24px;
+      color: var(--sky-200);
+    }
+
+    .logo-text {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    .logo-text strong {
+      display: block;
+      font-size: 0.95rem;
+      font-weight: 600;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .logo-text span {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .logo-remove {
+      position: relative;
+      /* sits above the invisible file input */
+      flex: none;
+      min-height: 40px;
+      padding: 8px 14px;
+      font: 600 0.8rem var(--sans);
+      color: var(--sky-200);
+      background: var(--navy-800);
+      border: 1px solid var(--line-strong);
+      border-radius: 999px;
+      cursor: pointer;
+    }
+
+    .logo-remove:hover {
+      background: var(--navy-700);
+    }
+
+    .form-foot {
+      text-align: center;
+    }
+
+    .form-foot .btn {
+      margin-top: 6px;
+      width: 100%;
+    }
+
+    .status {
+      margin: 14px 0 0;
+      font-size: 0.9rem;
+      color: var(--error);
+    }
+
+    .status:empty {
+      display: none;
+    }
+
+    .done {
+      text-align: center;
+      padding: 18px 0 8px;
+      outline: none; /* receives focus so screen readers announce it; no ring needed */
+    }
+
+    .done h3 {
+      margin: 0 0 8px;
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: 2rem;
+    }
+
+    .done p {
+      margin: 0 auto 10px;
+      max-width: 46ch;
+      color: var(--muted);
+    }
+
+    .done p strong {
+      color: var(--white);
+    }
+
+    .done .btn {
+      margin-top: 14px;
+    }
+
+    .done .link {
+      display: block;
+      margin: 16px auto 0;
+      background: none;
+      border: 0;
+      color: var(--sky-200);
+      font: 600 0.9rem var(--sans);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      cursor: pointer;
+    }
+
+    .done .link:hover {
+      color: var(--white);
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    footer {
+      padding: 34px 0 40px;
+      text-align: center;
+      color: var(--navy-900);
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    footer a {
+      color: inherit;
+      text-underline-offset: 3px;
+    }
+
+    footer a:hover {
+      text-decoration-thickness: 2px;
+    }
+
+    @media (min-width: 640px) {
+      .hero {
+        padding: 80px 0 56px;
+      }
+
+      .clock {
+        width: 96px;
+        height: 96px;
+      }
+
+      .panel {
+        padding: 34px 32px;
+      }
+
+      .facts {
+        grid-template-columns: 1fr 1fr;
+        gap: 24px 32px;
+      }
+
+      .prizes {
+        grid-template-columns: 1.3fr 1fr 1fr;
+        align-items: end;
+      }
+
+      .prize,
+      .prize:first-child,
+      .prize:last-child {
+        padding: 2px 12px 4px;
+        border-top: 0;
+        border-left: 1px solid var(--line);
+      }
+
+      .prize:first-child {
+        border-left: 0;
+      }
+
+      .two {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      form {
+        grid-template-columns: 1fr 1fr;
+        gap: 18px 20px;
+      }
+
+      .full {
+        grid-column: 1 / -1;
+      }
+
+      .form-foot .btn {
+        width: auto;
+        min-width: 280px;
+      }
+
+      /* Centered popup */
+      dialog.sheet {
+        inset: 0;
+        margin: auto;
+        width: min(720px, calc(100% - 48px));
+        height: fit-content;
+        max-height: min(880px, 90vh);
+        border-radius: 22px;
+        border: 1px solid var(--line);
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+      }
+
+      dialog.sheet[open] {
+        animation: pop-in 0.35s var(--ios-ease);
+      }
+
+      dialog.sheet.closing:not(.dragged) {
+        animation: pop-out 0.3s ease-in forwards;
+      }
+
+      .sheet-head {
+        padding: 22px 28px 16px;
+        touch-action: auto;
+      }
+
+      .sheet-head::before {
+        display: none;
+      }
+
+      .sheet-body {
+        padding: 24px 28px 28px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      .btn,
+      input,
+      select,
+      .yesno span,
+      .copy,
+      .logo-picker {
+        transition: none;
+      }
+
+      dialog.sheet[open],
+      dialog.sheet.closing:not(.dragged),
+      dialog.sheet::backdrop,
+      dialog.sheet.closing::backdrop {
+        animation: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="jersey">
+
+    <header class="hero wrap">
+      <svg class="clock" viewBox="0 0 100 100" fill="none" stroke="#fff" stroke-linecap="round" aria-hidden="true">
+        <circle cx="50" cy="50" r="46" stroke-width="2.5" />
+        <circle cx="50" cy="50" r="38" stroke-width="5" stroke-linecap="butt" stroke-dasharray="1.4 18.497"
+          stroke-dashoffset="0.7" />
+        <line x1="50" y1="50" x2="50" y2="22" stroke-width="2.5" />
+        <line x1="50" y1="50" x2="60.5" y2="68.2" stroke-width="3.5" />
+        <circle cx="50" cy="50" r="2.5" fill="#fff" stroke="none" />
+      </svg>
+      <p class="wordmark">After 5</p>
+      <span class="club">PICKLEBALL CLUB</span>
+
+      <h1 class="event-title">
+        <small>1st Official</small>
+        <span>Mini Tournament</span>
+      </h1>
+      <div class="badge">MEMBERS ONLY</div>
+      <p class="hero-date">NOVEMBER 15, 2026 &bull; SUNDAY</p>
+      <p class="hero-venue">Pickleboy, Highway Turno, Dipolog City</p>
+      <button class="btn" type="button" data-open-sheet>Join the Club</button>
+    </header>
+
+    <main class="wrap">
+
+      <section aria-labelledby="h-details">
+        <div class="panel">
+          <h2 id="h-details">Event Details</h2>
+          <dl class="facts">
+            <div>
+              <dt>Date</dt>
+              <dd>November 15, 2026 <small>Sunday</small></dd>
+            </div>
+            <div>
+              <dt>Call Time</dt>
+              <dd>12:00 NN – 1:00 PM</dd>
+            </div>
+            <div>
+              <dt>Venue</dt>
+              <dd>Pickleboy <small>Highway Turno, Dipolog City</small></dd>
+            </div>
+            <div>
+              <dt>Format</dt>
+              <dd>One Open Doubles Category <small>Skill-balanced blind pairing</small></dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+
+      <section aria-labelledby="h-prizes">
+        <div class="panel">
+          <h2 id="h-prizes">Cash Prizes</h2>
+          <div class="prizes">
+            <div class="prize top">
+              <p>Champion</p><strong>₱4,000</strong>
+            </div>
+            <div class="prize">
+              <p>1st Runner-up</p><strong>₱3,000</strong>
+            </div>
+            <div class="prize">
+              <p>2nd Runner-up</p><strong>₱2,000</strong>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section aria-label="Fees, deadlines and payment">
+        <div class="two">
+          <div class="panel">
+            <h2>Fees &amp; Deadlines</h2>
+            <ul class="rows">
+              <li><span>Club membership fee</span><strong>₱500 / member</strong></li>
+              <li><span>Tournament registration</span><strong>₱250 / player</strong></li>
+              <li><span>Membership deadline</span><strong>November 12</strong></li>
+              <li><span>Blind pairing</span><strong>November 13</strong></li>
+            </ul>
+          </div>
+          <div class="panel">
+            <h2>Payment Options</h2>
+            <ul class="rows">
+              <li><span>Club Treasurer</span>
+                <div class="val"><strong>Vanessa S. Paez</strong>
+                  <button class="copy" type="button" data-copy="Vanessa S. Paez" data-what="account name" aria-label="Copy account name"><svg class="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" /><path d="M5 15V6a2 2 0 0 1 2-2h9" /></svg><svg class="i-done" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg></button>
+                </div>
+              </li>
+              <li><span>GCash</span>
+                <div class="val"><strong>0945 572 1902</strong>
+                  <button class="copy" type="button" data-copy="09455721902" data-what="GCash number" aria-label="Copy GCash number"><svg class="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" /><path d="M5 15V6a2 2 0 0 1 2-2h9" /></svg><svg class="i-done" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg></button>
+                </div>
+              </li>
+              <li><span>AUB bank transfer</span>
+                <div class="val"><strong>315110006615</strong>
+                  <button class="copy" type="button" data-copy="315110006615" data-what="AUB account number" aria-label="Copy AUB account number"><svg class="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" /><path d="M5 15V6a2 2 0 0 1 2-2h9" /></svg><svg class="i-done" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg></button>
+                </div>
+              </li>
+            </ul>
+            <p class="note">Send your proof of payment to the Club Treasurer after paying.</p>
+            <p class="sr-only" id="copy-status" role="status"></p>
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="h-cta">
+        <div class="panel cta">
+          <h2 id="h-cta">Ready to Play?</h2>
+          <p>Fill in your member information to join the club and the mini tournament. It takes about a minute.</p>
+          <button class="btn" type="button" data-open-sheet>Join the Club</button>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="wrap">
+      After 5 Pickleball Club &middot; Dipolog City &middot; <a href="assets/poster.png">View the poster</a>
+    </footer>
+  </div>
+
+  <dialog class="sheet" id="join-sheet" aria-labelledby="h-join">
+    <div class="sheet-head">
+      <h2 id="h-join">Member Information</h2>
+      <button class="sheet-close" type="button" aria-label="Close" data-close-sheet>
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          aria-hidden="true">
+          <path d="M1 1l12 12M13 1L1 13" />
+        </svg>
+      </button>
+    </div>
+
+    <div class="sheet-body" tabindex="-1" autofocus>
+      <form id="member-form" novalidate>
+        <div class="field full">
+          <label for="fullName">Full Name</label>
+          <input id="fullName" name="fullName" type="text" autocomplete="name" maxlength="120" required>
+          <p class="err" data-for="fullName"></p>
+        </div>
+
+        <div class="field full">
+          <label for="address">Address <em>(Barangay, City/Municipality)</em></label>
+          <input id="address" name="address" type="text" autocomplete="street-address" maxlength="200"
+            placeholder="e.g. Turno, Dipolog City" required>
+          <p class="err" data-for="address"></p>
+        </div>
+
+        <div class="field">
+          <label for="birthday">Birthday</label>
+          <input id="birthday" name="birthday" type="date" autocomplete="bday" min="1920-01-01" required>
+          <p class="err" data-for="birthday"></p>
+        </div>
+
+        <div class="field">
+          <label for="contactNumber">Contact Number</label>
+          <input id="contactNumber" name="contactNumber" type="tel" inputmode="tel" autocomplete="tel" maxlength="20"
+            placeholder="09XX XXX XXXX" required>
+          <p class="err" data-for="contactNumber"></p>
+        </div>
+
+        <div class="field full">
+          <label for="email">Email Address <em>(optional)</em></label>
+          <input id="email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="120">
+          <p class="err" data-for="email"></p>
+        </div>
+
+        <div class="field">
+          <label for="emergencyName">Emergency Contact Person</label>
+          <input id="emergencyName" name="emergencyName" type="text" maxlength="120" required>
+          <p class="err" data-for="emergencyName"></p>
+        </div>
+
+        <div class="field">
+          <label for="emergencyNumber">Emergency Contact Number</label>
+          <input id="emergencyNumber" name="emergencyNumber" type="tel" inputmode="tel" maxlength="20"
+            placeholder="09XX XXX XXXX" required>
+          <p class="err" data-for="emergencyNumber"></p>
+        </div>
+
+        <div class="field full">
+          <label for="duprId">DUPR ID <em>(if available)</em></label>
+          <input id="duprId" name="duprId" type="text" maxlength="40" autocapitalize="characters">
+        </div>
+
+        <div class="field full">
+          <label for="registration">Registering For</label>
+          <select id="registration" name="registration">
+            <option>Membership + Mini Tournament (₱750)</option>
+            <option>Membership only (₱500)</option>
+            <option>Already a member — Mini Tournament only (₱250)</option>
+          </select>
+        </div>
+
+        <div class="field full" role="radiogroup" aria-labelledby="paid-label" aria-required="true">
+          <p class="label" id="paid-label">Have you paid the membership and tournament fee?</p>
+          <div class="yesno">
+            <label><input type="radio" name="feesPaid" value="yes"><span>Yes</span></label>
+            <label><input type="radio" name="feesPaid" value="no"><span>No</span></label>
+          </div>
+          <p class="err" data-for="feesPaid"></p>
+        </div>
+
+        <div class="field full">
+          <label for="teamLogo">Team Logo <em>(optional)</em></label>
+          <div class="logo-picker">
+            <input id="teamLogo" name="teamLogo" type="file" accept="image/png,image/jpeg,image/webp"
+              aria-describedby="logo-hint">
+            <div class="logo-thumb" id="logo-thumb">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 16V4M7 9l5-5 5 5M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3" />
+              </svg>
+            </div>
+            <div class="logo-text">
+              <strong id="logo-name">Choose an image</strong>
+              <span id="logo-hint">PNG, JPG or WebP, up to 5 MB</span>
+            </div>
+            <button class="logo-remove" type="button" id="logo-remove" hidden>Remove</button>
+          </div>
+          <p class="err" data-for="teamLogo"></p>
+        </div>
+
+        <div class="hp" aria-hidden="true">
+          <label for="website">Leave this empty</label>
+          <input id="website" name="website" type="text" tabindex="-1" autocomplete="off">
+        </div>
+
+        <div class="form-foot full">
+          <button class="btn" type="submit" id="submit-btn">Submit Registration</button>
+          <p class="status" id="status" role="alert"></p>
+        </div>
+      </form>
+
+      <div class="done" id="done" hidden tabindex="-1">
+        <h3>You're in!</h3>
+        <p>Thanks, <strong id="done-name"></strong>. Your member information has been received.</p>
+        <p id="done-unpaid">To complete your registration, pay via <strong>GCash 0945 572 1902</strong> or <strong>AUB
+            315110006615</strong> (Vanessa S. Paez) and send your proof of payment to the Club Treasurer.</p>
+        <p id="done-paid" hidden>If you haven't yet, send your proof of payment to the Club Treasurer,
+          <strong>Vanessa S. Paez</strong>.</p>
+        <button class="btn" type="button" data-close-sheet>Done</button>
+        <button class="link" type="button" id="again">Register another member</button>
+      </div>
+    </div>
+  </dialog>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+  <script>
+    // ---- Supabase settings (see README.md). Both values are safe to publish:
+    // the database only lets this key ADD rows and upload logos, never read them.
+    const SUPABASE_URL = "https://ouofkowntnzqbtxkjznj.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_OEPogZwyoCkAHxeek8Oj-A_K2BamcUV";
+    const LOGO_BUCKET = "team-logos";
+    const LOGO_MAX_BYTES = 5 * 1024 * 1024;
+    const LOGO_TYPES = { "image/png": "png", "image/jpeg": "jpg", "image/webp": "webp" };
+
+    const sheet = document.getElementById("join-sheet");
+    const form = document.getElementById("member-form");
+    const statusEl = document.getElementById("status");
+    const submitBtn = document.getElementById("submit-btn");
+    const done = document.getElementById("done");
+
+    /* ---------- Sheet open / close ---------- */
+    const CLOSE_MS = matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 300;
+    const phone = matchMedia("(max-width: 639px)");
+    let closing = false;
+
+    function resetSheetStyles() {
+      sheet.classList.remove("closing", "dragged");
+      sheet.style.transform = "";
+      sheet.style.transition = "";
+    }
+
+    function openSheet() {
+      if (sheet.open) return;
+      resetSheetStyles();
+      sheet.showModal();
+      document.documentElement.classList.add("sheet-open");
+    }
+
+    function closeSheet(dragged) {
+      if (!sheet.open || closing) return;
+      closing = true;
+      sheet.classList.add("closing");
+      if (dragged) { // finish the swipe from wherever the finger let go
+        sheet.classList.add("dragged");
+        sheet.style.transition = "transform " + CLOSE_MS + "ms ease-in";
+        sheet.style.transform = "translateY(100%)";
+      }
+      setTimeout(() => {
+        sheet.close();
+        resetSheetStyles();
+        document.documentElement.classList.remove("sheet-open");
+        closing = false;
+        if (!done.hidden) showForm(); // next open starts with a fresh form
+      }, CLOSE_MS);
+    }
+
+    document.querySelectorAll("[data-open-sheet]").forEach((b) => b.addEventListener("click", openSheet));
+    document.querySelectorAll("[data-close-sheet]").forEach((b) => b.addEventListener("click", () => closeSheet()));
+    sheet.addEventListener("cancel", (e) => { e.preventDefault(); closeSheet(); });         // Esc
+    sheet.addEventListener("click", (e) => { if (e.target === sheet) closeSheet(); });      // tap outside
+    if (location.hash === "#join") openSheet();                                             // shareable direct link
+
+    // Swipe down on the header to dismiss (phones only)
+    const head = sheet.querySelector(".sheet-head");
+    let drag = null;
+    head.addEventListener("pointerdown", (e) => {
+      if (!phone.matches || closing || e.target.closest("button")) return;
+      drag = { y: e.clientY, t: e.timeStamp, dy: 0 };
+      head.setPointerCapture(e.pointerId);
+      sheet.style.transition = "none";
+    });
+    head.addEventListener("pointermove", (e) => {
+      if (!drag) return;
+      drag.dy = Math.max(0, e.clientY - drag.y);
+      sheet.style.transform = "translateY(" + drag.dy + "px)";
+    });
+    function endDrag(e) {
+      if (!drag) return;
+      const dy = drag.dy;
+      const speed = dy / Math.max(1, e.timeStamp - drag.t); // px per ms
+      drag = null;
+      if (dy > 120 || (dy > 40 && speed > 0.5)) {
+        closeSheet(true);
+      } else {
+        sheet.style.transition = "transform 0.3s cubic-bezier(0.32, 0.72, 0, 1)";
+        sheet.style.transform = "";
+      }
+    }
+    head.addEventListener("pointerup", endDrag);
+    head.addEventListener("pointercancel", endDrag);
+
+    /* ---------- Validation ---------- */
+    const today = new Date();
+    const todayIso = new Date(today.getTime() - today.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+    form.birthday.max = todayIso;
+
+    const phoneOk = (v) => { const d = v.replace(/\D/g, ""); return d.length >= 10 && d.length <= 13; };
+    const errEl = (name) => form.querySelector('.err[data-for="' + name + '"]');
+
+    const rules = {
+      fullName: (v) => v ? "" : "Please enter your full name.",
+      address: (v) => v ? "" : "Please enter your barangay and city/municipality.",
+      birthday: (v) => !v ? "Please enter your birthday."
+        : (v > todayIso || v < "1920-01-01") ? "Please enter a valid birthday." : "",
+      contactNumber: (v) => !v ? "Please enter your contact number."
+        : phoneOk(v) ? "" : "That doesn't look like a complete phone number.",
+      email: (v) => !v || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ? "" : "Please check your email address, or leave it blank.",
+      emergencyName: (v) => v ? "" : "Please enter an emergency contact person.",
+      emergencyNumber: (v) => !v ? "Please enter an emergency contact number."
+        : phoneOk(v) ? "" : "That doesn't look like a complete phone number.",
+    };
+
+    // Tie each error message to its field so screen readers read it with the field.
+    form.querySelectorAll(".err[data-for]").forEach((p) => {
+      p.id = "err-" + p.dataset.for;
+      const control = form.elements[p.dataset.for];
+      const target = control instanceof RadioNodeList ? p.closest('[role="radiogroup"]') : control;
+      target.setAttribute("aria-describedby",
+        [target.getAttribute("aria-describedby"), p.id].filter(Boolean).join(" "));
+    });
+
+    function check(name) {
+      const input = form.elements[name];
+      const msg = rules[name](input.value.trim());
+      errEl(name).textContent = msg;
+      input.setAttribute("aria-invalid", msg ? "true" : "false");
+      return !msg;
+    }
+    Object.keys(rules).forEach((name) => form.elements[name].addEventListener("blur", () => check(name)));
+
+    /* ---------- Team logo picker ---------- */
+    const logoInput = form.teamLogo;
+    const logoThumb = document.getElementById("logo-thumb");
+    const logoName = document.getElementById("logo-name");
+    const logoRemove = document.getElementById("logo-remove");
+    const logoPlaceholder = logoThumb.innerHTML;
+    let logoPreviewUrl = null;
+
+    function clearLogo() {
+      logoInput.value = "";
+      if (logoPreviewUrl) URL.revokeObjectURL(logoPreviewUrl);
+      logoPreviewUrl = null;
+      logoThumb.innerHTML = logoPlaceholder;
+      logoName.textContent = "Choose an image";
+      logoRemove.hidden = true;
+    }
+
+    logoInput.addEventListener("change", () => {
+      const file = logoInput.files[0];
+      errEl("teamLogo").textContent = "";
+      if (!file) { clearLogo(); return; }
+      if (!LOGO_TYPES[file.type]) {
+        clearLogo();
+        errEl("teamLogo").textContent = "Please choose a PNG, JPG or WebP image.";
+        return;
+      }
+      if (file.size > LOGO_MAX_BYTES) {
+        clearLogo();
+        errEl("teamLogo").textContent = "That image is over 5 MB. Please choose a smaller one.";
+        return;
+      }
+      if (logoPreviewUrl) URL.revokeObjectURL(logoPreviewUrl);
+      logoPreviewUrl = URL.createObjectURL(file);
+      const img = document.createElement("img");
+      img.src = logoPreviewUrl;
+      img.alt = "Selected team logo";
+      logoThumb.replaceChildren(img);
+      logoName.textContent = file.name;
+      logoRemove.hidden = false;
+    });
+    logoRemove.addEventListener("click", () => { clearLogo(); errEl("teamLogo").textContent = ""; });
+
+    /* ---------- Submit to Supabase ---------- */
+    const configured = !SUPABASE_URL.startsWith("PASTE_") && !SUPABASE_KEY.startsWith("PASTE_");
+    const db = configured && window.supabase
+      ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { persistSession: false } })
+      : null;
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      statusEl.textContent = "";
+
+      const bad = Object.keys(rules).filter((name) => !check(name));
+      const paid = form.elements.feesPaid.value; // "yes", "no" or "" if not answered
+      errEl("feesPaid").textContent = paid ? "" : "Please choose Yes or No.";
+      if (bad.length) { form.elements[bad[0]].focus(); return; }
+      if (!paid) { form.elements.feesPaid[0].focus(); return; }
+
+      const val = (name) => form.elements[name].value.trim();
+      if (val("website")) { showDone(val("fullName"), paid === "yes"); return; } // honeypot: bots only
+
+      if (!db) {
+        statusEl.textContent = configured
+          ? "The registration service couldn't load. Check your connection and try again."
+          : "This form isn't connected to the database yet. Please contact the club officers.";
+        return;
+      }
+
+      submitBtn.disabled = true;
+      try {
+        let logoUrl = null;
+        const file = logoInput.files[0];
+        if (file) {
+          submitBtn.textContent = "Uploading logo…";
+          const path = crypto.randomUUID() + "." + LOGO_TYPES[file.type];
+          const up = await db.storage.from(LOGO_BUCKET).upload(path, file, { contentType: file.type });
+          if (up.error) throw up.error;
+          logoUrl = db.storage.from(LOGO_BUCKET).getPublicUrl(path).data.publicUrl;
+        }
+
+        submitBtn.textContent = "Submitting…";
+        const { error } = await db.from("members").insert({
+          full_name: val("fullName"),
+          address: val("address"),
+          birthday: val("birthday"),
+          contact_number: val("contactNumber"),
+          email: val("email") || null,
+          emergency_contact_name: val("emergencyName"),
+          emergency_contact_number: val("emergencyNumber"),
+          dupr_id: val("duprId") || null,
+          registration: val("registration"),
+          fees_paid: paid === "yes",
+          team_logo_url: logoUrl,
+        });
+        if (error) throw error;
+
+        showDone(val("fullName"), paid === "yes");
+      } catch (err) {
+        console.error(err);
+        statusEl.textContent = "Sorry, your form couldn't be submitted. Check your connection and try again — your answers are still here.";
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Submit Registration";
+      }
+    });
+
+    form.querySelectorAll('input[name="feesPaid"]').forEach((r) =>
+      r.addEventListener("change", () => { errEl("feesPaid").textContent = ""; }));
+
+    function showDone(name, paid) {
+      document.getElementById("done-name").textContent = name;
+      document.getElementById("done-unpaid").hidden = paid;
+      document.getElementById("done-paid").hidden = !paid;
+      form.hidden = true;
+      done.hidden = false;
+      sheet.querySelector(".sheet-body").scrollTop = 0;
+      done.focus();
+    }
+
+    function showForm() {
+      form.reset();
+      clearLogo();
+      statusEl.textContent = "";
+      form.querySelectorAll(".err").forEach((el) => { el.textContent = ""; });
+      form.querySelectorAll("[aria-invalid]").forEach((el) => el.removeAttribute("aria-invalid"));
+      done.hidden = true;
+      form.hidden = false;
+    }
+
+    document.getElementById("again").addEventListener("click", () => { showForm(); form.fullName.focus(); });
+
+    /* ---------- Copy buttons on the payment details ---------- */
+    async function copyText(text) {
+      try {
+        await navigator.clipboard.writeText(text);
+        return true;
+      } catch (err) { // older browsers, or a page not served over https
+        const t = document.createElement("textarea");
+        t.value = text;
+        t.setAttribute("readonly", "");
+        t.style.cssText = "position:fixed;top:0;left:0;opacity:0";
+        document.body.append(t);
+        t.select();
+        let ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { /* not supported */ }
+        t.remove();
+        return ok;
+      }
+    }
+
+    const copyStatus = document.getElementById("copy-status");
+    document.querySelectorAll(".copy").forEach((btn) => {
+      let timer;
+      btn.addEventListener("click", async () => {
+        const what = btn.dataset.what;
+        const ok = await copyText(btn.dataset.copy);
+        copyStatus.textContent = ""; // so repeating the same message is announced again
+        copyStatus.textContent = ok ? "Copied " + what + "." : "Couldn't copy. Press and hold the text to copy it.";
+        if (!ok) { // can't reach the clipboard: highlight the value so it can be copied by hand
+          getSelection().selectAllChildren(btn.previousElementSibling);
+          return;
+        }
+        btn.classList.add("copied");
+        btn.setAttribute("aria-label", "Copied " + what);
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+          btn.classList.remove("copied");
+          btn.setAttribute("aria-label", "Copy " + what);
+        }, 1800);
+      });
+    });
+  </script>
+</body>
+
+</html>
