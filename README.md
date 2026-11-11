@@ -40,6 +40,10 @@ Repeat steps 2–3 for each officer. To remove someone, delete their user under 
 
 You can also see the raw data in Supabase under **Table Editor → members** and **Storage → team-logos**.
 
+## Background music
+
+`assets/music.mp3` plays when a visitor taps the music button in the bottom-right corner (browsers don't allow music to start on its own). To change the song, replace that file and keep the name. If the file is removed, the button disappears.
+
 ## Share a link that opens the form
 
 Add `#join` to the site address (e.g. `https://your-site.example/#join`) and the form opens straight away.

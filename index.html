@@ -1100,9 +1100,136 @@
       }
     }
 
+    /* ---------- Background music toggle ---------- */
+    .music {
+      position: fixed;
+      right: max(16px, env(safe-area-inset-right));
+      bottom: max(16px, env(safe-area-inset-bottom));
+      z-index: 20;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 48px;
+      padding: 0 18px 0 15px;
+      border: 1px solid var(--line-strong);
+      border-radius: 999px;
+      background: rgba(9, 18, 46, 0.88);
+      color: var(--white);
+      font: 700 0.78rem/1 var(--sans);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(4, 10, 30, 0.45);
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+      transition: border-color 0.2s, background-color 0.2s, transform 0.2s var(--ios-ease);
+    }
+
+    .music[hidden] {
+      display: none;
+    }
+
+    /* Phones: a round icon button; the label stays for screen readers */
+    @media (max-width: 639px) {
+      .music {
+        width: 48px;
+        padding: 0;
+        justify-content: center;
+      }
+
+      .music-label {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+      }
+    }
+
+    .music:hover {
+      background: rgba(16, 30, 70, 0.92);
+    }
+
+    .music:active {
+      transform: scale(0.96);
+    }
+
+    .music:focus-visible {
+      outline: 3px solid var(--gold);
+      outline-offset: 3px;
+    }
+
+    .music[aria-pressed="true"] {
+      border-color: var(--gold);
+    }
+
+    /* Equalizer: resting bars when paused, dancing gold bars while playing */
+    .eq {
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 18px;
+    }
+
+    .eq i {
+      width: 3px;
+      height: 100%;
+      border-radius: 2px;
+      background: currentColor;
+      transform-origin: bottom;
+      transform: scaleY(var(--rest));
+      transition: transform 0.3s var(--ios-ease), background-color 0.2s;
+    }
+
+    .eq i:nth-child(1) { --rest: 0.35; --d: 0.9s; }
+    .eq i:nth-child(2) { --rest: 0.7;  --d: 0.7s; }
+    .eq i:nth-child(3) { --rest: 0.5;  --d: 1.05s; }
+    .eq i:nth-child(4) { --rest: 0.25; --d: 0.8s; }
+
+    .music[aria-pressed="true"] .eq i {
+      background: var(--gold);
+      animation: eq var(--d) ease-in-out infinite alternate;
+    }
+
+    .music[aria-pressed="true"] .eq i:nth-child(2) { animation-delay: -0.3s; }
+    .music[aria-pressed="true"] .eq i:nth-child(3) { animation-delay: -0.55s; }
+    .music[aria-pressed="true"] .eq i:nth-child(4) { animation-delay: -0.15s; }
+
+    @keyframes eq {
+      0%   { transform: scaleY(0.2); }
+      35%  { transform: scaleY(1); }
+      65%  { transform: scaleY(0.45); }
+      100% { transform: scaleY(0.85); }
+    }
+
+    /* While the music plays, the ball on the emblem keeps the beat */
+    .ball {
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+
+    body.music-on .emblem .ball {
+      animation: bounce 0.6s cubic-bezier(0.33, 0, 0.2, 1) infinite alternate;
+    }
+
+    @keyframes bounce {
+      from { translate: 0 0; }
+      to   { translate: 0 -9px; }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       html {
         scroll-behavior: auto;
+      }
+
+      .music[aria-pressed="true"] .eq i,
+      body.music-on .emblem .ball {
+        animation: none;
+      }
+
+      .music[aria-pressed="true"] .eq i {
+        transform: scaleY(0.8);
       }
 
       .btn,
@@ -1264,6 +1391,13 @@
       After 5 Pickleball Club &middot; Dipolog City &middot; <a href="assets/poster.png">View the poster</a>
     </footer>
   </div>
+
+  <!-- Background music: shown only once assets/music.mp3 loads; never starts on its own -->
+  <audio id="bg-music" src="assets/music.mp3" preload="metadata" loop></audio>
+  <button class="music" id="music-btn" type="button" aria-pressed="false" hidden>
+    <span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+    <span class="music-label">Play music</span>
+  </button>
 
   <dialog class="sheet" id="join-sheet" aria-labelledby="h-join">
     <div class="sheet-head">
@@ -1693,6 +1827,33 @@
         }, 1800);
       });
     });
+
+    /* ---------- Background music ---------- */
+    (() => {
+      const audio = document.getElementById("bg-music");
+      const btn = document.getElementById("music-btn");
+      const label = btn.querySelector(".music-label");
+      audio.volume = 0.6;
+
+      function render(playing) {
+        btn.setAttribute("aria-pressed", String(playing));
+        label.textContent = playing ? "Pause music" : "Play music";
+        document.body.classList.toggle("music-on", playing);
+      }
+
+      // Show the button only once the file is actually there.
+      const reveal = () => { btn.hidden = false; };
+      if (audio.readyState >= 1) reveal(); else audio.addEventListener("loadedmetadata", reveal, { once: true });
+      audio.addEventListener("error", () => { btn.hidden = true; render(false); });
+
+      audio.addEventListener("play", () => render(true));
+      audio.addEventListener("pause", () => render(false));
+
+      btn.addEventListener("click", () => {
+        if (audio.paused) audio.play().catch(() => render(false));
+        else audio.pause();
+      });
+    })();
   </script>
 </body>
 
