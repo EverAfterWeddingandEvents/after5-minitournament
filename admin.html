@@ -336,7 +336,7 @@
   /* ---------- Add-match pop-up ---------- */
   html:has(.sheet[open]) { overflow: hidden; }
   .sheet {
-    width: min(760px, calc(100% - 32px));
+    width: min(1000px, calc(100% - 32px));
     max-width: none;
     max-height: min(88dvh, 860px);
     padding: 0;
@@ -379,7 +379,96 @@
   .side { display: grid; gap: 12px; margin: 0; padding: 14px; border: 1px solid var(--line); border-radius: 12px; min-width: 0; }
   .side legend { padding: 0 8px; font: 700 0.72rem var(--tech); letter-spacing: 0.2em; text-transform: uppercase; color: var(--sky-200); }
   .side.b legend { color: var(--gold); }
-  .pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; }
+  .pair { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 10px; }
+  .p2-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 0 0 6px; }
+  .p2-head label { margin: 0; }
+  .spin-btn {
+    display: inline-flex; align-items: center; gap: 5px;
+    min-height: 26px; padding: 2px 10px;
+    font: 700 0.66rem var(--sans); letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--navy-900); background: var(--gold); border: 0; border-radius: 999px; cursor: pointer;
+  }
+  .spin-btn:hover { filter: brightness(1.08); }
+  .spin-btn svg { width: 13px; height: 13px; }
+
+  /* ---------- Partner roulette ---------- */
+  .sheet.wheel { width: min(880px, calc(100% - 32px)); }
+  .wheel-body { display: grid; gap: 20px; padding: 18px; overflow-y: auto; overscroll-behavior: contain; min-height: 0; }
+  .wheel-for { margin: 0; font-size: 0.88rem; color: var(--muted); }
+  .wheel-for strong { color: var(--white); }
+  .wheel-stage { display: grid; justify-items: center; gap: 14px; align-content: start; }
+  .wheel-wrap { position: relative; width: min(100%, 360px); aspect-ratio: 1; }
+  .wheel-wrap canvas { display: block; width: 100%; height: 100%; border-radius: 50%; box-shadow: 0 0 0 6px var(--navy-900), 0 0 0 9px var(--gold), 0 20px 50px rgba(2, 6, 20, 0.6); }
+  .wheel-pointer { position: absolute; top: -14px; left: 50%; width: 30px; height: 36px; margin-left: -15px; background: var(--gold); clip-path: polygon(0 0, 100% 0, 50% 100%); filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.5)); }
+  .wheel-hub {
+    position: absolute; top: 50%; left: 50%; width: 76px; height: 76px; margin: -38px 0 0 -38px;
+    font: 800 0.9rem var(--tech); letter-spacing: 0.12em; color: var(--navy-900);
+    background: radial-gradient(circle at 35% 30%, #fff, var(--sky-200)); border: 4px solid var(--navy-900); border-radius: 50%;
+    box-shadow: 0 0 0 3px var(--gold), 0 6px 16px rgba(0, 0, 0, 0.45); cursor: pointer;
+  }
+  .wheel-hub[disabled] { cursor: progress; opacity: 0.85; }
+  .wheel-result { min-height: 2.6em; margin: 0; text-align: center; font-size: 0.85rem; color: var(--muted); }
+  .wheel-result strong { display: block; font: 800 1.4rem/1.2 var(--tech); color: var(--gold); }
+  .wheel-result.pop strong { animation: pop 0.5s cubic-bezier(0.2, 1.6, 0.4, 1); }
+  @keyframes pop { from { transform: scale(0.6); opacity: 0; } }
+  .pool-panel { display: grid; gap: 10px; align-content: start; min-width: 0; }
+  .pool-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 12px; }
+  .pool-head strong { font-size: 0.95rem; }
+  .pool-head small { display: block; font-size: 0.76rem; font-weight: 500; color: var(--muted); }
+  .pool-tools { display: flex; gap: 6px; }
+  .pool-tools button { padding: 4px 10px; font: 600 0.74rem var(--sans); color: var(--sky-200); background: none; border: 1px solid var(--line); border-radius: 999px; cursor: pointer; }
+  .pool-tools button:hover { background: rgba(255, 255, 255, 0.08); }
+  .pool { display: grid; gap: 4px; max-height: 340px; margin: 0; padding: 4px; overflow-y: auto; list-style: none; border: 1px solid var(--line); border-radius: 12px; }
+  .pool label { display: flex; align-items: center; gap: 10px; margin: 0; padding: 8px 10px; font-size: 0.9rem; font-weight: 500; border-radius: 8px; cursor: pointer; }
+  .pool label:hover { background: rgba(255, 255, 255, 0.06); }
+  .pool input { flex: none; width: 18px; height: 18px; accent-color: var(--gold); }
+  .pool .nm { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+  .pool small { flex: none; padding: 2px 8px; font-size: 0.66rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; }
+  .pool .none { padding: 14px; font-size: 0.86rem; color: var(--muted); text-align: center; }
+  .pool-panel.busy { opacity: 0.55; pointer-events: none; }
+
+  /* ---------- Delete confirmation ---------- */
+  .sheet.confirm { width: min(440px, calc(100% - 32px)); }
+  .confirm-body { display: grid; justify-items: center; gap: 10px; padding: 28px 22px 20px; text-align: center; }
+  .confirm-icon {
+    display: grid; place-items: center; width: 60px; height: 60px; margin-bottom: 4px;
+    color: #ff8b85; background: rgba(229, 72, 77, 0.14); border: 1px solid rgba(255, 139, 133, 0.4); border-radius: 50%;
+  }
+  .confirm-icon svg { width: 26px; height: 26px; }
+  .confirm-body h2 { margin: 0; font-size: 1.2rem; }
+  .confirm-body > p { margin: 0; font-size: 0.9rem; color: var(--muted); text-wrap: pretty; }
+  .confirm-match {
+    display: grid; gap: 2px; width: 100%; margin-top: 8px; padding: 14px;
+    background: rgba(255, 255, 255, 0.04); border: 1px solid var(--line); border-radius: 12px;
+  }
+  .confirm-match .mc-label { margin-bottom: 2px; }
+  .confirm-body .msg { margin-top: 4px; }
+  .confirm-actions > * { flex: 1; }
+  .btn.danger { color: #fff; background: linear-gradient(180deg, #f0625f, #c9363b); }
+  .btn.danger:hover { filter: brightness(1.08); }
+  @media (max-width: 639px) { .sheet.confirm, .sheet.wheel { width: 100%; } }
+
+  /* Slim themed scrollbars inside the pop-ups */
+  .sheet .sheet-body, .wheel-body, .pool {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(169, 222, 250, 0.45) transparent;
+  }
+  .sheet .sheet-body::-webkit-scrollbar, .wheel-body::-webkit-scrollbar, .pool::-webkit-scrollbar { width: 10px; }
+  .sheet .sheet-body::-webkit-scrollbar-track, .wheel-body::-webkit-scrollbar-track, .pool::-webkit-scrollbar-track { background: transparent; margin: 8px 0; }
+  .sheet .sheet-body::-webkit-scrollbar-thumb, .wheel-body::-webkit-scrollbar-thumb, .pool::-webkit-scrollbar-thumb {
+    background: rgba(169, 222, 250, 0.4);
+    border: 3px solid transparent;
+    border-radius: 999px;
+    background-clip: padding-box;
+  }
+  .sheet .sheet-body::-webkit-scrollbar-thumb:hover, .wheel-body::-webkit-scrollbar-thumb:hover, .pool::-webkit-scrollbar-thumb:hover { background-color: var(--gold); }
+  @supports not selector(::-webkit-scrollbar) {
+    .sheet .sheet-body:hover, .wheel-body:hover, .pool:hover { scrollbar-color: var(--gold) transparent; }
+  }
+  @media (min-width: 760px) {
+    .wheel-body { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); }
+    .wheel-for { grid-column: 1 / -1; }
+  }
   .when { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
   .when .wide { grid-column: 1 / -1; }
   .match-form label em { font-style: normal; font-weight: 500; color: var(--muted); }
@@ -493,7 +582,6 @@
         <button class="btn" type="button" id="match-open" aria-haspopup="dialog"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M8 3v10M3 8h10" /></svg>Add match</button>
       </div>
     </div>
-    <p class="msg" id="match-list-msg" role="alert"></p>
     <ul class="match-list" id="match-list"></ul>
   </section>
 
@@ -512,7 +600,7 @@
           <div><label for="m-a1n">Name on poster</label><input id="m-a1n" type="text" maxlength="120" autocomplete="off"></div>
         </div>
         <div class="pair">
-          <div><label for="m-a2">Player 2</label><select id="m-a2" data-player></select></div>
+          <div><div class="p2-head"><label for="m-a2">Player 2</label><button class="spin-btn" type="button" data-spin="a" aria-label="Spin the wheel for Team A Player 2"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="6.2" /><path d="M8 1.8v12.4M1.8 8h12.4M3.6 3.6l8.8 8.8M12.4 3.6l-8.8 8.8" /></svg>Spin</button></div><select id="m-a2" data-player></select></div>
           <div><label for="m-a2n">Name on poster</label><input id="m-a2n" type="text" maxlength="120" autocomplete="off"></div>
         </div>
         <div><label for="m-ateam">Team name <em>(optional)</em></label><input id="m-ateam" type="text" maxlength="60" autocomplete="off"></div>
@@ -524,7 +612,7 @@
           <div><label for="m-b1n">Name on poster</label><input id="m-b1n" type="text" maxlength="120" autocomplete="off"></div>
         </div>
         <div class="pair">
-          <div><label for="m-b2">Player 2</label><select id="m-b2" data-player></select></div>
+          <div><div class="p2-head"><label for="m-b2">Player 2</label><button class="spin-btn" type="button" data-spin="b" aria-label="Spin the wheel for Team B Player 2"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="6.2" /><path d="M8 1.8v12.4M1.8 8h12.4M3.6 3.6l8.8 8.8M12.4 3.6l-8.8 8.8" /></svg>Spin</button></div><select id="m-b2" data-player></select></div>
           <div><label for="m-b2n">Name on poster</label><input id="m-b2n" type="text" maxlength="120" autocomplete="off"></div>
         </div>
         <div><label for="m-bteam">Team name <em>(optional)</em></label><input id="m-bteam" type="text" maxlength="60" autocomplete="off"></div>
@@ -543,6 +631,50 @@
         <button class="btn" type="submit" id="match-add">Add match</button>
       </div>
     </form>
+  </dialog>
+
+  <dialog class="sheet confirm" id="del-dialog" aria-labelledby="del-title" aria-describedby="del-desc">
+    <div class="confirm-body">
+      <span class="confirm-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M5.5 7l1 12a2 2 0 0 0 2 1.8h7a2 2 0 0 0 2-1.8l1-12M9 7V4.8A.8.8 0 0 1 9.8 4h4.4a.8.8 0 0 1 .8.8V7" /></svg></span>
+      <h2 id="del-title">Delete this match?</h2>
+      <p id="del-desc">Its poster comes off the Match Day page. This can't be undone.</p>
+      <div class="confirm-match" id="del-match"></div>
+      <p class="msg" id="del-msg" role="alert"></p>
+    </div>
+    <div class="match-actions confirm-actions">
+      <button class="btn-ghost" type="button" data-close id="del-keep">Keep match</button>
+      <button class="btn danger" type="button" id="del-go">Delete match</button>
+    </div>
+  </dialog>
+
+  <dialog class="sheet wheel" id="wheel-dialog" aria-labelledby="wheel-title">
+    <div class="sheet-head">
+      <h2 id="wheel-title">Spin for a partner</h2>
+      <button class="sheet-x" type="button" data-close aria-label="Close"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" /></svg></button>
+    </div>
+    <div class="wheel-body">
+      <p class="wheel-for" id="wheel-for"></p>
+      <div class="wheel-stage">
+        <div class="wheel-wrap">
+          <canvas id="wheel" width="720" height="720" aria-hidden="true"></canvas>
+          <span class="wheel-pointer" aria-hidden="true"></span>
+          <button class="wheel-hub" type="button" id="wheel-spin">SPIN</button>
+        </div>
+        <p class="wheel-result" id="wheel-result" aria-live="polite"></p>
+      </div>
+      <div class="pool-panel" id="pool-panel">
+        <div class="pool-head">
+          <span><strong>On the wheel <span id="pool-count"></span></strong><small>Untick anyone who shouldn't be paired with this player, e.g. masters.</small></span>
+          <span class="pool-tools"><button type="button" id="pool-all">Tick all</button><button type="button" id="pool-none">Clear</button></span>
+        </div>
+        <input type="search" id="pool-find" placeholder="Find a player…" aria-label="Find a player in the list">
+        <ul class="pool" id="pool"></ul>
+      </div>
+    </div>
+    <div class="match-actions">
+      <button class="btn-ghost" type="button" data-close>Cancel</button>
+      <button class="btn" type="button" id="wheel-use" disabled>Use this player</button>
+    </div>
   </dialog>
 
   <div class="tools">
@@ -898,33 +1030,245 @@
     renderMatches(newId);
   }
 
-  /* Pop-up: fade/scale in, and animate out before actually closing */
-  const dialog = $("match-dialog");
+  /* Pop-ups: fade/scale in, and animate out before actually closing */
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-  let lastFocus = null;
-  function openMatchDialog() {
-    if (dialog.open) return;
-    lastFocus = document.activeElement;
-    $("match-msg").textContent = "";
-    dialog.showModal();
-    dialog.getBoundingClientRect(); // commit the start state so the transition runs
-    dialog.classList.add("is-open");
-    $("m-a1").focus();
+  function sheet(d, { onOpen, canClose } = {}) {
+    let lastFocus = null;
+    const open = () => {
+      if (d.open) return;
+      lastFocus = document.activeElement;
+      d.showModal();
+      d.getBoundingClientRect(); // commit the start state so the transition runs
+      d.classList.add("is-open");
+      if (onOpen) onOpen();
+    };
+    const close = () => {
+      if (!d.open || !d.classList.contains("is-open")) return;
+      if (canClose && !canClose()) return;
+      d.classList.remove("is-open");
+      const done = () => { if (!d.classList.contains("is-open")) d.close(); if (lastFocus) lastFocus.focus(); };
+      if (reduceMotion.matches) return done();
+      setTimeout(done, 280);
+    };
+    d.querySelectorAll("[data-close]").forEach((b) => b.addEventListener("click", close));
+    d.addEventListener("cancel", (e) => { e.preventDefault(); close(); }); // Esc
+    // Click on the dimmed backdrop (outside the panel) closes it.
+    let downOnBackdrop = false;
+    d.addEventListener("pointerdown", (e) => { downOnBackdrop = e.target === d; });
+    d.addEventListener("click", (e) => { if (downOnBackdrop && e.target === d) close(); });
+    return { open, close };
   }
-  function closeMatchDialog() {
-    if (!dialog.open || !dialog.classList.contains("is-open")) return;
-    dialog.classList.remove("is-open");
-    const done = () => { if (!dialog.classList.contains("is-open")) dialog.close(); if (lastFocus) lastFocus.focus(); };
-    if (reduceMotion.matches) return done();
-    setTimeout(done, 280);
+  const matchSheet = sheet($("match-dialog"), { onOpen: () => { $("match-msg").textContent = ""; $("m-a1").focus(); } });
+  const closeMatchDialog = matchSheet.close;
+  $("match-open").addEventListener("click", matchSheet.open);
+
+  /* ---------- Partner roulette: spin to pick Player 2 from a hand-picked pool ---------- */
+  const wheelCanvas = $("wheel");
+  const wctx = wheelCanvas.getContext("2d");
+  const SEG_COLORS = ["#16295c", "#1f6fae", "#0b1533", "#2c8fd0"];
+  const wheelOff = new Set(); // players unticked this session (e.g. masters) stay unticked between spins
+  let wheelTeam = "a", wheelRot = 0, wheelPick = null, spinning = false;
+  const isPlayer = (m) => /tournament/i.test(m.registration || "");
+  const normName = (s) => String(s || "").trim().toLowerCase().replace(/\s+/g, " ");
+  const inAMatch = (m) => {
+    const n = normName(m.full_name);
+    return matches.some((x) => ["team_a_player1", "team_a_player2", "team_b_player1", "team_b_player2"].some((k) => normName(x[k]) === n));
+  };
+
+  function wheelPool() {
+    // Everyone registered for the tournament (or everyone, if none are marked), minus players already chosen in this form.
+    const taken = new Set(["m-a1", "m-a2", "m-b1", "m-b2"].filter((id) => id !== "m-" + wheelTeam + "2").map((id) => $(id).value).filter(Boolean));
+    const base = members.some(isPlayer) ? members.filter(isPlayer) : members;
+    return base.filter((m) => !taken.has(m.id)).sort((x, y) => x.full_name.localeCompare(y.full_name));
   }
-  $("match-open").addEventListener("click", openMatchDialog);
-  dialog.querySelectorAll("[data-close]").forEach((b) => b.addEventListener("click", closeMatchDialog));
-  dialog.addEventListener("cancel", (e) => { e.preventDefault(); closeMatchDialog(); }); // Esc
-  // Click on the dimmed backdrop (outside the panel) closes it.
-  let downOnBackdrop = false;
-  dialog.addEventListener("pointerdown", (e) => { downOnBackdrop = e.target === dialog; });
-  dialog.addEventListener("click", (e) => { if (downOnBackdrop && e.target === dialog) closeMatchDialog(); });
+  const wheelEntries = () => [...$("pool").querySelectorAll("input:checked")].map((c) => memberById(c.value)).filter(Boolean);
+
+  function fitText(text, max) {
+    if (wctx.measureText(text).width <= max) return text;
+    let t = text;
+    while (t.length > 1 && wctx.measureText(t + "…").width > max) t = t.slice(0, -1);
+    return t + "…";
+  }
+  function drawWheel(winner) {
+    const list = wheelEntries();
+    const W = wheelCanvas.width, R = W / 2;
+    wctx.clearRect(0, 0, W, W);
+    wctx.save();
+    wctx.translate(R, R);
+    if (list.length < 2) {
+      wctx.fillStyle = "#101d45";
+      wctx.beginPath(); wctx.arc(0, 0, R, 0, Math.PI * 2); wctx.fill();
+      wctx.fillStyle = "#b9c8e6";
+      wctx.font = "600 30px Montserrat, sans-serif";
+      wctx.textAlign = "center";
+      wctx.fillText("Tick at least 2 players", 0, -R * 0.55);
+      wctx.restore();
+      return;
+    }
+    const a = (Math.PI * 2) / list.length;
+    const fs = Math.max(15, Math.min(34, 520 / list.length));
+    list.forEach((m, i) => {
+      const start = wheelRot + i * a - Math.PI / 2;
+      wctx.beginPath();
+      wctx.moveTo(0, 0);
+      wctx.arc(0, 0, R, start, start + a);
+      wctx.closePath();
+      wctx.fillStyle = winner === i ? "#d9a441" : SEG_COLORS[i % (list.length % 4 === 1 ? 3 : 4)];
+      wctx.fill();
+      wctx.strokeStyle = "rgba(169, 222, 250, 0.35)";
+      wctx.lineWidth = 2;
+      wctx.stroke();
+      wctx.save();
+      wctx.rotate(start + a / 2);
+      wctx.fillStyle = winner === i ? "#0b1533" : "#ffffff";
+      wctx.font = "700 " + fs + "px Montserrat, sans-serif";
+      wctx.textAlign = "right";
+      wctx.textBaseline = "middle";
+      wctx.fillText(fitText(m.full_name, R * 0.62), R - 22, 0);
+      wctx.restore();
+    });
+    wctx.restore();
+  }
+
+  function renderPool() {
+    const q = normName($("pool-find").value);
+    const pool = wheelPool();
+    const items = pool.map((m) => {
+      const cb = el("input", { type: "checkbox", value: m.id, checked: !wheelOff.has(m.id) });
+      cb.addEventListener("change", () => {
+        if (cb.checked) wheelOff.delete(m.id); else wheelOff.add(m.id);
+        afterPoolChange();
+      });
+      const li = el("li", null, el("label", null, cb, el("span", { className: "nm", textContent: m.full_name }),
+        inAMatch(m) ? el("small", { textContent: "In a match" }) : null));
+      li.hidden = !!q && !normName(m.full_name).includes(q);
+      return li;
+    });
+    $("pool").replaceChildren(...(items.length ? items : [el("li", { className: "none", textContent: "No players to choose from yet." })]));
+    afterPoolChange();
+  }
+  function afterPoolChange() {
+    const n = wheelEntries().length;
+    $("pool-count").textContent = "(" + n + ")";
+    $("wheel-spin").disabled = n < 2;
+    wheelPick = null;
+    $("wheel-use").disabled = true;
+    $("wheel-result").textContent = n < 2 ? "" : "Press SPIN";
+    $("wheel-result").classList.remove("pop");
+    drawWheel();
+  }
+
+  const wheelSheet = sheet($("wheel-dialog"), { canClose: () => !spinning, onOpen: () => $("wheel-spin").focus() });
+  document.querySelectorAll("[data-spin]").forEach((btn) => btn.addEventListener("click", () => {
+    wheelTeam = btn.dataset.spin;
+    const t = wheelTeam.toUpperCase();
+    const p1 = memberById($("m-" + wheelTeam + "1").value);
+    // Players already in a match start unticked; the officer can tick them back.
+    wheelPool().forEach((m) => { if (inAMatch(m)) wheelOff.add(m.id); });
+    $("wheel-title").textContent = "Spin for Team " + t + " partner";
+    $("wheel-for").replaceChildren(...(p1
+      ? ["Partner for ", el("strong", { textContent: p1.full_name }), " (Team " + t + ", Player 1)"]
+      : ["Tip: choose Team " + t + " Player 1 first, so you know who this partner is for."]));
+    $("pool-find").value = "";
+    wheelRot = 0;
+    renderPool();
+    wheelSheet.open();
+  }));
+  $("pool-find").addEventListener("input", () => {
+    const q = normName($("pool-find").value);
+    $("pool").querySelectorAll("li").forEach((li) => {
+      const nm = li.querySelector(".nm");
+      if (nm) li.hidden = !!q && !normName(nm.textContent).includes(q);
+    });
+  });
+  $("pool-all").addEventListener("click", () => { wheelPool().forEach((m) => wheelOff.delete(m.id)); renderPool(); });
+  $("pool-none").addEventListener("click", () => { wheelPool().forEach((m) => wheelOff.add(m.id)); renderPool(); });
+
+  $("wheel-spin").addEventListener("click", () => {
+    const list = wheelEntries();
+    if (spinning || list.length < 2) return;
+    spinning = true;
+    $("wheel-spin").disabled = true;
+    $("wheel-use").disabled = true;
+    $("pool-panel").classList.add("busy");
+    $("wheel-result").classList.remove("pop");
+    $("wheel-result").textContent = "Spinning…";
+    const rnd = () => crypto.getRandomValues(new Uint32Array(1))[0] / 2 ** 32;
+    const n = list.length, a = (Math.PI * 2) / n;
+    const pick = Math.floor(rnd() * n);
+    // The pointer is at the top: segment i is under it when (-rotation mod 2π) falls inside [i·a, (i+1)·a).
+    const landing = -(pick * a + a * (0.2 + 0.6 * rnd()));
+    const TAU = Math.PI * 2;
+    const from = wheelRot;
+    const delta = ((landing - from) % TAU + TAU) % TAU + TAU * (reduceMotion.matches ? 0 : 6);
+    const dur = reduceMotion.matches ? 300 : 5200;
+    const t0 = performance.now();
+    const ease = (t) => 1 - Math.pow(1 - t, 4);
+    const step = (now) => {
+      const t = Math.min(1, (now - t0) / dur);
+      wheelRot = from + delta * ease(t);
+      drawWheel();
+      if (t < 1) return requestAnimationFrame(step);
+      wheelRot %= TAU;
+      spinning = false;
+      wheelPick = list[pick];
+      drawWheel(pick);
+      $("pool-panel").classList.remove("busy");
+      $("wheel-spin").disabled = false;
+      $("wheel-use").disabled = false;
+      $("wheel-result").replaceChildren(el("strong", { textContent: wheelPick.full_name }), "Spin again, or use this player.");
+      $("wheel-result").getBoundingClientRect();
+      $("wheel-result").classList.add("pop");
+      $("wheel-use").focus();
+    };
+    requestAnimationFrame(step);
+  });
+  $("wheel-use").addEventListener("click", () => {
+    if (!wheelPick) return;
+    const sel = $("m-" + wheelTeam + "2");
+    sel.value = wheelPick.id;
+    sel.dispatchEvent(new Event("change"));
+    wheelSheet.close();
+  });
+
+  /* Delete confirmation pop-up (replaces the browser's plain confirm box) */
+  let delTarget = null, deleting = false;
+  const delSheet = sheet($("del-dialog"), { canClose: () => !deleting, onOpen: () => $("del-keep").focus() });
+  function askDelete(m, i) {
+    delTarget = m;
+    $("del-msg").textContent = "";
+    $("del-match").replaceChildren(
+      el("p", { className: "mc-label", textContent: "Match " + (i + 1) + (m.label ? " · " + m.label : "") }),
+      el("p", { className: "mc-team a", textContent: m.team_a_player1 + " & " + m.team_a_player2 }),
+      el("span", { className: "mc-vs", textContent: "VS" }),
+      el("p", { className: "mc-team b", textContent: m.team_b_player1 + " & " + m.team_b_player2 }));
+    delSheet.open();
+  }
+  $("del-go").addEventListener("click", async () => {
+    if (!delTarget || deleting) return;
+    const go = $("del-go");
+    deleting = true;
+    go.disabled = true;
+    $("del-keep").disabled = true;
+    go.textContent = "Deleting…";
+    $("del-msg").textContent = "";
+    const { data, error } = await db.from("matches").delete().eq("id", delTarget.id).select("id");
+    deleting = false;
+    go.disabled = false;
+    $("del-keep").disabled = false;
+    go.textContent = "Delete match";
+    if (error || !data.length) {
+      console.error(error);
+      $("del-msg").textContent = "Couldn't delete that match. Check your connection and try again.";
+      return;
+    }
+    const id = delTarget.id;
+    delTarget = null;
+    matches = matches.filter((x) => x.id !== id);
+    renderMatches();
+    delSheet.close();
+    setTimeout(() => $("match-open").focus(), 300); // the card's Delete button is gone now
+  });
 
   function renderMatches(newId) {
     $("match-count").textContent = matches.length
@@ -936,20 +1280,7 @@
     }
     $("match-list").replaceChildren(...matches.map((m, i) => {
       const del = el("button", { type: "button", className: "btn-ghost", textContent: "Delete" });
-      del.addEventListener("click", async () => {
-        if (!confirm("Delete this match? Its poster comes off the Match Day page.")) return;
-        $("match-list-msg").textContent = "";
-        del.disabled = true;
-        const { data, error } = await db.from("matches").delete().eq("id", m.id).select("id");
-        if (error || !data.length) {
-          console.error(error);
-          del.disabled = false;
-          $("match-list-msg").textContent = "Couldn't delete that match. Check your connection and try again.";
-          return;
-        }
-        matches = matches.filter((x) => x.id !== m.id);
-        renderMatches();
-      });
+      del.addEventListener("click", () => askDelete(m, i));
       const when = [fmtMatchDate(m.match_date), fmtMatchTime(m.match_time), m.court].filter(Boolean).join(" · ");
       return el("li", { className: "match-card" + (m.id === newId ? " is-new" : "") },
         el("p", { className: "mc-label", textContent: "Match " + (i + 1) + (m.label ? " · " + m.label : "") }),
