@@ -447,10 +447,7 @@
             <div><label for="m-a2">Player 2</label><select id="m-a2" data-player></select></div>
             <div><label for="m-a2n">Name on poster</label><input id="m-a2n" type="text" maxlength="120" autocomplete="off"></div>
           </div>
-          <div class="pair">
-            <div><label for="m-ateam">Team name <em>(optional)</em></label><input id="m-ateam" type="text" maxlength="60" autocomplete="off"></div>
-            <div><label for="m-alogo">Team logo</label><select id="m-alogo"></select></div>
-          </div>
+          <div><label for="m-ateam">Team name <em>(optional)</em></label><input id="m-ateam" type="text" maxlength="60" autocomplete="off"></div>
         </fieldset>
         <fieldset class="side b">
           <legend>Team B</legend>
@@ -462,10 +459,7 @@
             <div><label for="m-b2">Player 2</label><select id="m-b2" data-player></select></div>
             <div><label for="m-b2n">Name on poster</label><input id="m-b2n" type="text" maxlength="120" autocomplete="off"></div>
           </div>
-          <div class="pair">
-            <div><label for="m-bteam">Team name <em>(optional)</em></label><input id="m-bteam" type="text" maxlength="60" autocomplete="off"></div>
-            <div><label for="m-blogo">Team logo</label><select id="m-blogo"></select></div>
-          </div>
+          <div><label for="m-bteam">Team name <em>(optional)</em></label><input id="m-bteam" type="text" maxlength="60" autocomplete="off"></div>
         </fieldset>
         </div>
         <div class="when">
@@ -807,28 +801,12 @@
         ...sorted.map((m) => el("option", { value: m.id, textContent: m.full_name })));
       if (memberById(keep)) sel.value = keep;
     });
-    SIDES.forEach(fillLogos);
-  }
-
-  // The logo choices for a side are whatever its two players uploaded when they registered.
-  function fillLogos(k) {
-    const sel = $("m-" + k + "logo");
-    const keep = sel.value;
-    const opts = [el("option", { value: "", textContent: "No logo (show initials)" })];
-    [1, 2].forEach((n) => {
-      const m = memberById($("m-" + k + n).value);
-      const url = m && logoUrl(m);
-      if (url && !opts.some((o) => o.value === url)) opts.push(el("option", { value: url, textContent: m.full_name + "'s logo" }));
-    });
-    sel.replaceChildren(...opts);
-    sel.value = opts.some((o) => o.value === keep && keep) ? keep : (opts[1] ? opts[1].value : "");
   }
 
   SIDES.forEach((k) => [1, 2].forEach((n) => {
     $("m-" + k + n).addEventListener("change", (e) => {
       const m = memberById(e.target.value);
       $("m-" + k + n + "n").value = m ? m.full_name : "";
-      fillLogos(k);
     });
   }));
 
@@ -890,6 +868,8 @@
     const msg = $("match-msg");
     msg.textContent = "";
     const text = (id) => $(id).value.trim();
+    // Each player's photo is the image they uploaded when they registered (none = their initial on the poster).
+    const photo = (id) => { const m = memberById($(id).value); return (m && logoUrl(m)) || null; };
     const names = ["m-a1n", "m-a2n", "m-b1n", "m-b2n"];
     const missing = names.find((id) => !text(id));
     if (missing) {
@@ -918,11 +898,13 @@
       team_a_name: text("m-ateam") || null,
       team_a_player1: text("m-a1n"),
       team_a_player2: text("m-a2n"),
-      team_a_logo_url: $("m-alogo").value || null,
+      team_a_player1_photo_url: photo("m-a1"),
+      team_a_player2_photo_url: photo("m-a2"),
       team_b_name: text("m-bteam") || null,
       team_b_player1: text("m-b1n"),
       team_b_player2: text("m-b2n"),
-      team_b_logo_url: $("m-blogo").value || null,
+      team_b_player1_photo_url: photo("m-b1"),
+      team_b_player2_photo_url: photo("m-b2"),
     }).select();
     btn.disabled = false;
     btn.textContent = "Add match";
@@ -935,7 +917,6 @@
     SIDES.forEach((k) => {
       [1, 2].forEach((n) => { $("m-" + k + n).value = ""; $("m-" + k + n + "n").value = ""; });
       $("m-" + k + "team").value = "";
-      fillLogos(k);
     });
     await loadMatches();
   });

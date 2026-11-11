@@ -186,8 +186,8 @@
       match_date: "2026-11-15",
       match_time: "13:00:00",
       court: "Pickleboy, Highway Turno, Dipolog City",
-      team_a_name: "Team Sunset", team_a_player1: "Miguel", team_a_player2: "Andrea", team_a_logo_url: null,
-      team_b_name: "Team Dink", team_b_player1: "Paolo", team_b_player2: "Bea", team_b_logo_url: null,
+      team_a_name: "Team Sunset", team_a_player1: "Miguel", team_a_player2: "Andrea",
+      team_b_name: "Team Dink", team_b_player1: "Paolo", team_b_player2: "Bea",
     }];
 
     const W = 1080, H = 1350; // portrait 4:5, the size Facebook and Instagram like
@@ -212,8 +212,7 @@
       return String(h % 12 || 12).padStart(2, "0") + ":" + p[2] + " " + (h < 12 ? "AM" : "PM");
     }
     const firstName = (s) => String(s || "").trim();
-    const initials = (a, b) => ((firstName(a)[0] || "") + (firstName(b)[0] || "")).toUpperCase();
-    // Only load logos that live in our own storage bucket.
+    // Only load photos that live in our own storage bucket.
     const safeLogo = (u) => (typeof u === "string" && u.startsWith(LOGO_PREFIX)) ? u : null;
 
     function loadImage(url) {
@@ -297,10 +296,10 @@
       if (img) {
         ctx.save();
         ctx.beginPath(); ctx.arc(cx, cy, r - 6, 0, 6.2832); ctx.clip();
-        const box = (r - 6) * 2 * 0.86; // logo sits inside the circle, uncropped
-        const k = Math.min(box / img.naturalWidth, box / img.naturalHeight);
+        const box = (r - 6) * 2; // the photo fills the circle; tall photos keep the top, where the face is
+        const k = Math.max(box / img.naturalWidth, box / img.naturalHeight);
         const w = img.naturalWidth * k, h = img.naturalHeight * k;
-        ctx.drawImage(img, cx - w / 2, cy - h / 2, w, h);
+        ctx.drawImage(img, cx - w / 2, cy - box / 2 - (h - box) * 0.25, w, h);
         ctx.restore();
       } else {
         ctx.fillStyle = C.white; ctx.textAlign = "center"; ctx.textBaseline = "middle";
@@ -311,9 +310,10 @@
       ctx.beginPath(); ctx.arc(cx, cy, r, 0, 6.2832); ctx.stroke();
     }
 
-    function team(ctx, x, w, name, p1, p2, img, accent) {
+    function team(ctx, x, w, name, p1, p2, img1, img2, accent) {
       const mid = x + w / 2, inner = w - 64;
-      badge(ctx, mid, 400, 132, img, initials(p1, p2) || "A5", accent);
+      badge(ctx, mid - 104, 400, 98, img1, (firstName(p1)[0] || "?").toUpperCase(), accent);
+      badge(ctx, mid + 104, 400, 98, img2, (firstName(p2)[0] || "?").toUpperCase(), accent);
       ctx.textAlign = "center"; ctx.textBaseline = "alphabetic";
 
       if (name) {
@@ -333,7 +333,7 @@
       ctx.fillText("&", mid, 722);
     }
 
-    function draw(canvas, m, logoA, logoB) {
+    function draw(canvas, m, photos) {
       const ctx = canvas.getContext("2d");
       ctx.clearRect(0, 0, W, H);
       background(ctx);
@@ -351,8 +351,8 @@
       // The two sides
       pennant(ctx, 60, 440, 236, 900, C.sky, C.blue);
       pennant(ctx, 580, 440, 236, 900, C.gold, C.goldDeep);
-      team(ctx, 60, 440, m.team_a_name, m.team_a_player1, m.team_a_player2, logoA, C.sky200);
-      team(ctx, 580, 440, m.team_b_name, m.team_b_player1, m.team_b_player2, logoB, C.gold);
+      team(ctx, 60, 440, m.team_a_name, m.team_a_player1, m.team_a_player2, photos[0], photos[1], C.sky200);
+      team(ctx, 580, 440, m.team_b_name, m.team_b_player1, m.team_b_player2, photos[2], photos[3], C.gold);
 
       // VS
       ctx.save();
@@ -435,8 +435,9 @@
       fig.className = "poster";
       fig.append(canvas, cap);
 
-      const [logoA, logoB] = await Promise.all([loadImage(safeLogo(m.team_a_logo_url)), loadImage(safeLogo(m.team_b_logo_url))]);
-      draw(canvas, m, logoA, logoB);
+      const photos = await Promise.all(["team_a_player1", "team_a_player2", "team_b_player1", "team_b_player2"]
+        .map((k) => loadImage(safeLogo(m[k + "_photo_url"]))));
+      draw(canvas, m, photos);
 
       btn.addEventListener("click", () => {
         btn.disabled = true;

@@ -99,9 +99,9 @@ create policy "Website can upload team logos"
 
 -- 4. Matches (the Match Day posters on matchday.html) --------------------------
 
--- One row per doubles match: two players on each side. Names and logo links are
+-- One row per doubles match: two players on each side. Names and photo links are
 -- copied in by an officer on admin.html, so the public page never reads the
--- members table.
+-- members table. A player's photo is the image they uploaded when registering.
 create table if not exists public.matches (
   id               uuid primary key default gen_random_uuid(),
   created_at       timestamptz not null default now(),
@@ -112,12 +112,20 @@ create table if not exists public.matches (
   team_a_name      text check (char_length(team_a_name) <= 60),
   team_a_player1   text not null check (char_length(team_a_player1) between 1 and 120),
   team_a_player2   text not null check (char_length(team_a_player2) between 1 and 120),
-  team_a_logo_url  text check (char_length(team_a_logo_url) <= 500),
+  team_a_player1_photo_url  text check (char_length(team_a_player1_photo_url) <= 500),
+  team_a_player2_photo_url  text check (char_length(team_a_player2_photo_url) <= 500),
   team_b_name      text check (char_length(team_b_name) <= 60),
   team_b_player1   text not null check (char_length(team_b_player1) between 1 and 120),
   team_b_player2   text not null check (char_length(team_b_player2) between 1 and 120),
-  team_b_logo_url  text check (char_length(team_b_logo_url) <= 500)
+  team_b_player1_photo_url  text check (char_length(team_b_player1_photo_url) <= 500),
+  team_b_player2_photo_url  text check (char_length(team_b_player2_photo_url) <= 500)
 );
+
+-- In case an earlier version of this table (one logo per team) was already created.
+alter table public.matches add column if not exists team_a_player1_photo_url text check (char_length(team_a_player1_photo_url) <= 500);
+alter table public.matches add column if not exists team_a_player2_photo_url text check (char_length(team_a_player2_photo_url) <= 500);
+alter table public.matches add column if not exists team_b_player1_photo_url text check (char_length(team_b_player1_photo_url) <= 500);
+alter table public.matches add column if not exists team_b_player2_photo_url text check (char_length(team_b_player2_photo_url) <= 500);
 
 alter table public.matches enable row level security;
 

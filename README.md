@@ -44,16 +44,16 @@ You can also see the raw data in Supabase under **Table Editor → members** and
 
 ## Match Day posters
 
-`matchday.html` shows a poster for every match: the two players on each side, their team logo, the date, time and court. Each poster has a **Save image** button that downloads it as a picture (1080 × 1350, ready for Facebook or Messenger). The home page links to it under the Join button and in the footer.
+`matchday.html` shows a poster for every match: the photos and names of the two players on each side, the date, time and court. Each poster has a **Save image** button that downloads it as a picture (1080 × 1350, ready for Facebook or Messenger). The home page links to it under the Join button and in the footer.
 
 To put real matches on it:
 
 1. Run `supabase/setup.sql` again in the **SQL Editor** (safe to re-run; it adds the `matches` table).
 2. Sign in to `admin.html` and open **Match Day posters**.
-3. Choose two players for Team A and two for Team B. **Name on poster** starts as the player's full name — shorten it to a first name or nickname if you like. **Team logo** offers the logos those two players uploaded when they registered; with no logo the poster shows their initials.
+3. Choose two players for Team A and two for Team B. **Name on poster** starts as the player's full name — shorten it to a first name or nickname if you like. Each player's photo is the image they uploaded when they registered; a player with no image gets their initial instead.
 4. Set the date, time, round and court, then press **Add match**. **Delete** takes a poster off the page.
 
-Until the first match is added, the page shows one sample poster with made-up names. Player photos aren't stored anywhere, so the posters use team logos and names only.
+Until the first match is added, the page shows one sample poster with made-up names.
 
 ## Background music
 
