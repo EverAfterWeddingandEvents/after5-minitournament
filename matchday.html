@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Match Day — After 5 Pickleball Club Mini Tournament</title>
+  <meta name="description" content="Match Day posters for the After 5 Pickleball Club 1st Official Mini Tournament.">
+  <meta name="theme-color" content="#0b1533">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/favicon-48.png" sizes="48x48" type="image/png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Oxanium:wght@500;700;800&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy-900: #0b1533;
+      --navy-800: #101d45;
+      --navy-700: #16295c;
+      --blue-500: #1f6fae;
+      --sky-400: #45b4e8;
+      --sky-200: #a9defa;
+      --white: #ffffff;
+      --muted: #b9c8e6;
+      --gold: #d9a441;
+      --panel: rgba(9, 18, 46, 0.78);
+      --line: rgba(169, 222, 250, 0.22);
+      --serif: "Playfair Display", Georgia, serif;
+      --sans: "Montserrat", system-ui, -apple-system, "Segoe UI", sans-serif;
+      --tech: "Oxanium", "Montserrat", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+
+    body {
+      margin: 0;
+      font-family: var(--sans);
+      color: var(--white);
+      background: var(--navy-900);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection { color: var(--navy-900); background: var(--sky-200); }
+    :focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+
+    /* Same jersey as the home page: navy shoulders fading into sky blue, halftone dots, diagonal panels */
+    .jersey {
+      position: relative;
+      overflow: hidden;
+      min-height: 100vh;
+      background: linear-gradient(180deg, var(--navy-900) 0%, var(--navy-800) 18%, var(--navy-700) 40%, var(--blue-500) 68%, var(--sky-400) 100%);
+    }
+    .jersey::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(8, 16, 42, 0.75) 32%, transparent 34%);
+      background-size: 18px 18px;
+      -webkit-mask-image: linear-gradient(180deg, transparent 8%, #000 38%, #000 62%, transparent 94%);
+              mask-image: linear-gradient(180deg, transparent 8%, #000 38%, #000 62%, transparent 94%);
+      pointer-events: none;
+    }
+    .jersey::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(115deg, transparent 55%, rgba(255, 255, 255, 0.05) 55%, rgba(255, 255, 255, 0.05) 70%, transparent 70%),
+        linear-gradient(245deg, transparent 62%, rgba(255, 255, 255, 0.04) 62%, rgba(255, 255, 255, 0.04) 80%, transparent 80%);
+      pointer-events: none;
+    }
+
+    .wrap { position: relative; z-index: 1; width: 100%; max-width: 980px; margin: 0 auto; padding: 0 16px; }
+
+    header { padding: 40px 0 26px; text-align: center; }
+    .wordmark { margin: 0; font: 500 2.4rem/1 var(--serif); }
+    .club {
+      display: inline-block;
+      margin: 8px -0.42em 0 0;
+      padding-bottom: 7px;
+      font-size: 0.74rem;
+      font-weight: 500;
+      letter-spacing: 0.42em;
+      border-bottom: 2px solid var(--gold);
+    }
+    h1 {
+      margin: 22px 0 0;
+      font: 800 clamp(2.4rem, 9vw, 4rem)/1 var(--tech);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-style: italic;
+    }
+    h1 span { color: var(--gold); }
+    .lede { max-width: 520px; margin: 12px auto 0; font-size: 0.95rem; color: var(--muted); text-wrap: pretty; }
+
+    .notice {
+      max-width: 620px;
+      margin: 0 auto 20px;
+      padding: 12px 16px;
+      font-size: 0.88rem;
+      text-align: center;
+      color: var(--sky-200);
+      background: var(--panel);
+      border: 1px dashed var(--line);
+      border-radius: 14px;
+    }
+
+    .posters { display: grid; grid-template-columns: minmax(0, 1fr); gap: 28px; justify-items: center; }
+    .poster { width: 100%; max-width: 440px; margin: 0; }
+    .poster canvas {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 4 / 5;
+      border-radius: 16px;
+      background: var(--navy-800);
+      box-shadow: 0 24px 60px rgba(2, 6, 20, 0.5);
+    }
+    .poster figcaption { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 12px; }
+    .poster figcaption p { margin: 0; min-width: 0; font-size: 0.82rem; color: var(--white); overflow-wrap: anywhere; }
+
+    .btn, .btn-ghost {
+      flex: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 10px 18px;
+      font: 700 0.78rem var(--sans);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 999px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .btn { color: var(--navy-900); background: linear-gradient(180deg, #ffffff, var(--sky-200)); border: 0; }
+    .btn:hover { filter: brightness(1.04); }
+    .btn[disabled] { opacity: 0.6; cursor: progress; }
+    .btn svg { width: 16px; height: 16px; }
+    .btn-ghost { color: var(--white); background: rgba(11, 21, 51, 0.82); border: 1px solid var(--line); }
+    .btn-ghost:hover { background: var(--navy-900); }
+
+    footer { padding: 34px 0 calc(40px + env(safe-area-inset-bottom)); text-align: center; }
+
+    @media (min-width: 760px) {
+      .posters { grid-template-columns: repeat(2, minmax(0, 440px)); justify-content: center; }
+      .posters.single { grid-template-columns: minmax(0, 440px); }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="jersey">
+    <header class="wrap">
+      <p class="wordmark">After 5</p>
+      <span class="club">PICKLEBALL CLUB</span>
+      <h1>Match <span>Day</span></h1>
+      <p class="lede">Doubles match-ups for the 1st Official Mini Tournament. Save a poster and share it with your team.</p>
+    </header>
+
+    <main class="wrap">
+      <p class="notice" id="notice" role="status">Loading matches…</p>
+      <div class="posters" id="posters"></div>
+    </main>
+
+    <footer class="wrap">
+      <a class="btn-ghost" href="./">Back to the tournament page</a>
+    </footer>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+  <script>
+    // Same project as index.html. This key is public; the database rules only let it read the matches.
+    const SUPABASE_URL = "https://ouofkowntnzqbtxkjznj.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_OEPogZwyoCkAHxeek8Oj-A_K2BamcUV";
+    const LOGO_PREFIX = SUPABASE_URL + "/storage/v1/object/public/team-logos/";
+
+    // Shown until officers add real matches on admin.html.
+    const SAMPLE = [{
+      label: "Sample match",
+      match_date: "2026-11-15",
+      match_time: "13:00:00",
+      court: "Pickleboy, Highway Turno, Dipolog City",
+      team_a_name: "Team Sunset", team_a_player1: "Miguel", team_a_player2: "Andrea", team_a_logo_url: null,
+      team_b_name: "Team Dink", team_b_player1: "Paolo", team_b_player2: "Bea", team_b_logo_url: null,
+    }];
+
+    const W = 1080, H = 1350; // portrait 4:5, the size Facebook and Instagram like
+    const C = { navy900: "#0b1533", navy800: "#101d45", navy700: "#16295c", blue: "#1f6fae", sky: "#45b4e8", sky200: "#a9defa", gold: "#d9a441", goldDeep: "#8f6a1f", white: "#ffffff" };
+    const TECH = '"Oxanium", "Montserrat", sans-serif';
+    const SANS = '"Montserrat", system-ui, sans-serif';
+    const SERIF = '"Playfair Display", Georgia, serif';
+
+    /* ---------- Formatting ---------- */
+    const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    function dateParts(iso) {
+      const p = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso || "");
+      if (!p) return null;
+      const d = new Date(Date.UTC(+p[1], +p[2] - 1, +p[3]));
+      return { date: +p[3] + " " + MONTHS[+p[2] - 1] + ", " + p[1], day: DAYS[d.getUTCDay()] };
+    }
+    function fmtTime(t) {
+      const p = /^(\d{1,2}):(\d{2})/.exec(t || "");
+      if (!p) return null;
+      const h = +p[1];
+      return String(h % 12 || 12).padStart(2, "0") + ":" + p[2] + " " + (h < 12 ? "AM" : "PM");
+    }
+    const firstName = (s) => String(s || "").trim();
+    const initials = (a, b) => ((firstName(a)[0] || "") + (firstName(b)[0] || "")).toUpperCase();
+    // Only load logos that live in our own storage bucket.
+    const safeLogo = (u) => (typeof u === "string" && u.startsWith(LOGO_PREFIX)) ? u : null;
+
+    function loadImage(url) {
+      return new Promise((resolve) => {
+        if (!url) return resolve(null);
+        const img = new Image();
+        img.crossOrigin = "anonymous"; // so the poster can still be saved as a picture
+        img.onload = () => resolve(img);
+        img.onerror = () => resolve(null);
+        img.src = url;
+      });
+    }
+
+    /* ---------- Drawing ---------- */
+    function fitText(ctx, text, maxWidth, size, weight, family, min) {
+      let s = size;
+      do { ctx.font = weight + " " + s + "px " + family; s -= 2; }
+      while (ctx.measureText(text).width > maxWidth && s > (min || 20));
+    }
+    function spaced(ctx, text, x, y, spacing) { // centred text with letter spacing
+      if ("letterSpacing" in ctx) {
+        ctx.letterSpacing = spacing + "px";
+        ctx.fillText(text, x + spacing / 2, y);
+        ctx.letterSpacing = "0px";
+      } else ctx.fillText(text, x, y);
+    }
+
+    function background(ctx) {
+      const g = ctx.createLinearGradient(0, 0, 0, H);
+      g.addColorStop(0, C.navy900); g.addColorStop(0.18, C.navy800); g.addColorStop(0.4, C.navy700);
+      g.addColorStop(0.68, C.blue); g.addColorStop(1, C.sky);
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, W, H);
+
+      // Halftone dots through the middle, fading out at both ends
+      for (let y = 12; y < H; y += 24) {
+        const t = y / H;
+        const a = t < 0.38 ? (t - 0.08) / 0.3 : t > 0.62 ? (0.94 - t) / 0.32 : 1;
+        if (a <= 0) continue;
+        ctx.fillStyle = "rgba(8, 16, 42, " + (0.7 * Math.min(1, a)).toFixed(3) + ")";
+        for (let x = 12; x < W; x += 24) { ctx.beginPath(); ctx.arc(x, y, 4.6, 0, 6.2832); ctx.fill(); }
+      }
+
+      // The jersey's diagonal panels
+      ctx.fillStyle = "rgba(255, 255, 255, 0.05)";
+      ctx.beginPath(); ctx.moveTo(760, 0); ctx.lineTo(940, 0); ctx.lineTo(310, H); ctx.lineTo(130, H); ctx.fill();
+      ctx.fillStyle = "rgba(255, 255, 255, 0.04)";
+      ctx.beginPath(); ctx.moveTo(150, 0); ctx.lineTo(360, 0); ctx.lineTo(990, H); ctx.lineTo(780, H); ctx.fill();
+
+      // Darken the bottom so the details stay readable on the sky blue
+      const d = ctx.createLinearGradient(0, 820, 0, H);
+      d.addColorStop(0, "rgba(11, 21, 51, 0)"); d.addColorStop(0.45, "rgba(11, 21, 51, 0.72)"); d.addColorStop(1, "rgba(11, 21, 51, 0.9)");
+      ctx.fillStyle = d;
+      ctx.fillRect(0, 820, W, H - 820);
+    }
+
+    function pennant(ctx, x, w, top, bottom, light, deep) {
+      const tip = 86, mid = x + w / 2;
+      const shape = () => {
+        ctx.beginPath();
+        ctx.moveTo(x, top); ctx.lineTo(x + w, top); ctx.lineTo(x + w, bottom - tip);
+        ctx.lineTo(mid, bottom); ctx.lineTo(x, bottom - tip); ctx.closePath();
+      };
+      ctx.save();
+      ctx.shadowColor = "rgba(2, 6, 20, 0.55)"; ctx.shadowBlur = 40; ctx.shadowOffsetY = 18;
+      const g = ctx.createLinearGradient(0, top, 0, bottom);
+      g.addColorStop(0, light); g.addColorStop(0.42, deep); g.addColorStop(1, C.navy900);
+      ctx.fillStyle = g;
+      shape(); ctx.fill();
+      ctx.restore();
+      ctx.lineWidth = 3; ctx.strokeStyle = "rgba(255, 255, 255, 0.28)";
+      shape(); ctx.stroke();
+    }
+
+    function badge(ctx, cx, cy, r, img, fallback, ring) {
+      ctx.save();
+      ctx.shadowColor = "rgba(2, 6, 20, 0.5)"; ctx.shadowBlur = 26; ctx.shadowOffsetY = 10;
+      ctx.fillStyle = img ? C.white : C.navy900;
+      ctx.beginPath(); ctx.arc(cx, cy, r, 0, 6.2832); ctx.fill();
+      ctx.restore();
+      if (img) {
+        ctx.save();
+        ctx.beginPath(); ctx.arc(cx, cy, r - 6, 0, 6.2832); ctx.clip();
+        const box = (r - 6) * 2 * 0.86; // logo sits inside the circle, uncropped
+        const k = Math.min(box / img.naturalWidth, box / img.naturalHeight);
+        const w = img.naturalWidth * k, h = img.naturalHeight * k;
+        ctx.drawImage(img, cx - w / 2, cy - h / 2, w, h);
+        ctx.restore();
+      } else {
+        ctx.fillStyle = C.white; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+        fitText(ctx, fallback, r * 1.3, r * 0.95, 800, TECH);
+        ctx.fillText(fallback, cx, cy + r * 0.04);
+      }
+      ctx.lineWidth = 8; ctx.strokeStyle = ring;
+      ctx.beginPath(); ctx.arc(cx, cy, r, 0, 6.2832); ctx.stroke();
+    }
+
+    function team(ctx, x, w, name, p1, p2, img, accent) {
+      const mid = x + w / 2, inner = w - 64;
+      badge(ctx, mid, 400, 132, img, initials(p1, p2) || "A5", accent);
+      ctx.textAlign = "center"; ctx.textBaseline = "alphabetic";
+
+      if (name) {
+        ctx.fillStyle = accent === C.gold ? "#ffe3a6" : C.sky200;
+        fitText(ctx, name.toUpperCase(), inner - 20, 30, 700, TECH, 18);
+        spaced(ctx, name.toUpperCase(), mid, 592, 4);
+      }
+      ctx.fillStyle = C.white;
+      ctx.shadowColor = "rgba(2, 6, 20, 0.6)"; ctx.shadowBlur = 14; ctx.shadowOffsetY = 4;
+      fitText(ctx, firstName(p1).toUpperCase(), inner, 64, 800, TECH, 26);
+      ctx.fillText(firstName(p1).toUpperCase(), mid, 668);
+      fitText(ctx, firstName(p2).toUpperCase(), inner, 64, 800, TECH, 26);
+      ctx.fillText(firstName(p2).toUpperCase(), mid, 778);
+      ctx.shadowColor = "transparent"; ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
+      ctx.fillStyle = accent;
+      ctx.font = "500 40px " + SERIF;
+      ctx.fillText("&", mid, 722);
+    }
+
+    function draw(canvas, m, logoA, logoB) {
+      const ctx = canvas.getContext("2d");
+      ctx.clearRect(0, 0, W, H);
+      background(ctx);
+
+      // Club name
+      ctx.textAlign = "center"; ctx.textBaseline = "alphabetic"; ctx.fillStyle = C.white;
+      ctx.font = "500 76px " + SERIF;
+      ctx.fillText("After 5", W / 2, 108);
+      ctx.font = "500 22px " + SANS;
+      spaced(ctx, "PICKLEBALL CLUB", W / 2, 150, 10);
+      ctx.fillStyle = C.gold; ctx.fillRect(W / 2 - 150, 164, 300, 3);
+      ctx.fillStyle = C.sky200; ctx.font = "700 22px " + TECH;
+      spaced(ctx, "1ST OFFICIAL MINI TOURNAMENT", W / 2, 204, 6);
+
+      // The two sides
+      pennant(ctx, 60, 440, 236, 900, C.sky, C.blue);
+      pennant(ctx, 580, 440, 236, 900, C.gold, C.goldDeep);
+      team(ctx, 60, 440, m.team_a_name, m.team_a_player1, m.team_a_player2, logoA, C.sky200);
+      team(ctx, 580, 440, m.team_b_name, m.team_b_player1, m.team_b_player2, logoB, C.gold);
+
+      // VS
+      ctx.save();
+      ctx.shadowColor = "rgba(2, 6, 20, 0.6)"; ctx.shadowBlur = 24; ctx.shadowOffsetY = 8;
+      ctx.fillStyle = C.navy900;
+      ctx.beginPath(); ctx.arc(W / 2, 560, 62, 0, 6.2832); ctx.fill();
+      ctx.restore();
+      ctx.lineWidth = 5; ctx.strokeStyle = C.white;
+      ctx.beginPath(); ctx.arc(W / 2, 560, 62, 0, 6.2832); ctx.stroke();
+      ctx.fillStyle = C.white; ctx.textBaseline = "middle"; ctx.font = "800 54px " + TECH;
+      ctx.fillText("VS", W / 2, 564);
+
+      // MATCH DAY, slanted like a sports poster
+      ctx.save();
+      ctx.translate(W / 2, 0);
+      ctx.transform(1, 0, -0.18, 1, 0, 0);
+      ctx.textBaseline = "alphabetic";
+      ctx.lineJoin = "round";
+      ctx.shadowColor = "rgba(2, 6, 20, 0.65)"; ctx.shadowBlur = 22; ctx.shadowOffsetY = 10;
+      ctx.font = "800 170px " + TECH;
+      ctx.lineWidth = 14; ctx.strokeStyle = C.navy900;
+      ctx.strokeText("MATCH", 178, 1010);
+      ctx.fillStyle = C.white; ctx.fillText("MATCH", 178, 1010);
+      ctx.strokeText("DAY", 198, 1148);
+      ctx.fillStyle = C.gold; ctx.fillText("DAY", 198, 1148);
+      ctx.restore();
+
+      // Round / label
+      ctx.textAlign = "center"; ctx.textBaseline = "alphabetic";
+      let y = 1206;
+      if (m.label) {
+        ctx.fillStyle = C.sky200;
+        fitText(ctx, m.label.toUpperCase(), 800, 26, 700, TECH, 18);
+        spaced(ctx, m.label.toUpperCase(), W / 2, y, 6);
+      }
+
+      // Date | time | day
+      const d = dateParts(m.match_date);
+      const bits = [d && d.date, fmtTime(m.match_time), d && d.day].filter(Boolean).map((s) => s.toUpperCase());
+      y = 1256;
+      ctx.fillStyle = C.white;
+      fitText(ctx, bits.join("   |   "), 940, 34, 700, TECH, 20);
+      ctx.fillText(bits.join("   |   "), W / 2, y);
+
+      if (m.court) {
+        ctx.fillStyle = C.white;
+        fitText(ctx, m.court.toUpperCase(), 940, 24, 600, SANS, 16);
+        ctx.fillText(m.court.toUpperCase(), W / 2, 1302);
+      }
+    }
+
+    /* ---------- Page ---------- */
+    const fileSafe = (s) => String(s || "").trim().replace(/[^\w-]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 40);
+    const DOWNLOAD_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 11l5 5 5-5M5 20h14" /></svg>';
+
+    async function poster(m) {
+      const a = [m.team_a_player1, m.team_a_player2].join(" & ");
+      const b = [m.team_b_player1, m.team_b_player2].join(" & ");
+      const d = dateParts(m.match_date);
+      const summary = a + " vs " + b;
+
+      const canvas = document.createElement("canvas");
+      canvas.width = W; canvas.height = H;
+      canvas.setAttribute("role", "img");
+      canvas.setAttribute("aria-label", "Match Day poster: " + summary
+        + (d ? ", " + d.day + " " + d.date : "") + (fmtTime(m.match_time) ? ", " + fmtTime(m.match_time) : "")
+        + (m.court ? ", " + m.court : ""));
+
+      const text = document.createElement("p");
+      text.textContent = (m.label ? m.label + " · " : "") + summary;
+
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "btn";
+      btn.innerHTML = DOWNLOAD_ICON + "<span>Save image</span>";
+
+      const cap = document.createElement("figcaption");
+      cap.append(text, btn);
+      const fig = document.createElement("figure");
+      fig.className = "poster";
+      fig.append(canvas, cap);
+
+      const [logoA, logoB] = await Promise.all([loadImage(safeLogo(m.team_a_logo_url)), loadImage(safeLogo(m.team_b_logo_url))]);
+      draw(canvas, m, logoA, logoB);
+
+      btn.addEventListener("click", () => {
+        btn.disabled = true;
+        canvas.toBlob((blob) => {
+          btn.disabled = false;
+          if (!blob) return;
+          const link = document.createElement("a");
+          link.href = URL.createObjectURL(blob);
+          link.download = "after5-match-day-" + (fileSafe(a + "-vs-" + b) || "poster") + ".png";
+          document.body.append(link);
+          link.click();
+          link.remove();
+          setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+        }, "image/png");
+      });
+      return fig;
+    }
+
+    async function loadMatches() {
+      if (!window.supabase) return null;
+      const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { persistSession: false } });
+      const { data, error } = await db.from("matches").select("*")
+        .order("match_date").order("match_time", { nullsFirst: false }).order("created_at");
+      if (error) { console.error(error); return null; }
+      return data;
+    }
+
+    (async () => {
+      const notice = document.getElementById("notice");
+      const list = document.getElementById("posters");
+      // Canvas text needs the fonts in hand before drawing.
+      const fonts = ['800 60px "Oxanium"', '700 30px "Oxanium"', '500 40px "Playfair Display"', '500 22px "Montserrat"', '600 24px "Montserrat"'];
+      const [rows] = await Promise.all([
+        loadMatches(),
+        document.fonts ? Promise.all(fonts.map((f) => document.fonts.load(f))).catch(() => { }) : null,
+      ]);
+
+      const real = rows && rows.length;
+      const matches = real ? rows : SAMPLE;
+      if (real) notice.hidden = true;
+      else notice.textContent = "Match-ups will be posted here after the blind pairing. Until then, here's a sample poster.";
+
+      list.classList.toggle("single", matches.length === 1);
+      list.replaceChildren(...await Promise.all(matches.map(poster)));
+    })();
+  </script>
+</body>
+
+</html>

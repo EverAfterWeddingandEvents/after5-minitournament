@@ -5,7 +5,9 @@ A one-page site for the 1st Official Mini Tournament. "Join the Club" opens the 
 - `index.html` — the whole site (styles and script are inside it)
 - `assets/poster.png` — the event poster (linked in the footer)
 - `assets/share.jpg` — the picture shown when the link is shared in Messenger, Facebook, etc.
-- `supabase/setup.sql` — creates the members table and the team logo storage
+- `matchday.html` — the Match Day posters, one per doubles match (2 vs 2)
+- `admin.html` — the officers' page: registrations and the Match Day match-ups
+- `supabase/setup.sql` — creates the members table, the team logo storage and the matches table
 
 ## Connect the form to Supabase
 
@@ -39,6 +41,19 @@ It needs a login, and only accounts you list as admins can see anything:
 Repeat steps 2–3 for each officer. To remove someone, delete their user under **Authentication → Users**.
 
 You can also see the raw data in Supabase under **Table Editor → members** and **Storage → team-logos**.
+
+## Match Day posters
+
+`matchday.html` shows a poster for every match: the two players on each side, their team logo, the date, time and court. Each poster has a **Save image** button that downloads it as a picture (1080 × 1350, ready for Facebook or Messenger). The home page links to it under the Join button and in the footer.
+
+To put real matches on it:
+
+1. Run `supabase/setup.sql` again in the **SQL Editor** (safe to re-run; it adds the `matches` table).
+2. Sign in to `admin.html` and open **Match Day posters**.
+3. Choose two players for Team A and two for Team B. **Name on poster** starts as the player's full name — shorten it to a first name or nickname if you like. **Team logo** offers the logos those two players uploaded when they registered; with no logo the poster shows their initials.
+4. Set the date, time, round and court, then press **Add match**. **Delete** takes a poster off the page.
+
+Until the first match is added, the page shows one sample poster with made-up names. Player photos aren't stored anywhere, so the posters use team logos and names only.
 
 ## Background music
 

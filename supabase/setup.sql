@@ -97,7 +97,54 @@ create policy "Website can upload team logos"
   to anon, authenticated
   with check (bucket_id = 'team-logos');
 
--- 4. Make an account an admin ------------------------------------------------
+-- 4. Matches (the Match Day posters on matchday.html) --------------------------
+
+-- One row per doubles match: two players on each side. Names and logo links are
+-- copied in by an officer on admin.html, so the public page never reads the
+-- members table.
+create table if not exists public.matches (
+  id               uuid primary key default gen_random_uuid(),
+  created_at       timestamptz not null default now(),
+  label            text check (char_length(label) <= 60),          -- e.g. "Round 1", "Final"
+  match_date       date not null,
+  match_time       time,
+  court            text check (char_length(court) <= 120),
+  team_a_name      text check (char_length(team_a_name) <= 60),
+  team_a_player1   text not null check (char_length(team_a_player1) between 1 and 120),
+  team_a_player2   text not null check (char_length(team_a_player2) between 1 and 120),
+  team_a_logo_url  text check (char_length(team_a_logo_url) <= 500),
+  team_b_name      text check (char_length(team_b_name) <= 60),
+  team_b_player1   text not null check (char_length(team_b_player1) between 1 and 120),
+  team_b_player2   text not null check (char_length(team_b_player2) between 1 and 120),
+  team_b_logo_url  text check (char_length(team_b_logo_url) <= 500)
+);
+
+alter table public.matches enable row level security;
+
+-- Anyone may see the matches; only admins may add or delete them.
+revoke all on public.matches from anon, authenticated;
+grant select on public.matches to anon, authenticated;
+grant insert, delete on public.matches to authenticated;
+
+drop policy if exists "Anyone can view matches" on public.matches;
+create policy "Anyone can view matches"
+  on public.matches for select
+  to anon, authenticated
+  using (true);
+
+drop policy if exists "Admins can add matches" on public.matches;
+create policy "Admins can add matches"
+  on public.matches for insert
+  to authenticated
+  with check (exists (select 1 from public.admins a where a.user_id = (select auth.uid())));
+
+drop policy if exists "Admins can delete matches" on public.matches;
+create policy "Admins can delete matches"
+  on public.matches for delete
+  to authenticated
+  using (exists (select 1 from public.admins a where a.user_id = (select auth.uid())));
+
+-- 5. Make an account an admin ------------------------------------------------
 -- First create the account: Authentication → Users → Add user → Create new user
 -- (enter an email and password, keep "Auto Confirm User" ticked).
 -- Then remove the two dashes below, put in that email, and run just this statement:

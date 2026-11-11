@@ -73,7 +73,7 @@
   .btn[disabled], .btn-ghost[disabled] { opacity: 0.6; cursor: progress; }
   :focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
 
-  input[type="email"], input[type="password"], input[type="text"], input[type="search"], select {
+  input[type="email"], input[type="password"], input[type="text"], input[type="search"], input[type="date"], input[type="time"], select {
     width: 100%;
     min-height: 46px;
     padding: 10px 14px;
@@ -301,7 +301,46 @@
   .logo .btn-ghost { min-height: 38px; padding: 8px 14px; font-size: 0.72rem; }
   .no-logo { font-size: 0.82rem; color: var(--muted); }
 
+  /* ---------- Match Day posters ---------- */
+  .matches { margin-top: 16px; background: var(--panel); border: 1px solid var(--line); border-radius: 16px; }
+  .matches > summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 56px;
+    padding: 12px 18px;
+    font-weight: 700;
+    cursor: pointer;
+    list-style: none;
+    border-radius: 16px;
+  }
+  .matches > summary::-webkit-details-marker { display: none; }
+  .matches > summary::after { content: "+"; font: 700 1.4rem/1 var(--tech); color: var(--sky-200); }
+  .matches[open] > summary::after { content: "–"; }
+  .matches > summary small { display: block; font-size: 0.78rem; font-weight: 500; color: var(--muted); }
+  .matches-body { padding: 4px 18px 18px; }
+  .match-form { display: grid; gap: 16px; }
+  .sides { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .side { display: grid; gap: 12px; margin: 0; padding: 14px; border: 1px solid var(--line); border-radius: 12px; min-width: 0; }
+  .side legend { padding: 0 8px; font: 700 0.72rem var(--tech); letter-spacing: 0.2em; text-transform: uppercase; color: var(--sky-200); }
+  .side.b legend { color: var(--gold); }
+  .pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; }
+  .when { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
+  .when .wide { grid-column: 1 / -1; }
+  .match-form label em { font-style: normal; font-weight: 500; color: var(--muted); }
+  .match-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
+  .match-list { display: grid; gap: 8px; margin: 18px 0 0; padding: 16px 0 0; list-style: none; border-top: 1px solid var(--line); }
+  .match-list li { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .match-list p { margin: 0; min-width: 0; font-size: 0.92rem; overflow-wrap: anywhere; }
+  .match-list p small { display: block; font-size: 0.78rem; color: var(--muted); }
+  .match-list .btn-ghost { flex: none; min-height: 38px; padding: 8px 14px; font-size: 0.72rem; }
+  .match-list .none { font-size: 0.88rem; color: var(--muted); }
+
   @media (min-width: 640px) {
+    .sides { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+    .when { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .when .wide { grid-column: span 2; }
     .stats { grid-template-columns: repeat(4, minmax(0, 1fr)); }
     .tools { grid-template-columns: minmax(0, 1fr) 180px auto; align-items: center; }
     .tools-btns > * { flex: none; }
@@ -392,6 +431,58 @@
     <div class="stat"><p>Said paid</p><strong id="s-paid">–</strong></div>
     <div class="stat"><p>Confirmed</p><strong id="s-confirmed">–</strong></div>
   </section>
+
+  <details class="matches" id="matches">
+    <summary><span>Match Day posters <small id="match-count">Set up the 2 vs 2 match-ups shown on the Match Day page</small></span></summary>
+    <div class="matches-body">
+      <form class="match-form" id="match-form" novalidate>
+        <div class="sides">
+        <fieldset class="side a">
+          <legend>Team A</legend>
+          <div class="pair">
+            <div><label for="m-a1">Player 1</label><select id="m-a1" data-player></select></div>
+            <div><label for="m-a1n">Name on poster</label><input id="m-a1n" type="text" maxlength="120" autocomplete="off"></div>
+          </div>
+          <div class="pair">
+            <div><label for="m-a2">Player 2</label><select id="m-a2" data-player></select></div>
+            <div><label for="m-a2n">Name on poster</label><input id="m-a2n" type="text" maxlength="120" autocomplete="off"></div>
+          </div>
+          <div class="pair">
+            <div><label for="m-ateam">Team name <em>(optional)</em></label><input id="m-ateam" type="text" maxlength="60" autocomplete="off"></div>
+            <div><label for="m-alogo">Team logo</label><select id="m-alogo"></select></div>
+          </div>
+        </fieldset>
+        <fieldset class="side b">
+          <legend>Team B</legend>
+          <div class="pair">
+            <div><label for="m-b1">Player 1</label><select id="m-b1" data-player></select></div>
+            <div><label for="m-b1n">Name on poster</label><input id="m-b1n" type="text" maxlength="120" autocomplete="off"></div>
+          </div>
+          <div class="pair">
+            <div><label for="m-b2">Player 2</label><select id="m-b2" data-player></select></div>
+            <div><label for="m-b2n">Name on poster</label><input id="m-b2n" type="text" maxlength="120" autocomplete="off"></div>
+          </div>
+          <div class="pair">
+            <div><label for="m-bteam">Team name <em>(optional)</em></label><input id="m-bteam" type="text" maxlength="60" autocomplete="off"></div>
+            <div><label for="m-blogo">Team logo</label><select id="m-blogo"></select></div>
+          </div>
+        </fieldset>
+        </div>
+        <div class="when">
+          <div><label for="m-date">Date</label><input id="m-date" type="date" value="2026-11-15" required></div>
+          <div><label for="m-time">Time <em>(optional)</em></label><input id="m-time" type="time"></div>
+          <div class="wide"><label for="m-label">Round <em>(optional, e.g. Round 1, Final)</em></label><input id="m-label" type="text" maxlength="60" autocomplete="off"></div>
+          <div class="wide"><label for="m-court">Court / venue</label><input id="m-court" type="text" maxlength="120" value="Pickleboy, Highway Turno, Dipolog City" autocomplete="off"></div>
+        </div>
+        <p class="msg" id="match-msg" role="alert"></p>
+        <div class="match-actions">
+          <button class="btn" type="submit" id="match-add">Add match</button>
+          <a class="btn-ghost" href="matchday.html" target="_blank" rel="noopener">Open Match Day page</a>
+        </div>
+      </form>
+      <ul class="match-list" id="match-list"></ul>
+    </div>
+  </details>
 
   <div class="tools">
     <input type="search" id="search" placeholder="Search name, number, address…" aria-label="Search registrations">
@@ -515,6 +606,7 @@
   $("signout").addEventListener("click", async () => {
     await db.auth.signOut();
     members = [];
+    matches = [];
     $("list").replaceChildren();
     showLogin();
   });
@@ -541,6 +633,8 @@
     members = all;
     stats();
     render();
+    fillPlayers();
+    loadMatches();
   }
 
   function stats() {
@@ -699,6 +793,152 @@
   $("search").addEventListener("input", () => { page = 1; render(); });
   $("filter").addEventListener("change", () => { page = 1; render(); });
   $("refresh").addEventListener("click", load);
+
+  /* ---------- Match Day posters (shown on matchday.html) ---------- */
+  const SIDES = ["a", "b"];
+  let matches = [];
+  const memberById = (id) => members.find((m) => m.id === id);
+
+  function fillPlayers() {
+    const sorted = members.slice().sort((x, y) => x.full_name.localeCompare(y.full_name));
+    document.querySelectorAll("#match-form select[data-player]").forEach((sel) => {
+      const keep = sel.value;
+      sel.replaceChildren(el("option", { value: "", textContent: "Choose a player…" }),
+        ...sorted.map((m) => el("option", { value: m.id, textContent: m.full_name })));
+      if (memberById(keep)) sel.value = keep;
+    });
+    SIDES.forEach(fillLogos);
+  }
+
+  // The logo choices for a side are whatever its two players uploaded when they registered.
+  function fillLogos(k) {
+    const sel = $("m-" + k + "logo");
+    const keep = sel.value;
+    const opts = [el("option", { value: "", textContent: "No logo (show initials)" })];
+    [1, 2].forEach((n) => {
+      const m = memberById($("m-" + k + n).value);
+      const url = m && logoUrl(m);
+      if (url && !opts.some((o) => o.value === url)) opts.push(el("option", { value: url, textContent: m.full_name + "'s logo" }));
+    });
+    sel.replaceChildren(...opts);
+    sel.value = opts.some((o) => o.value === keep && keep) ? keep : (opts[1] ? opts[1].value : "");
+  }
+
+  SIDES.forEach((k) => [1, 2].forEach((n) => {
+    $("m-" + k + n).addEventListener("change", (e) => {
+      const m = memberById(e.target.value);
+      $("m-" + k + n + "n").value = m ? m.full_name : "";
+      fillLogos(k);
+    });
+  }));
+
+  const fmtMatchDate = (iso) => {
+    const p = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso || "");
+    return p ? MONTHS[+p[2] - 1] + " " + +p[3] : "";
+  };
+  const fmtMatchTime = (t) => {
+    const p = /^(\d{1,2}):(\d{2})/.exec(t || "");
+    return p ? (+p[1] % 12 || 12) + ":" + p[2] + (+p[1] < 12 ? " AM" : " PM") : "";
+  };
+
+  async function loadMatches() {
+    const { data, error } = await db.from("matches").select("*")
+      .order("match_date").order("match_time", { nullsFirst: false }).order("created_at");
+    if (error) {
+      console.error(error);
+      $("match-list").replaceChildren(el("li", { className: "none", textContent: "Matches aren't set up yet. Run the latest supabase/setup.sql in Supabase, then press Refresh." }));
+      return;
+    }
+    matches = data;
+    renderMatches();
+  }
+
+  function renderMatches() {
+    $("match-count").textContent = matches.length
+      ? matches.length + (matches.length === 1 ? " match" : " matches") + " on the Match Day page"
+      : "Set up the 2 vs 2 match-ups shown on the Match Day page";
+    if (!matches.length) {
+      $("match-list").replaceChildren(el("li", { className: "none", textContent: "No matches yet. The Match Day page shows a sample poster until you add one." }));
+      return;
+    }
+    $("match-list").replaceChildren(...matches.map((m) => {
+      const del = el("button", { type: "button", className: "btn-ghost", textContent: "Delete" });
+      del.addEventListener("click", async () => {
+        if (!confirm("Delete this match? Its poster comes off the Match Day page.")) return;
+        del.disabled = true;
+        const { data, error } = await db.from("matches").delete().eq("id", m.id).select("id");
+        if (error || !data.length) {
+          console.error(error);
+          del.disabled = false;
+          $("match-msg").textContent = "Couldn't delete that match. Check your connection and try again.";
+          return;
+        }
+        matches = matches.filter((x) => x.id !== m.id);
+        renderMatches();
+      });
+      const when = [m.label, fmtMatchDate(m.match_date), fmtMatchTime(m.match_time), m.court].filter(Boolean).join(" · ");
+      return el("li", null,
+        el("p", null,
+          m.team_a_player1 + " & " + m.team_a_player2 + " vs " + m.team_b_player1 + " & " + m.team_b_player2,
+          el("small", { textContent: when })),
+        del);
+    }));
+  }
+
+  $("match-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const msg = $("match-msg");
+    msg.textContent = "";
+    const text = (id) => $(id).value.trim();
+    const names = ["m-a1n", "m-a2n", "m-b1n", "m-b2n"];
+    const missing = names.find((id) => !text(id));
+    if (missing) {
+      msg.textContent = "Choose all four players (two on each team).";
+      $(missing.slice(0, -1)).focus();
+      return;
+    }
+    const picked = ["m-a1", "m-a2", "m-b1", "m-b2"].map((id) => $(id).value).filter(Boolean);
+    if (new Set(picked).size !== picked.length) {
+      msg.textContent = "The same player is chosen more than once.";
+      return;
+    }
+    if (!$("m-date").value) {
+      msg.textContent = "Choose the match date.";
+      $("m-date").focus();
+      return;
+    }
+    const btn = $("match-add");
+    btn.disabled = true;
+    btn.textContent = "Adding…";
+    const { data, error } = await db.from("matches").insert({
+      label: text("m-label") || null,
+      match_date: $("m-date").value,
+      match_time: $("m-time").value || null,
+      court: text("m-court") || null,
+      team_a_name: text("m-ateam") || null,
+      team_a_player1: text("m-a1n"),
+      team_a_player2: text("m-a2n"),
+      team_a_logo_url: $("m-alogo").value || null,
+      team_b_name: text("m-bteam") || null,
+      team_b_player1: text("m-b1n"),
+      team_b_player2: text("m-b2n"),
+      team_b_logo_url: $("m-blogo").value || null,
+    }).select();
+    btn.disabled = false;
+    btn.textContent = "Add match";
+    if (error || !data.length) {
+      console.error(error);
+      msg.textContent = "Couldn't add the match. Check your connection, and that the latest supabase/setup.sql has been run.";
+      return;
+    }
+    // Keep date, time, round and court for the next match; clear the players.
+    SIDES.forEach((k) => {
+      [1, 2].forEach((n) => { $("m-" + k + n).value = ""; $("m-" + k + n + "n").value = ""; });
+      $("m-" + k + "team").value = "";
+      fillLogos(k);
+    });
+    await loadMatches();
+  });
 
   /* ---------- CSV export (what's currently shown) ---------- */
   const COLS = [
