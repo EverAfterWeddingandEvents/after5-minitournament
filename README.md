@@ -24,7 +24,7 @@ The anon key is meant to be public. The setup script only lets it add registrati
 
 ## See the registrations: the admin page
 
-`admin.html` lists everyone who registered, 20 per page, with search, a paid / not-paid filter, each team logo with a **Download logo** button, and **Export CSV**. Nothing on the main page links to it — open it by typing the address, e.g. `https://your-site.example/admin.html`. Officers can also press **Confirm registration** on an entry (and undo it); that is the only thing the page can change.
+`admin.html` lists everyone who registered, 20 per page, with search, a paid / not-paid filter, each team logo with a **Download logo** button, and **Export CSV**. Nothing on the main page links to it — open it by typing the address, e.g. `https://your-site.example/admin.html`. Officers can also press **Confirm registration** on an entry (and undo it), and use **Add player** to add someone by name (e.g. a walk-in). Players added that way are tagged "Added by admin" and can be removed again; website sign-ups can't be deleted from the page. (Adding players needs the latest `supabase/setup.sql` — re-run it once.)
 
 It needs a login, and only accounts you list as admins can see anything:
 

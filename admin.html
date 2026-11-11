@@ -41,7 +41,6 @@
     -webkit-font-smoothing: antialiased;
   }
   [hidden] { display: none !important; }
-  .wrap { width: 100%; max-width: 980px; margin: 0 auto; padding: 0 16px; }
 
   .brand { font-family: var(--serif); font-weight: 500; font-size: 1.6rem; line-height: 1; margin: 0; }
   .brand small {
@@ -73,7 +72,7 @@
   .btn[disabled], .btn-ghost[disabled] { opacity: 0.6; cursor: progress; }
   :focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
 
-  input[type="email"], input[type="password"], input[type="text"], input[type="search"], input[type="date"], input[type="time"], select {
+  input[type="email"], input[type="password"], input[type="text"], input[type="tel"], input[type="search"], input[type="date"], input[type="time"], select {
     width: 100%;
     min-height: 46px;
     padding: 10px 14px;
@@ -219,15 +218,114 @@
     .login-card { padding: 34px 32px 28px; }
   }
 
-  /* ---------- Dashboard ---------- */
-  .top {
+  /* ---------- Dashboard shell: sidebar + full-width content ---------- */
+  .app { min-height: 100vh; }
+  .sidebar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 10px 12px;
+    padding: 12px 16px 10px;
+    background: rgba(8, 15, 38, 0.9);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .sidebar .brand { font-size: 1.35rem; }
+  .side-nav { grid-column: 1 / -1; display: flex; gap: 6px; margin: 0 -16px; padding: 0 16px 2px; overflow-x: auto; scrollbar-width: none; }
+  .side-nav::-webkit-scrollbar { display: none; }
+  .side-nav a {
+    flex: none;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    padding: 22px 0 18px;
+    gap: 8px;
+    padding: 8px 12px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--muted);
+    text-decoration: none;
+    white-space: nowrap;
+    border: 1px solid var(--line);
+    border-radius: 999px;
   }
-  .top-right { display: flex; align-items: center; justify-content: flex-end; gap: 12px; flex: 1; min-width: 0; }
+  .side-nav a:hover { color: var(--white); background: rgba(255, 255, 255, 0.06); }
+  .side-nav a.active { color: var(--navy-900); background: var(--sky-200); border-color: var(--sky-200); }
+  .side-nav svg { flex: none; width: 17px; height: 17px; }
+  .side-sep { flex: none; width: 1px; margin: 4px 2px; background: var(--line); }
+  .side-foot { grid-column: 2; grid-row: 1; display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .side-foot .who { display: none; }
+  .side-foot .btn-ghost { min-height: 36px; padding: 6px 14px; font-size: 0.72rem; }
+
+  .main { min-width: 0; padding: 22px 16px 56px; }
+  .main-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
+  .main-head h1 { margin: 2px 0 0; font: 700 1.7rem/1.1 var(--sans); }
+  .eyebrow { margin: 0; font: 700 0.68rem var(--tech); letter-spacing: 0.24em; text-transform: uppercase; color: var(--gold); }
+  .regs, .matches.view { margin-top: 0; }
+  .view { animation: viewIn 0.28s ease-out; }
+  @keyframes viewIn { from { opacity: 0; transform: translateY(8px); } }
+  @media (prefers-reduced-motion: reduce) { .view { animation: none; } }
+  #view-title:focus { outline: none; }
+
+  .quick-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; margin-top: 16px; }
+  .quick {
+    display: flex; align-items: center; gap: 14px; padding: 18px;
+    color: var(--white); text-decoration: none;
+    background: var(--panel); border: 1px solid var(--line); border-radius: 16px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .quick:hover { border-color: rgba(169, 222, 250, 0.5); transform: translateY(-2px); }
+  .quick > span:nth-child(2) { flex: 1; min-width: 0; }
+  .quick strong { display: block; font-size: 1rem; }
+  .quick small { display: block; font-size: 0.82rem; color: var(--muted); }
+  .quick-icon { display: grid; place-items: center; flex: none; width: 46px; height: 46px; color: var(--gold); background: rgba(217, 164, 65, 0.12); border-radius: 12px; }
+  .quick-icon svg { width: 22px; height: 22px; }
+  .quick-go { font: 700 1.2rem var(--tech); color: var(--sky-200); }
+  .recent { margin-top: 16px; padding: 16px 18px 8px; background: var(--panel); border: 1px solid var(--line); border-radius: 16px; }
+  .recent-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+  .recent-head h2 { margin: 0; font-size: 1rem; }
+  .recent-head a { font-size: 0.82rem; font-weight: 600; color: var(--sky-200); }
+  .recent-list { margin: 10px 0 0; padding: 0; list-style: none; }
+  .recent-list li { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0; border-top: 1px solid var(--line); }
+  .recent-list li:first-child { border-top: 0; }
+  .recent-list .nm { min-width: 0; font-weight: 600; overflow-wrap: anywhere; }
+  .recent-list .nm small { display: block; font-size: 0.76rem; font-weight: 500; color: var(--muted); }
+  .recent-list time { flex: none; font-size: 0.76rem; color: var(--muted); }
+  .recent-list .none { justify-content: center; color: var(--muted); font-size: 0.88rem; }
+  @media (min-width: 640px) { .quick-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .regs-head h2 { margin: 0; font-size: 1.05rem; font-weight: 700; }
+  .regs-head small { display: block; font-size: 0.78rem; color: var(--muted); }
+
+  @media (min-width: 1000px) {
+    .app { display: grid; grid-template-columns: 252px minmax(0, 1fr); }
+    .sidebar {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+      padding: 28px 18px 22px;
+      background: rgba(8, 15, 38, 0.7);
+      border-bottom: 0;
+      border-right: 1px solid var(--line);
+    }
+    .sidebar .brand { font-size: 1.6rem; padding: 0 10px; }
+    .side-nav { flex-direction: column; gap: 4px; margin: 30px 0 0; padding: 0; overflow: visible; }
+    .side-nav a { padding: 11px 12px; font-size: 0.88rem; border: 0; border-radius: 10px; }
+    .side-nav a.active { color: var(--white); background: rgba(169, 222, 250, 0.12); box-shadow: inset 3px 0 0 var(--gold); }
+    .side-sep { width: auto; height: 1px; margin: 12px 10px; }
+    .side-foot { margin-top: auto; flex-direction: column; align-items: stretch; gap: 10px; padding: 16px 10px 0; border-top: 1px solid var(--line); }
+    .side-foot .who { display: block; }
+    .main { padding: 34px 40px 64px; }
+    .main-head h1 { font-size: 2rem; }
+  }
+  @media (min-width: 1400px) {
+    .list { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
+  }
+
+  /* ---------- Dashboard ---------- */
   .who { min-width: 0; font-size: 0.8rem; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
   .stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
@@ -240,11 +338,11 @@
   .tools-btns > * { flex: 1; }
 
   .count { margin: 0 0 10px; font-size: 0.82rem; color: var(--muted); }
-  .list { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; scroll-margin-top: 12px; }
+  .list { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; scroll-margin-top: 130px; }
+  @media (min-width: 1000px) { .list { scroll-margin-top: 24px; } }
   .pager { display: flex; align-items: center; justify-content: center; gap: 14px; margin-top: 18px; }
   .pager span { font-size: 0.88rem; color: var(--muted); font-variant-numeric: tabular-nums; }
   .pager button[disabled] { opacity: 0.35; cursor: default; }
-  .bottom-space { height: 48px; }
   .empty { padding: 36px 16px; text-align: center; color: var(--muted); border: 1px dashed var(--line); border-radius: 14px; }
 
   .card { padding: 18px; background: var(--panel); border: 1px solid var(--line); border-radius: 16px; }
@@ -264,6 +362,7 @@
   .pill.paid { color: var(--ok); }
   .pill.unpaid { color: var(--gold); }
   .pill.unknown { color: var(--muted); }
+  .pill.manual { color: var(--sky-200); }
   .pill.confirmed { color: var(--navy-900); background: var(--ok); border-color: var(--ok); }
   .pills { flex: none; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; }
   .card.is-confirmed { border-color: rgba(143, 227, 176, 0.55); }
@@ -280,6 +379,7 @@
   .card-foot p { margin: 0; font-size: 0.85rem; color: var(--muted); }
   .card-foot p.bad { color: var(--error); }
   .card-foot button { min-height: 40px; }
+  .foot-btns { display: flex; flex-wrap: wrap; gap: 8px; }
 
   .card-body { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
   .fields { display: grid; grid-template-columns: 1fr; gap: 12px 24px; margin: 0; min-width: 0; }
@@ -311,7 +411,7 @@
   .matches > .msg { margin-top: 12px; }
 
   /* Match-up cards: 1 across on phones, 2 on tablets, 3 on wide screens */
-  .match-list { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; margin: 16px 0 0; padding: 0; list-style: none; }
+  .match-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 270px), 1fr)); gap: 10px; margin: 16px 0 0; padding: 0; list-style: none; }
   .match-card {
     display: grid;
     gap: 4px;
@@ -448,6 +548,13 @@
   .btn.danger:hover { filter: brightness(1.08); }
   @media (max-width: 639px) { .sheet.confirm, .sheet.wheel { width: 100%; } }
 
+  /* ---------- Add player ---------- */
+  .sheet.small { width: min(480px, calc(100% - 32px)); }
+  .player-form { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+  .player-form .sheet-body p.hint { margin: 0; font-size: 0.82rem; color: var(--muted); }
+  .player-form label em { font-style: normal; font-weight: 500; color: var(--muted); }
+  @media (max-width: 639px) { .sheet.small { width: 100%; } }
+
   /* Slim themed scrollbars inside the pop-ups */
   .sheet .sheet-body, .wheel-body, .pool {
     scrollbar-width: thin;
@@ -476,20 +583,21 @@
 
   @media (min-width: 640px) {
     .sides { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
-    .match-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .when { grid-template-columns: repeat(4, minmax(0, 1fr)); }
     .when .wide { grid-column: span 2; }
     .stats { grid-template-columns: repeat(4, minmax(0, 1fr)); }
     .tools { grid-template-columns: minmax(0, 1fr) 180px auto; align-items: center; }
     .tools-btns > * { flex: none; }
+  }
+  .card { container-type: inline-size; }
+  @container (min-width: 520px) {
     .fields { grid-template-columns: 1fr 1fr; }
     .card-body { grid-template-columns: minmax(0, 1fr) auto; align-items: start; }
     .logo { flex-direction: column; align-items: center; min-width: 130px; }
     .logo a.thumb { width: 96px; height: 96px; }
   }
-  @media (min-width: 900px) {
+  @container (min-width: 800px) {
     .fields { grid-template-columns: repeat(3, 1fr); }
-    .match-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   }
 </style>
 </head>
@@ -555,26 +663,62 @@
 </main>
 
 <!-- Dashboard -->
-<div class="wrap" id="dash" hidden>
-  <header class="top">
-    <h1 class="brand">After 5 <small>Registrations</small></h1>
-    <div class="top-right">
+<div class="app" id="dash" hidden>
+  <aside class="sidebar">
+    <div class="side-brand">
+      <p class="brand">After 5 <small>Admin</small></p>
+    </div>
+    <nav class="side-nav" aria-label="Dashboard sections">
+      <a href="#overview" data-nav="overview"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="6" height="6" rx="1.5" /><rect x="11" y="3" width="6" height="6" rx="1.5" /><rect x="3" y="11" width="6" height="6" rx="1.5" /><rect x="11" y="11" width="6" height="6" rx="1.5" /></svg>Overview</a>
+      <a href="#matches" data-nav="matches"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="2.5" width="12" height="15" rx="2" /><path d="M7 7h6M7 10.5h6M7 14h3" /></svg>Match Day posters</a>
+      <a href="#registrations" data-nav="registrations"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="7" r="3" /><path d="M2.5 17c.6-3 2.8-4.6 5.5-4.6s4.9 1.6 5.5 4.6M13.5 4.3a3 3 0 0 1 0 5.4M15.5 12.8c1.2.7 1.9 2.1 2.1 4.2" /></svg>Registrations</a>
+      <span class="side-sep" aria-hidden="true"></span>
+      <a href="matchday.html" target="_blank" rel="noopener"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 3h6v6M17 3l-8 8M14 12v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h4" /></svg>Match Day page</a>
+      <a href="./" target="_blank" rel="noopener"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 3h6v6M17 3l-8 8M14 12v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h4" /></svg>Tournament page</a>
+    </nav>
+    <div class="side-foot">
       <span class="who" id="who"></span>
       <button class="btn-ghost" type="button" id="signout">Sign out</button>
     </div>
+  </aside>
+
+  <main class="main">
+  <header class="main-head">
+    <div>
+      <p class="eyebrow">1st Official Mini Tournament</p>
+      <h1 id="view-title" tabindex="-1">Overview</h1>
+    </div>
   </header>
 
-  <section class="stats" aria-label="Summary">
-    <div class="stat"><p>Registered</p><strong id="s-total">–</strong></div>
-    <div class="stat"><p>Tournament players</p><strong id="s-players">–</strong></div>
-    <div class="stat"><p>Said paid</p><strong id="s-paid">–</strong></div>
-    <div class="stat"><p>Confirmed</p><strong id="s-confirmed">–</strong></div>
-  </section>
+  <div class="view" data-view="overview">
+    <section class="stats" aria-label="Summary">
+      <div class="stat"><p>Registered</p><strong id="s-total">–</strong></div>
+      <div class="stat"><p>Tournament players</p><strong id="s-players">–</strong></div>
+      <div class="stat"><p>Said paid</p><strong id="s-paid">–</strong></div>
+      <div class="stat"><p>Confirmed</p><strong id="s-confirmed">–</strong></div>
+    </section>
+    <div class="quick-grid">
+      <a class="quick" href="#matches">
+        <span class="quick-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="2.5" width="12" height="15" rx="2" /><path d="M7 7h6M7 10.5h6M7 14h3" /></svg></span>
+        <span><strong>Match Day posters</strong><small id="q-matches">–</small></span>
+        <span class="quick-go" aria-hidden="true">→</span>
+      </a>
+      <a class="quick" href="#registrations">
+        <span class="quick-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="7" r="3" /><path d="M2.5 17c.6-3 2.8-4.6 5.5-4.6s4.9 1.6 5.5 4.6M13.5 4.3a3 3 0 0 1 0 5.4M15.5 12.8c1.2.7 1.9 2.1 2.1 4.2" /></svg></span>
+        <span><strong>Registrations</strong><small id="q-regs">–</small></span>
+        <span class="quick-go" aria-hidden="true">→</span>
+      </a>
+    </div>
+    <section class="recent" aria-labelledby="recent-title">
+      <div class="recent-head"><h2 id="recent-title">Latest sign-ups</h2><a href="#registrations">View all</a></div>
+      <ul class="recent-list" id="recent"></ul>
+    </section>
+  </div>
 
-  <section class="matches" aria-labelledby="matches-title">
+  <section class="matches view" data-view="matches" aria-labelledby="matches-title" hidden>
     <div class="matches-head">
       <div>
-        <h2 id="matches-title">Match Day posters</h2>
+        <h2 id="matches-title">Match-ups</h2>
         <small id="match-count">Set up the 2 vs 2 match-ups shown on the Match Day page</small>
       </div>
       <div class="matches-actions">
@@ -633,6 +777,37 @@
     </form>
   </dialog>
 
+  <dialog class="sheet small" id="player-dialog" aria-labelledby="player-title">
+    <div class="sheet-head">
+      <h2 id="player-title">Add a player</h2>
+      <button class="sheet-x" type="button" data-close aria-label="Close"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" /></svg></button>
+    </div>
+    <form class="player-form" id="player-form" novalidate>
+      <div class="sheet-body">
+        <p class="hint">For players who didn't sign up on the website, e.g. walk-ins. Only the name is needed; they'll show in the list, the match dropdowns and the spin wheel.</p>
+        <div><label for="p-name">Full name</label><input id="p-name" type="text" maxlength="120" autocomplete="off" required></div>
+        <div><label for="p-reg">Registering for</label>
+          <select id="p-reg">
+            <option>Membership + Mini Tournament (₱750)</option>
+            <option>Membership only (₱500)</option>
+            <option>Already a member — Mini Tournament only (₱250)</option>
+          </select></div>
+        <div><label for="p-paid">Paid?</label>
+          <select id="p-paid">
+            <option value="">Not sure yet</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select></div>
+        <div><label for="p-contact">Contact number <em>(optional)</em></label><input id="p-contact" type="tel" inputmode="tel" maxlength="20" autocomplete="off"></div>
+        <p class="msg" id="player-msg" role="alert"></p>
+      </div>
+      <div class="match-actions">
+        <button class="btn-ghost" type="button" data-close>Cancel</button>
+        <button class="btn" type="submit" id="player-add">Add player</button>
+      </div>
+    </form>
+  </dialog>
+
   <dialog class="sheet confirm" id="del-dialog" aria-labelledby="del-title" aria-describedby="del-desc">
     <div class="confirm-body">
       <span class="confirm-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M5.5 7l1 12a2 2 0 0 0 2 1.8h7a2 2 0 0 0 2-1.8l1-12M9 7V4.8A.8.8 0 0 1 9.8 4h4.4a.8.8 0 0 1 .8.8V7" /></svg></span>
@@ -677,6 +852,10 @@
     </div>
   </dialog>
 
+  <section class="regs view" data-view="registrations" aria-label="Registrations" hidden>
+  <div class="regs-head">
+    <small>Everyone who signed up, plus players added here</small>
+  </div>
   <div class="tools">
     <input type="search" id="search" placeholder="Search name, number, address…" aria-label="Search registrations">
     <select id="filter" aria-label="Filter registrations">
@@ -688,6 +867,7 @@
       <option value="logo">Has team logo</option>
     </select>
     <div class="tools-btns">
+      <button class="btn-ghost" type="button" id="player-open" aria-haspopup="dialog">+ Add player</button>
       <button class="btn-ghost" type="button" id="refresh">Refresh</button>
       <button class="btn" type="button" id="export">Export CSV</button>
     </div>
@@ -701,7 +881,8 @@
     <span id="page-label" aria-live="polite"></span>
     <button class="btn-ghost" type="button" id="next">Next</button>
   </nav>
-  <div class="bottom-space"></div>
+  </section>
+  </main>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
@@ -836,6 +1017,7 @@
     $("s-players").textContent = members.filter(playing).length;
     $("s-paid").textContent = members.filter((m) => m.fees_paid === true).length;
     $("s-confirmed").textContent = members.filter((m) => m.confirmed_at).length;
+    renderOverview();
   }
 
   // Officers confirm a registration once they've checked it (e.g. payment received). Can be undone.
@@ -904,8 +1086,9 @@
     const head = el("div", { className: "card-head" },
       el("div", null,
         el("h2", { textContent: m.full_name }),
-        el("time", { textContent: "Registered " + fmtWhen.format(new Date(m.created_at)) })),
+        el("time", { textContent: (m.added_by_admin ? "Added " : "Registered ") + fmtWhen.format(new Date(m.created_at)) })),
       el("div", { className: "pills" },
+        m.added_by_admin ? el("span", { className: "pill manual", textContent: "Added by admin" }) : null,
         m.confirmed_at ? el("span", { className: "pill confirmed", textContent: "Confirmed" }) : null,
         el("span", { className: "pill " + paid[0], textContent: paid[1] })));
 
@@ -942,7 +1125,12 @@
       textContent: m.confirmed_at ? "Undo confirmation" : "Confirm registration",
     });
     btn.addEventListener("click", () => setConfirmed(m, !m.confirmed_at, btn, note));
-    const foot = el("div", { className: "card-foot" }, note, btn);
+    let remove = null;
+    if (m.added_by_admin) {
+      remove = el("button", { type: "button", className: "btn-ghost", textContent: "Remove player" });
+      remove.addEventListener("click", () => askRemovePlayer(m));
+    }
+    const foot = el("div", { className: "card-foot" }, note, el("div", { className: "foot-btns" }, remove, btn));
 
     return el("article", { className: "card" + (m.confirmed_at ? " is-confirmed" : "") },
       head, el("div", { className: "card-body" }, fields, logo), foot);
@@ -1232,45 +1420,118 @@
   });
 
   /* Delete confirmation pop-up (replaces the browser's plain confirm box) */
-  let delTarget = null, deleting = false;
+  let delJob = null, deleting = false;
   const delSheet = sheet($("del-dialog"), { canClose: () => !deleting, onOpen: () => $("del-keep").focus() });
-  function askDelete(m, i) {
-    delTarget = m;
+  // job: { title, desc, preview: [nodes], keep, go, run: async () => error message or null, after }
+  function askDelete(job) {
+    delJob = job;
+    $("del-title").textContent = job.title;
+    $("del-desc").textContent = job.desc;
+    $("del-match").replaceChildren(...job.preview);
+    $("del-keep").textContent = job.keep;
+    $("del-go").textContent = job.go;
     $("del-msg").textContent = "";
-    $("del-match").replaceChildren(
-      el("p", { className: "mc-label", textContent: "Match " + (i + 1) + (m.label ? " · " + m.label : "") }),
-      el("p", { className: "mc-team a", textContent: m.team_a_player1 + " & " + m.team_a_player2 }),
-      el("span", { className: "mc-vs", textContent: "VS" }),
-      el("p", { className: "mc-team b", textContent: m.team_b_player1 + " & " + m.team_b_player2 }));
     delSheet.open();
   }
   $("del-go").addEventListener("click", async () => {
-    if (!delTarget || deleting) return;
-    const go = $("del-go");
+    if (!delJob || deleting) return;
+    const job = delJob, go = $("del-go");
     deleting = true;
     go.disabled = true;
     $("del-keep").disabled = true;
-    go.textContent = "Deleting…";
+    go.textContent = "Removing…";
     $("del-msg").textContent = "";
-    const { data, error } = await db.from("matches").delete().eq("id", delTarget.id).select("id");
+    const problem = await job.run();
     deleting = false;
     go.disabled = false;
     $("del-keep").disabled = false;
-    go.textContent = "Delete match";
-    if (error || !data.length) {
-      console.error(error);
-      $("del-msg").textContent = "Couldn't delete that match. Check your connection and try again.";
+    go.textContent = job.go;
+    if (problem) { $("del-msg").textContent = problem; return; }
+    delJob = null;
+    delSheet.close();
+    if (job.after) setTimeout(job.after, 300); // the button that opened this is gone now
+  });
+  const matchPreview = (m, i) => [
+    el("p", { className: "mc-label", textContent: "Match " + (i + 1) + (m.label ? " · " + m.label : "") }),
+    el("p", { className: "mc-team a", textContent: m.team_a_player1 + " & " + m.team_a_player2 }),
+    el("span", { className: "mc-vs", textContent: "VS" }),
+    el("p", { className: "mc-team b", textContent: m.team_b_player1 + " & " + m.team_b_player2 })];
+  const askDeleteMatch = (m, i) => askDelete({
+    title: "Delete this match?",
+    desc: "Its poster comes off the Match Day page. This can't be undone.",
+    preview: matchPreview(m, i), keep: "Keep match", go: "Delete match",
+    run: async () => {
+      const { data, error } = await db.from("matches").delete().eq("id", m.id).select("id");
+      if (error || !data.length) { console.error(error); return "Couldn't delete that match. Check your connection and try again."; }
+      matches = matches.filter((x) => x.id !== m.id);
+      renderMatches();
+      return null;
+    },
+    after: () => $("match-open").focus(),
+  });
+  const askRemovePlayer = (m) => askDelete({
+    title: "Remove this player?",
+    desc: "They come off the registration list, the match dropdowns and the spin wheel. Matches already made aren't changed.",
+    preview: [el("p", { className: "mc-team a", textContent: m.full_name }),
+      el("small", { className: "mc-label", textContent: m.registration || "" })],
+    keep: "Keep player", go: "Remove player",
+    run: async () => {
+      const { data, error } = await db.from("members").delete().eq("id", m.id).select("id");
+      if (error || !data.length) { console.error(error); return "Couldn't remove that player. Check your connection, and that the latest supabase/setup.sql has been run."; }
+      members = members.filter((x) => x.id !== m.id);
+      stats(); render(); fillPlayers();
+      return null;
+    },
+    after: () => $("player-open").focus(),
+  });
+
+  /* Add a player by hand (walk-ins etc.) */
+  let dupeOk = "";
+  const playerSheet = sheet($("player-dialog"), { onOpen: () => { $("player-msg").textContent = ""; dupeOk = ""; $("p-name").focus(); } });
+  $("player-open").addEventListener("click", playerSheet.open);
+  $("player-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const msg = $("player-msg");
+    msg.textContent = "";
+    const name = $("p-name").value.trim().replace(/\s+/g, " ");
+    const contact = $("p-contact").value.trim();
+    if (!name) { msg.textContent = "Type the player's full name."; $("p-name").focus(); return; }
+    if (contact && (contact.length < 7 || contact.length > 20)) { msg.textContent = "That contact number looks too short. Leave it empty if you don't have it."; $("p-contact").focus(); return; }
+    // Same name already on the list? Warn once; pressing Add again adds anyway.
+    const twin = members.find((m) => normName(m.full_name) === normName(name));
+    if (twin && dupeOk !== normName(name)) {
+      dupeOk = normName(name);
+      msg.textContent = twin.full_name + " is already registered. Press Add player again to add them anyway.";
       return;
     }
-    const id = delTarget.id;
-    delTarget = null;
-    matches = matches.filter((x) => x.id !== id);
-    renderMatches();
-    delSheet.close();
-    setTimeout(() => $("match-open").focus(), 300); // the card's Delete button is gone now
+    const btn = $("player-add");
+    btn.disabled = true;
+    btn.textContent = "Adding…";
+    const paid = $("p-paid").value;
+    const { data, error } = await db.from("members").insert({
+      full_name: name,
+      registration: $("p-reg").value,
+      fees_paid: paid === "yes" ? true : paid === "no" ? false : null,
+      contact_number: contact || null,
+      added_by_admin: true,
+    }).select();
+    btn.disabled = false;
+    btn.textContent = "Add player";
+    if (error || !data || !data.length) {
+      console.error(error);
+      msg.textContent = "Couldn't add the player. Check your connection, and that the latest supabase/setup.sql has been run in Supabase.";
+      return;
+    }
+    members.unshift(data[0]);
+    stats(); render(); fillPlayers();
+    $("p-name").value = ""; $("p-contact").value = ""; $("p-paid").value = "";
+    playerSheet.close();
   });
 
   function renderMatches(newId) {
+    $("q-matches").textContent = matches.length
+      ? matches.length + (matches.length === 1 ? " match-up" : " match-ups") + " on the Match Day page"
+      : "No match-ups yet";
     $("match-count").textContent = matches.length
       ? matches.length + (matches.length === 1 ? " match" : " matches") + " on the Match Day page"
       : "Set up the 2 vs 2 match-ups shown on the Match Day page";
@@ -1280,7 +1541,7 @@
     }
     $("match-list").replaceChildren(...matches.map((m, i) => {
       const del = el("button", { type: "button", className: "btn-ghost", textContent: "Delete" });
-      del.addEventListener("click", () => askDelete(m, i));
+      del.addEventListener("click", () => askDeleteMatch(m, i));
       const when = [fmtMatchDate(m.match_date), fmtMatchTime(m.match_time), m.court].filter(Boolean).join(" · ");
       return el("li", { className: "match-card" + (m.id === newId ? " is-new" : "") },
         el("p", { className: "mc-label", textContent: "Match " + (i + 1) + (m.label ? " · " + m.label : "") }),
@@ -1383,6 +1644,35 @@
     a.remove();
     setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   });
+
+  /* ---------- Sidebar: one view at a time (#overview, #matches, #registrations) ---------- */
+  const VIEWS = { overview: "Overview", matches: "Match Day posters", registrations: "Registrations" };
+  const navLinks = [...document.querySelectorAll("[data-nav]")];
+  function showView(focus) {
+    const id = VIEWS[location.hash.slice(1)] ? location.hash.slice(1) : "overview";
+    document.querySelectorAll("[data-view]").forEach((v) => { v.hidden = v.dataset.view !== id; });
+    navLinks.forEach((a) => {
+      a.classList.toggle("active", a.dataset.nav === id);
+      if (a.dataset.nav === id) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
+    });
+    $("view-title").textContent = VIEWS[id];
+    document.title = VIEWS[id] + " · After 5 Admin";
+    scrollTo(0, 0);
+    if (focus) $("view-title").focus({ preventScroll: true });
+  }
+  addEventListener("hashchange", () => showView(true));
+  showView(false);
+
+  // Overview: latest sign-ups and the shortcut counts
+  function renderOverview() {
+    $("q-regs").textContent = members.length + " registered"
+      + " · " + members.filter((m) => m.confirmed_at).length + " confirmed";
+    const latest = members.slice(0, 5);
+    $("recent").replaceChildren(...(latest.length ? latest.map((m) => el("li", null,
+      el("span", { className: "nm" }, m.full_name, el("small", { textContent: m.registration || "" })),
+      el("time", { textContent: fmtWhen.format(new Date(m.created_at)) })))
+      : [el("li", { className: "none", textContent: "No one has registered yet." })]));
+  }
 
   /* ---------- Boot ---------- */
   db.auth.getSession().then(({ data }) => {

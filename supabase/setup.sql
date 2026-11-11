@@ -25,6 +25,19 @@ alter table public.members add column if not exists fees_paid boolean;
 -- When an officer confirmed the registration on admin.html (empty = not yet confirmed).
 alter table public.members add column if not exists confirmed_at timestamptz;
 
+-- Players an officer added by hand on admin.html (e.g. walk-ins). These only need a name,
+-- so the personal details are optional for them — but still required for website sign-ups.
+alter table public.members add column if not exists added_by_admin boolean not null default false;
+alter table public.members alter column address drop not null;
+alter table public.members alter column birthday drop not null;
+alter table public.members alter column contact_number drop not null;
+alter table public.members alter column emergency_contact_name drop not null;
+alter table public.members alter column emergency_contact_number drop not null;
+alter table public.members drop constraint if exists members_details_required;
+alter table public.members add constraint members_details_required check (
+  added_by_admin or (address is not null and birthday is not null and contact_number is not null
+                     and emergency_contact_name is not null and emergency_contact_number is not null));
+
 -- The website may only ADD rows. It cannot read, change or delete them,
 -- so members' personal details are visible only to you in the dashboard.
 alter table public.members enable row level security;
@@ -36,7 +49,7 @@ drop policy if exists "Website can submit registrations" on public.members;
 create policy "Website can submit registrations"
   on public.members for insert
   to anon, authenticated
-  with check (confirmed_at is null); -- nobody can submit a registration that is already confirmed
+  with check (confirmed_at is null and not added_by_admin); -- website sign-ups can't be pre-confirmed or pose as admin-added
 
 -- 2. Admins (who may see registrations on admin.html) ------------------------
 
@@ -72,6 +85,21 @@ create policy "Admins can confirm registrations"
   to authenticated
   using (exists (select 1 from public.admins a where a.user_id = (select auth.uid())))
   with check (exists (select 1 from public.admins a where a.user_id = (select auth.uid())));
+
+-- Admins can add a player by name, and remove players that were added that way (not website sign-ups).
+grant delete on public.members to authenticated;
+
+drop policy if exists "Admins can add players" on public.members;
+create policy "Admins can add players"
+  on public.members for insert
+  to authenticated
+  with check (added_by_admin and exists (select 1 from public.admins a where a.user_id = (select auth.uid())));
+
+drop policy if exists "Admins can remove players they added" on public.members;
+create policy "Admins can remove players they added"
+  on public.members for delete
+  to authenticated
+  using (added_by_admin and exists (select 1 from public.admins a where a.user_id = (select auth.uid())));
 
 drop policy if exists "Admins can view registrations" on public.members;
 create policy "Admins can view registrations"
