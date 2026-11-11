@@ -42,7 +42,7 @@ You can also see the raw data in Supabase under **Table Editor → members** and
 
 ## Background music
 
-`assets/music.mp3` plays when a visitor taps the music button in the bottom-right corner (browsers don't allow music to start on its own). To change the song, replace that file and keep the name. If the file is removed, the button disappears.
+`assets/music.mp3` starts playing the first time a visitor clicks, taps or presses a key anywhere on the page (browsers don't allow music to start before that). The music button in the bottom-right corner pauses and resumes it. To change the song, replace that file and keep the name. If the file is removed, the button disappears.
 
 ## Share a link that opens the form
 

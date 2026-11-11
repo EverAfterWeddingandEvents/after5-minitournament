@@ -1392,7 +1392,7 @@
     </footer>
   </div>
 
-  <!-- Background music: shown only once assets/music.mp3 loads; never starts on its own -->
+  <!-- Background music: button shown only once assets/music.mp3 loads; starts on the first click/tap/key press anywhere -->
   <audio id="bg-music" src="assets/music.mp3" preload="metadata" loop></audio>
   <button class="music" id="music-btn" type="button" aria-pressed="false" hidden>
     <span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
@@ -1849,7 +1849,19 @@
       audio.addEventListener("play", () => render(true));
       audio.addEventListener("pause", () => render(false));
 
+      // Browsers block autoplay until the visitor interacts with the page, so
+      // start the music on the first click, tap or key press anywhere.
+      const events = ["click", "touchend", "keydown"];
+      const stopListening = () => events.forEach(e => document.removeEventListener(e, startOnFirstInteraction, true));
+      function startOnFirstInteraction(e) {
+        if (btn.contains(e.target)) { stopListening(); return; } // the button handles its own click
+        if (audio.error || !audio.paused) { stopListening(); return; }
+        audio.play().then(stopListening).catch(() => render(false));
+      }
+      events.forEach(e => document.addEventListener(e, startOnFirstInteraction, true));
+
       btn.addEventListener("click", () => {
+        stopListening();
         if (audio.paused) audio.play().catch(() => render(false));
         else audio.pause();
       });
