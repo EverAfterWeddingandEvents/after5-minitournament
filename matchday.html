@@ -108,8 +108,9 @@
       border-radius: 14px;
     }
 
-    .posters { display: grid; grid-template-columns: minmax(0, 1fr); gap: 28px; justify-items: center; }
-    .poster { width: 100%; max-width: 440px; margin: 0; }
+    /* Flex-wrap keeps every row centred, so an odd last poster sits in the middle */
+    .posters { display: flex; flex-wrap: wrap; justify-content: center; gap: 28px; }
+    .poster { flex: 0 1 100%; max-width: 440px; min-width: 0; margin: 0; }
     .poster canvas {
       display: block;
       width: 100%;
@@ -120,6 +121,7 @@
       box-shadow: 0 24px 60px rgba(2, 6, 20, 0.5);
     }
     .poster figcaption { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 12px; }
+    .poster figcaption:has(> .btn:only-child) { justify-content: center; }
     .poster figcaption p { margin: 0; min-width: 0; font-size: 0.82rem; color: var(--white); overflow-wrap: anywhere; }
 
     .btn, .btn-ghost {
@@ -148,8 +150,11 @@
     footer { padding: 34px 0 calc(40px + env(safe-area-inset-bottom)); text-align: center; }
 
     @media (min-width: 760px) {
-      .posters { grid-template-columns: repeat(2, minmax(0, 440px)); justify-content: center; }
-      .posters.single { grid-template-columns: minmax(0, 440px); }
+      .poster { flex-basis: calc((100% - 28px) / 2); }
+    }
+    @media (min-width: 1240px) {
+      main.wrap { max-width: 1400px; }
+      .poster { flex-basis: calc((100% - 56px) / 3); }
     }
   </style>
 </head>
@@ -421,8 +426,6 @@
         + (d ? ", " + d.day + " " + d.date : "") + (fmtTime(m.match_time) ? ", " + fmtTime(m.match_time) : "")
         + (m.court ? ", " + m.court : ""));
 
-      const text = document.createElement("p");
-      text.textContent = (m.label ? m.label + " · " : "") + summary;
 
       const btn = document.createElement("button");
       btn.type = "button";
@@ -430,7 +433,12 @@
       btn.innerHTML = DOWNLOAD_ICON + "<span>Save image</span>";
 
       const cap = document.createElement("figcaption");
-      cap.append(text, btn);
+      if (m.label) {
+        const text = document.createElement("p");
+        text.textContent = m.label;
+        cap.append(text);
+      }
+      cap.append(btn);
       const fig = document.createElement("figure");
       fig.className = "poster";
       fig.append(canvas, cap);
@@ -480,7 +488,6 @@
       if (real) notice.hidden = true;
       else notice.textContent = "Match-ups will be posted here after the blind pairing. Until then, here's a sample poster.";
 
-      list.classList.toggle("single", matches.length === 1);
       list.replaceChildren(...await Promise.all(matches.map(poster)));
     })();
   </script>
