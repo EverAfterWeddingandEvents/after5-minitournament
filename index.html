@@ -418,6 +418,13 @@
       border: 1px solid currentColor;
     }
 
+    /* Platinum: the one filled pill, so the top tier reads first */
+    .tier.platinum h3 span {
+      color: var(--navy-900);
+      background: #e6ebf2;
+      border-color: #e6ebf2;
+    }
+
     .tier.gold h3 span { color: var(--gold); }
     .tier.silver h3 span { color: #d4dbe6; }
 
@@ -469,6 +476,20 @@
       outline: 2px solid rgba(217, 164, 65, 0.7);
       outline-offset: 3px;
     }
+
+    .tier.platinum .logos { --cols: 2; --gap: 14px; }
+
+    .tier.platinum .logo-tile {
+      outline: 2px solid rgba(230, 235, 242, 0.85);
+      outline-offset: 3px;
+    }
+
+    .tier.platinum .logos p { font-size: 0.95rem; }
+
+    /* Official Umpire: one wide wordmark */
+    .tier.umpire .logos li { flex-basis: min(340px, 100%); }
+    .logo-tile.wide { aspect-ratio: 12 / 5; padding: 0; }
+    .tier.umpire .logos p { font-size: 0.86rem; }
 
     .logo-tile img {
       width: 100%;
@@ -1200,6 +1221,7 @@
 
       .logos { --cols: 6; }
       .tier.gold .logos { --cols: 4; }
+      .tier.platinum .logos { --cols: 3; }
 
       form {
         grid-template-columns: 1fr 1fr;
@@ -1531,6 +1553,12 @@
         <div class="panel">
           <h2 id="h-sponsors">Tournament Partners</h2>
           <p class="sponsors-intro">Thank you to the sponsors who make this tournament possible.</p>
+          <div class="tier platinum">
+            <h3>Title Tournament Partner <span>Platinum</span></h3>
+            <ul class="logos">
+              <li><div class="logo-tile"><img src="assets/sponsors/a-gen-power-systems.jpg" alt="" loading="lazy" decoding="async" width="480" height="480"></div><p>A-Gen Power Systems Engineering</p></li>
+            </ul>
+          </div>
           <div class="tier gold">
             <h3>Major Tournament Partners <span>Gold</span></h3>
             <ul class="logos">
@@ -1557,6 +1585,13 @@
               <li><div class="logo-tile name"><span>James Bernard Fabe</span></div></li>
               <li><div class="logo-tile fill"><img src="assets/sponsors/jdl-auto-electrical-services.jpg" alt="" loading="lazy" decoding="async" width="480" height="480"></div><p>JDL Auto Electrical Services</p></li>
               <li><div class="logo-tile fill"><img src="assets/sponsors/jjlc-security-services.jpg" alt="" loading="lazy" decoding="async" width="480" height="480"></div><p>JJLC Security Services Co.</p></li>
+              <li><div class="logo-tile fill"><img src="assets/sponsors/m-lhuillier.jpg" alt="" loading="lazy" decoding="async" width="480" height="480"></div><p>M Lhuillier</p></li>
+            </ul>
+          </div>
+          <div class="tier umpire">
+            <h3>Official Umpire</h3>
+            <ul class="logos">
+              <li><div class="logo-tile wide"><img src="assets/sponsors/pdlstack.jpg" alt="" loading="lazy" decoding="async" width="960" height="400"></div><p>Paddlestack</p></li>
             </ul>
           </div>
         </div>
