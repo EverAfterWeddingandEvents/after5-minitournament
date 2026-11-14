@@ -7,7 +7,7 @@ A one-page site for the 1st Official Mini Tournament. "Join the Club" opens the 
 - `assets/share.jpg` — the picture shown when the link is shared in Messenger, Facebook, etc.
 - `pairings.html` — the Pairings posters, one per doubles pair, grouped by pool
 - The **Tournament Partners poster** (all sponsors by tier) lives on `admin.html`, under **Partners poster** in the sidebar, with a **Save image** button — visitors don't see it. Its sponsor list is in the script of `admin.html`; when you add, remove or rename a sponsor in `index.html`, make the same change there
-- `live.html` — live schedule, scores and standings, read from the officials' PDLStack tournament page (see "Live scores" below)
+- `live.html` — live schedule, scores and standings (with small player photos from `assets/players/thumbs/`), read from the officials' PDLStack tournament page (see "Live scores" below)
 - `admin.html` — the officers' page: registrations and the partners poster
 - `supabase/setup.sql` — creates the members table and the team logo storage
 
