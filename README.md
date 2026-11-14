@@ -6,6 +6,7 @@ A one-page site for the 1st Official Mini Tournament. "Join the Club" opens the 
 - `assets/poster.png` — the event poster (linked in the footer)
 - `assets/share.jpg` — the picture shown when the link is shared in Messenger, Facebook, etc.
 - `matchday.html` — the Match Day posters, one per doubles match (2 vs 2)
+- `partners.html` — the Tournament Partners poster (all sponsors by tier) with a **Save image** button. Its sponsor list is near the top of its script — when you add, remove or rename a sponsor in `index.html`, make the same change there
 - `admin.html` — the officers' page: registrations and the Match Day match-ups
 - `supabase/setup.sql` — creates the members table, the team logo storage and the matches table
 
