@@ -401,8 +401,26 @@
       g.addColorStop(0, "rgba(11, 21, 51, 0)"); g.addColorStop(1, "rgba(11, 21, 51, 0.85)");
       ctx.fillStyle = g; ctx.fillRect(x - k, y, w + k * 2, h);
       ctx.restore();
-      ctx.lineWidth = 8; ctx.strokeStyle = color; ctx.lineJoin = "round";
+      // Border: a polished gradient line, a thin inner line, and corner brackets in the other accent colour
+      const deep = color === C.gold ? "#8f6a1f" : C.blue, accent = color === C.gold ? C.sky200 : C.gold;
+      const bg = ctx.createLinearGradient(x - k, y, x + w + k, y + h);
+      bg.addColorStop(0, "#ffffff"); bg.addColorStop(0.22, color); bg.addColorStop(0.7, color); bg.addColorStop(1, deep);
+      ctx.lineJoin = "miter";
+      ctx.lineWidth = 10; ctx.strokeStyle = bg;
       slant(ctx, x, y, w, h, k); ctx.stroke();
+      ctx.lineWidth = 2; ctx.strokeStyle = "rgba(255, 255, 255, 0.55)";
+      slant(ctx, x + 15, y + 15, w - 30, h - 30, k * (h - 30) / h); ctx.stroke();
+
+      const ux = -2 * k / Math.hypot(2 * k, h), uy = h / Math.hypot(2 * k, h); // direction of the slanted sides, going down
+      const d = 20, len = 92;
+      ctx.save();
+      ctx.shadowColor = "rgba(2, 6, 20, 0.5)"; ctx.shadowBlur = 10; ctx.shadowOffsetY = 4;
+      ctx.lineWidth = 9; ctx.strokeStyle = accent; ctx.lineCap = "butt";
+      let cx = x + k - d, cy = y - d; // top-left bracket
+      ctx.beginPath(); ctx.moveTo(cx + ux * len, cy + uy * len); ctx.lineTo(cx, cy); ctx.lineTo(cx + len, cy); ctx.stroke();
+      cx = x + w - k + d; cy = y + h + d; // bottom-right bracket
+      ctx.beginPath(); ctx.moveTo(cx - ux * len, cy - uy * len); ctx.lineTo(cx, cy); ctx.lineTo(cx - len, cy); ctx.stroke();
+      ctx.restore();
     }
 
     function ball(ctx, cx, cy, r) {
