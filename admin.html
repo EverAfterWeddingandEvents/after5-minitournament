@@ -581,6 +581,19 @@
   .match-form label em { font-style: normal; font-weight: 500; color: var(--muted); }
   .match-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 10px 14px; }
 
+  .partners-note { max-width: 560px; margin: 0 auto 18px; font-size: 0.9rem; text-align: center; color: var(--muted); text-wrap: pretty; }
+  .partners-poster { display: grid; justify-items: center; gap: 14px; }
+  .partners-poster canvas {
+    display: block;
+    width: 100%;
+    max-width: 420px;
+    height: auto;
+    aspect-ratio: 2 / 3;
+    border-radius: 14px;
+    background: var(--navy-800);
+    box-shadow: 0 18px 44px rgba(2, 6, 20, 0.5);
+  }
+
   @media (min-width: 640px) {
     .sides { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
     .when { grid-template-columns: repeat(4, minmax(0, 1fr)); }
@@ -672,6 +685,7 @@
       <a href="#overview" data-nav="overview"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="6" height="6" rx="1.5" /><rect x="11" y="3" width="6" height="6" rx="1.5" /><rect x="3" y="11" width="6" height="6" rx="1.5" /><rect x="11" y="11" width="6" height="6" rx="1.5" /></svg>Overview</a>
       <a href="#matches" data-nav="matches"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="2.5" width="12" height="15" rx="2" /><path d="M7 7h6M7 10.5h6M7 14h3" /></svg>Match Day posters</a>
       <a href="#registrations" data-nav="registrations"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="7" r="3" /><path d="M2.5 17c.6-3 2.8-4.6 5.5-4.6s4.9 1.6 5.5 4.6M13.5 4.3a3 3 0 0 1 0 5.4M15.5 12.8c1.2.7 1.9 2.1 2.1 4.2" /></svg>Registrations</a>
+      <a href="#partners" data-nav="partners"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="14" height="14" rx="2.5" /><path d="M3 13l4-4 3.5 3.5L13 10l4 4" /><circle cx="12.5" cy="7" r="1.3" /></svg>Partners poster</a>
       <span class="side-sep" aria-hidden="true"></span>
       <a href="matchday.html" target="_blank" rel="noopener"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 3h6v6M17 3l-8 8M14 12v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h4" /></svg>Match Day page</a>
       <a href="./" target="_blank" rel="noopener"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 3h6v6M17 3l-8 8M14 12v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h4" /></svg>Tournament page</a>
@@ -851,6 +865,15 @@
       <button class="btn" type="button" id="wheel-use" disabled>Use this player</button>
     </div>
   </dialog>
+
+  <section class="partners view" data-view="partners" aria-label="Tournament Partners poster" hidden>
+    <p class="partners-note">All sponsors by tier, ready to save and post. This poster is only here on the admin page — visitors to the site don't see it.</p>
+    <div class="partners-poster">
+      <canvas id="partners-canvas" width="1080" height="1620" role="img"
+        aria-label="Tournament Partners poster listing the Platinum, Gold and Silver sponsors of the 1st Official Mini Tournament"></canvas>
+      <button class="btn" type="button" id="partners-save" disabled>Preparing poster…</button>
+    </div>
+  </section>
 
   <section class="regs view" data-view="registrations" aria-label="Registrations" hidden>
   <div class="regs-head">
@@ -1611,6 +1634,297 @@
     await loadMatches(data[0].id);
   });
 
+  /* ---------- Tournament Partners poster (officers only; drawn the first time its view is opened) ---------- */
+  const drawPartnersPoster = (() => {
+  // The sponsors, in the same order and tiers as the Tournament Partners section of index.html —
+  // when a sponsor is added, removed or renamed there, make the same change here.
+  // "fit" says how the image sits in its tile: contain (white tile, padded), dark (black tile) or fill (edge to edge).
+  // A sponsor with no "img" is listed by name only.
+  const DIR = "assets/sponsors/";
+  const TIERS = {
+    platinum: [
+      { name: "A-Gen Power Systems Engineering", img: "a-gen-power-systems.jpg" },
+    ],
+    goldPeople: [
+      { name: "Hon. Glona G. Labadlabad", img: "mayor-glona-g-labadlabad.jpg", fit: "fill" },
+      { name: "Stephanie Mae L. Surace", img: "stephanie-mae-l-surace.jpg", fit: "fill" },
+    ],
+    gold: [
+      { name: "Catalina Digital Printing Services", img: "catalina.jpg", fit: "dark" },
+      { name: "Nature’s Spring", img: "natures-spring.jpg", fit: "fill" },
+      { name: "Anino Studios by Juwan Marco Silva", img: "anino-studios.jpg", fit: "fill" },
+      { name: "Linepro Pickleball Outlet", img: "linepro.jpg" },
+    ],
+    silver: [
+      { name: "Ever After Wedding and Events", img: "ever-after-wedding-and-events.jpg" },
+      { name: "Blue Dot Shooter’s House", img: "blue-dot-shooters-house.jpg" },
+      { name: "Yakap Medical Clinic", img: "yakap-medical-clinic.jpg" },
+      { name: "Dexter Regala Construction", img: "dexter-regala-construction.jpg" },
+      { name: "R C & A Law & Accounting Firm", img: "rca-law-and-accounting-firm.jpg", fit: "fill" },
+      { name: "JDL Auto Electrical Services", img: "jdl-auto-electrical-services.jpg", fit: "fill" },
+      { name: "JJLC Security Services Co.", img: "jjlc-security-services.jpg", fit: "fill" },
+      { name: "M Lhuillier", img: "m-lhuillier.jpg", fit: "fill" },
+      { name: "Ariana Hotel", img: "ariana-hotel.jpg" },
+      { name: "Mary Rose Sumalpong / Kyle Joseph B. Magdolot" },
+      { name: "Engr. Recarte Bogay" },
+      { name: "Ms. Gera Mae Grace Ballos" },
+      { name: "Lynlie Ibay" },
+      { name: "James Bernard Fabe" },
+    ],
+    poweredBy: [
+      { name: "Paddlestack", img: "paddle-up-events.jpg", fit: "fill", wide: true },
+    ],
+  };
+
+  const W = 1080, H = 1620;
+  const C = { navy900: "#0b1533", navy800: "#101d45", navy700: "#16295c", blue: "#1f6fae", sky: "#45b4e8", sky200: "#a9defa", gold: "#d9a441", silver: "#d4dbe6", white: "#ffffff" };
+  const TECH = '"Oxanium", "Montserrat", sans-serif';
+  const SANS = '"Montserrat", system-ui, sans-serif';
+  const SERIF = '"Playfair Display", Georgia, serif';
+
+  // The club emblem from the home page: crossed paddles behind the 5 o'clock clock, with the gold ball.
+  const PADDLE = '<rect x="-4.5" y="-24" width="9" height="52" rx="3" fill="#101d45"/><path d="M-4.5 6h9M-4.5 13h9M-4.5 20h9"/>'
+    + '<rect x="-22" y="-90" width="44" height="64" rx="19" fill="#101d45"/><rect x="-15.5" y="-83.5" width="31" height="51" rx="13" opacity="0.45"/>';
+  const EMBLEM = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" width="424" height="300" viewBox="-6 -4 212 150" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round">'
+    + '<g stroke-width="2.4" transform="translate(100 108) rotate(-54)">' + PADDLE + '</g>'
+    + '<g stroke-width="2.4" transform="translate(100 108) rotate(54)">' + PADDLE + '</g>'
+    + '<g transform="translate(57 8) scale(0.86)"><circle cx="50" cy="50" r="49" fill="#0b1533" stroke="none"/><circle cx="50" cy="50" r="46" stroke-width="2.5"/>'
+    + '<circle cx="50" cy="50" r="38" stroke-width="5" stroke-linecap="butt" stroke-dasharray="1.4 18.497" stroke-dashoffset="0.7"/>'
+    + '<line x1="50" y1="50" x2="50" y2="22" stroke-width="2.5"/><line x1="50" y1="50" x2="60.5" y2="68.2" stroke-width="3.5"/><circle cx="50" cy="50" r="2.5" fill="#fff" stroke="none"/></g>'
+    + '<g transform="translate(158 124) scale(1.15)"><circle r="10" fill="#d9a441" stroke="none"/><g fill="#0b1533" stroke="none">'
+    + '<circle cx="-4" cy="-3.5" r="1.6"/><circle cx="3" cy="-5" r="1.6"/><circle cx="5" cy="2" r="1.6"/><circle cx="-2" cy="4.5" r="1.6"/><circle cx="-6" cy="2.5" r="1.3"/><circle cx="0.5" cy="-0.5" r="1.6"/></g></g></svg>');
+
+  function loadImage(src) {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => resolve(img);
+      img.onerror = () => resolve(null);
+      img.src = src;
+    });
+  }
+
+  function spaced(ctx, text, x, y, spacing) { // centred text with letter spacing
+    if ("letterSpacing" in ctx) {
+      ctx.letterSpacing = spacing + "px";
+      ctx.fillText(text, x + spacing / 2, y);
+      ctx.letterSpacing = "0px";
+    } else ctx.fillText(text, x, y);
+  }
+
+  function wrap(ctx, text, maxWidth) {
+    const lines = [];
+    let line = "";
+    for (const word of text.split(" ")) {
+      const next = line ? line + " " + word : word;
+      if (line && ctx.measureText(next).width > maxWidth) { lines.push(line); line = word; }
+      else line = next;
+    }
+    if (line) lines.push(line);
+    return lines;
+  }
+
+  function roundRect(ctx, x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+  }
+
+  function background(ctx) {
+    const g = ctx.createLinearGradient(0, 0, 0, H);
+    g.addColorStop(0, C.navy900); g.addColorStop(0.3, C.navy800); g.addColorStop(0.62, C.navy700);
+    g.addColorStop(0.88, C.blue); g.addColorStop(1, C.sky);
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, W, H);
+
+    // Halftone dots through the middle, fading out at both ends
+    for (let y = 12; y < H; y += 24) {
+      const t = y / H;
+      const a = t < 0.38 ? (t - 0.08) / 0.3 : t > 0.62 ? (0.94 - t) / 0.32 : 1;
+      if (a <= 0) continue;
+      ctx.fillStyle = "rgba(8, 16, 42, " + (0.55 * Math.min(1, a)).toFixed(3) + ")";
+      for (let x = 12; x < W; x += 24) { ctx.beginPath(); ctx.arc(x, y, 4.6, 0, 6.2832); ctx.fill(); }
+    }
+
+    // The jersey's diagonal panels
+    ctx.fillStyle = "rgba(255, 255, 255, 0.05)";
+    ctx.beginPath(); ctx.moveTo(760, 0); ctx.lineTo(940, 0); ctx.lineTo(250, H); ctx.lineTo(70, H); ctx.fill();
+    ctx.fillStyle = "rgba(255, 255, 255, 0.04)";
+    ctx.beginPath(); ctx.moveTo(150, 0); ctx.lineTo(360, 0); ctx.lineTo(1050, H); ctx.lineTo(840, H); ctx.fill();
+  }
+
+  // One sponsor tile: a white rounded square (black for "dark" logos) with the logo inside.
+  function tile(ctx, s, x, y, w, h, outline) {
+    const r = Math.min(w, h) * 0.12;
+    ctx.save();
+    ctx.shadowColor = "rgba(2, 6, 20, 0.45)"; ctx.shadowBlur = 22; ctx.shadowOffsetY = 8;
+    ctx.fillStyle = s.fit === "dark" ? "#000" : "#fff";
+    roundRect(ctx, x, y, w, h, r); ctx.fill();
+    ctx.restore();
+
+    if (s.image) {
+      const pad = s.fit === "fill" ? 0 : (s.fit === "dark" ? 0.04 : 0.09) * w;
+      const bw = w - pad * 2, bh = h - pad * 2;
+      const k = (s.fit === "fill" ? Math.max : Math.min)(bw / s.image.naturalWidth, bh / s.image.naturalHeight);
+      const iw = s.image.naturalWidth * k, ih = s.image.naturalHeight * k;
+      ctx.save();
+      roundRect(ctx, x, y, w, h, r); ctx.clip();
+      ctx.drawImage(s.image, x + (w - iw) / 2, y + (h - ih) / 2, iw, ih);
+      ctx.restore();
+    }
+    if (outline) {
+      ctx.lineWidth = 3; ctx.strokeStyle = outline;
+      roundRect(ctx, x - 5, y - 5, w + 10, h + 10, r + 4); ctx.stroke();
+    }
+  }
+
+  // A centred row of tiles with each name underneath. Returns the y just below the lowest caption.
+  function row(ctx, list, y, size, gap, font, lineHeight, outline) {
+    const widths = list.map((s) => s.wide ? size * 2.4 : size);
+    const total = widths.reduce((a, b) => a + b, 0) + gap * (list.length - 1);
+    let x = (W - total) / 2, bottom = y + size;
+    ctx.textAlign = "center"; ctx.textBaseline = "alphabetic";
+    list.forEach((s, i) => {
+      tile(ctx, s, x, y, widths[i], size, outline);
+      ctx.font = font; ctx.fillStyle = C.white;
+      const lines = wrap(ctx, s.name, Math.max(widths[i] + gap - 10, 150));
+      lines.forEach((line, n) => ctx.fillText(line, x + widths[i] / 2, y + size + lineHeight * (n + 1) + 6));
+      bottom = Math.max(bottom, y + size + lineHeight * lines.length + 6);
+      x += widths[i] + gap;
+    });
+    return bottom;
+  }
+
+  // "Major Tournament Partners  (GOLD)" — the tier name with its pill, centred as a pair.
+  function heading(ctx, text, pill, color, y) {
+    ctx.textBaseline = "alphabetic"; ctx.textAlign = "left";
+    ctx.font = "700 25px " + SANS;
+    const tw = ctx.measureText(text).width;
+    let pw = 0;
+    if (pill) { ctx.font = "700 15px " + TECH; pw = ctx.measureText(pill).width + pill.length * 3 + 30; }
+    let x = (W - tw - (pill ? pw + 14 : 0)) / 2;
+    ctx.font = "700 25px " + SANS; ctx.fillStyle = C.white;
+    ctx.fillText(text, x, y);
+    if (pill) {
+      x += tw + 14;
+      ctx.lineWidth = 1.5; ctx.strokeStyle = color;
+      roundRect(ctx, x, y - 22, pw, 28, 14); ctx.stroke();
+      ctx.font = "700 15px " + TECH; ctx.fillStyle = color; ctx.textAlign = "center";
+      spaced(ctx, pill, x + pw / 2 - 1, y - 3, 3);
+    }
+  }
+
+  function divider(ctx, y) {
+    ctx.fillStyle = "rgba(169, 222, 250, 0.2)";
+    ctx.fillRect(90, y, W - 180, 1.5);
+  }
+
+  function draw(canvas, emblem) {
+    const ctx = canvas.getContext("2d");
+    background(ctx);
+
+    // Club and event
+    if (emblem) ctx.drawImage(emblem, W / 2 - 75, 4, 150, 106);
+    ctx.textAlign = "center"; ctx.textBaseline = "alphabetic"; ctx.fillStyle = C.white;
+    ctx.font = "500 58px " + SERIF;
+    ctx.fillText("After 5", W / 2, 160);
+    ctx.font = "500 18px " + SANS;
+    spaced(ctx, "PICKLEBALL CLUB", W / 2, 190, 9);
+    ctx.fillStyle = C.gold; ctx.fillRect(W / 2 - 126, 201, 252, 3);
+    ctx.fillStyle = C.white; ctx.font = "700 27px " + TECH;
+    spaced(ctx, "1ST OFFICIAL MINI TOURNAMENT", W / 2, 240, 4);
+    ctx.fillStyle = C.sky200; ctx.font = "600 17px " + SANS;
+    spaced(ctx, "NOVEMBER 15, 2026  •  SUNDAY  •  PICKLEBOY, DIPOLOG CITY", W / 2, 268, 2);
+
+    // Section title
+    ctx.fillStyle = C.sky200; ctx.font = "700 34px " + TECH;
+    spaced(ctx, "TOURNAMENT PARTNERS", W / 2, 322, 9);
+    ctx.fillStyle = C.gold; ctx.fillRect(W / 2 - 34, 335, 68, 3);
+
+    let y = 376;
+    heading(ctx, "Title Tournament Partner", "PLATINUM", C.white, y);
+    y = row(ctx, TIERS.platinum, y + 24, 146, 420, "600 21px " + SANS, 26, "rgba(255, 255, 255, 0.85)");
+
+    divider(ctx, y + 20);
+    y += 58;
+    heading(ctx, "Major Tournament Partners", "GOLD", C.gold, y);
+    y = row(ctx, TIERS.goldPeople, y + 24, 150, 150, "600 20px " + SANS, 25, "rgba(217, 164, 65, 0.8)");
+    y = row(ctx, TIERS.gold, y + 22, 128, 86, "600 17px " + SANS, 22, "rgba(217, 164, 65, 0.8)");
+
+    divider(ctx, y + 20);
+    y += 58;
+    heading(ctx, "Supporting Tournament Partners", "SILVER", C.silver, y);
+    const logos = TIERS.silver.filter((s) => s.img), names = TIERS.silver.filter((s) => !s.img);
+    const half = Math.ceil(logos.length / 2);
+    y = row(ctx, logos.slice(0, half), y + 22, 100, 74, "600 15px " + SANS, 19);
+    y = row(ctx, logos.slice(half), y + 14, 100, 74, "600 15px " + SANS, 19);
+
+    // Sponsors without a logo: names only
+    ctx.font = "700 17px " + SANS; ctx.fillStyle = C.white; ctx.textAlign = "center";
+    const SEP = "   •   ";
+    const lines = [];
+    let line = "";
+    names.forEach((s) => {
+      const next = line ? line + SEP + s.name : s.name;
+      if (line && ctx.measureText(next).width > W - 160) { lines.push(line); line = s.name; }
+      else line = next;
+    });
+    if (line) lines.push(line);
+    y += 10;
+    lines.forEach((l) => { y += 27; ctx.fillText(l, W / 2, y); });
+
+    // Powered By: label, wide logo and name on one line
+    divider(ctx, y + 20);
+    y += 36;
+    const pb = TIERS.poweredBy[0], th = 84, tw = th * 2.4;
+    ctx.font = "700 25px " + SANS;
+    const lw = ctx.measureText("Powered By").width;
+    ctx.font = "600 19px " + SANS;
+    const nw = ctx.measureText(pb.name).width;
+    let x = (W - lw - 24 - tw - 22 - nw) / 2;
+    ctx.textAlign = "left"; ctx.textBaseline = "middle"; ctx.fillStyle = C.white;
+    ctx.font = "700 25px " + SANS;
+    ctx.fillText("Powered By", x, y + th / 2);
+    tile(ctx, pb, x + lw + 24, y, tw, th);
+    ctx.font = "600 19px " + SANS; ctx.fillStyle = C.white; ctx.textAlign = "left"; ctx.textBaseline = "middle";
+    ctx.fillText(pb.name, x + lw + 24 + tw + 22, y + th / 2);
+  }
+
+    let started = false;
+    return async () => {
+      if (started) return;
+      started = true;
+      const canvas = $("partners-canvas"), save = $("partners-save");
+      const all = Object.values(TIERS).flat();
+      const fonts = ['700 30px "Oxanium"', '500 70px "Playfair Display"', '500 20px "Montserrat"', '600 20px "Montserrat"', '700 25px "Montserrat"'];
+      const [emblem] = await Promise.all([
+        loadImage(EMBLEM),
+        ...all.filter((s) => s.img).map(async (s) => { s.image = await loadImage(DIR + s.img); }),
+        document.fonts ? Promise.all(fonts.map((f) => document.fonts.load(f))).catch(() => { }) : null,
+      ]);
+      draw(canvas, emblem);
+      save.disabled = false;
+      save.textContent = "Save image";
+
+      save.addEventListener("click", () => {
+        save.disabled = true;
+        canvas.toBlob((blob) => {
+          save.disabled = false;
+          if (!blob) return;
+          const link = el("a", { href: URL.createObjectURL(blob), download: "after5-tournament-partners.png" });
+          document.body.append(link);
+          link.click();
+          link.remove();
+          setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+        }, "image/png");
+      });
+    };
+  })();
+
   /* ---------- CSV export (what's currently shown) ---------- */
   const COLS = [
     ["Registered (Manila time)", (m) => fmtWhen.format(new Date(m.created_at))],
@@ -1645,8 +1959,8 @@
     setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   });
 
-  /* ---------- Sidebar: one view at a time (#overview, #matches, #registrations) ---------- */
-  const VIEWS = { overview: "Overview", matches: "Match Day posters", registrations: "Registrations" };
+  /* ---------- Sidebar: one view at a time (#overview, #matches, #registrations, #partners) ---------- */
+  const VIEWS = { overview: "Overview", matches: "Match Day posters", registrations: "Registrations", partners: "Partners poster" };
   const navLinks = [...document.querySelectorAll("[data-nav]")];
   function showView(focus) {
     const id = VIEWS[location.hash.slice(1)] ? location.hash.slice(1) : "overview";
@@ -1659,6 +1973,7 @@
     document.title = VIEWS[id] + " · After 5 Admin";
     scrollTo(0, 0);
     if (focus) $("view-title").focus({ preventScroll: true });
+    if (id === "partners") drawPartnersPoster();
   }
   addEventListener("hashchange", () => showView(true));
   showView(false);
