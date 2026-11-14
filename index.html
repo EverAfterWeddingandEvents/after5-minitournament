@@ -1619,7 +1619,7 @@
     </footer>
   </div>
 
-  <!-- Background music: button shown only once assets/music.mp3 loads; starts on the first click/tap/key press anywhere -->
+  <!-- Background music (assets/music.js): button shown only once assets/music.mp3 loads; starts on the first click/tap/key press and carries on across pages -->
   <audio id="bg-music" src="assets/music.mp3" preload="metadata" loop></audio>
   <button class="music" id="music-btn" type="button" aria-pressed="false" hidden>
     <span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
@@ -2054,46 +2054,8 @@
         }, 1800);
       });
     });
-
-    /* ---------- Background music ---------- */
-    (() => {
-      const audio = document.getElementById("bg-music");
-      const btn = document.getElementById("music-btn");
-      const label = btn.querySelector(".music-label");
-      audio.volume = 0.6;
-
-      function render(playing) {
-        btn.setAttribute("aria-pressed", String(playing));
-        label.textContent = playing ? "Pause music" : "Play music";
-        document.body.classList.toggle("music-on", playing);
-      }
-
-      // Show the button only once the file is actually there.
-      const reveal = () => { btn.hidden = false; };
-      if (audio.readyState >= 1) reveal(); else audio.addEventListener("loadedmetadata", reveal, { once: true });
-      audio.addEventListener("error", () => { btn.hidden = true; render(false); });
-
-      audio.addEventListener("play", () => render(true));
-      audio.addEventListener("pause", () => render(false));
-
-      // Browsers block autoplay until the visitor interacts with the page, so
-      // start the music on the first click, tap or key press anywhere.
-      const events = ["click", "touchend", "keydown"];
-      const stopListening = () => events.forEach(e => document.removeEventListener(e, startOnFirstInteraction, true));
-      function startOnFirstInteraction(e) {
-        if (btn.contains(e.target)) { stopListening(); return; } // the button handles its own click
-        if (audio.error || !audio.paused) { stopListening(); return; }
-        audio.play().then(stopListening).catch(() => render(false));
-      }
-      events.forEach(e => document.addEventListener(e, startOnFirstInteraction, true));
-
-      btn.addEventListener("click", () => {
-        stopListening();
-        if (audio.paused) audio.play().catch(() => render(false));
-        else audio.pause();
-      });
-    })();
   </script>
+  <script src="assets/music.js" defer></script>
 </body>
 
 </html>
