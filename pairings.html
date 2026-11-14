@@ -148,7 +148,7 @@
     .btn-ghost { color: var(--white); background: rgba(11, 21, 51, 0.82); border: 1px solid var(--line); }
     .btn-ghost:hover { background: var(--navy-900); }
 
-    footer { padding: 34px 0 calc(40px + env(safe-area-inset-bottom)); text-align: center; }
+    footer { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; padding: 34px 16px calc(40px + env(safe-area-inset-bottom)); }
 
     /* ---------- Cinematic touches: opening bars, drifting light, posters that fade up with a sweep of light ---------- */
     .jersey { isolation: isolate; }
@@ -255,6 +255,7 @@
     <main class="wrap" id="pools"></main>
 
     <footer class="wrap">
+      <a class="btn-ghost" href="live.html">Live scores</a>
       <a class="btn-ghost" href="./">Back to the tournament page</a>
     </footer>
   </div>

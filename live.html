@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Live scores — After 5 Pickleball Club Mini Tournament</title>
+  <meta name="description" content="Live schedule, scores and standings for the After 5 Pickleball Club 1st Official Mini Tournament.">
+  <meta name="theme-color" content="#0b1533">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/favicon-48.png" sizes="48x48" type="image/png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Oxanium:wght@500;700;800&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy-900: #0b1533;
+      --navy-800: #101d45;
+      --navy-700: #16295c;
+      --blue-500: #1f6fae;
+      --sky-400: #45b4e8;
+      --sky-200: #a9defa;
+      --white: #ffffff;
+      --muted: #b9c8e6;
+      --gold: #d9a441;
+      --panel: rgba(9, 18, 46, 0.78);
+      --line: rgba(169, 222, 250, 0.22);
+      --serif: "Playfair Display", Georgia, serif;
+      --sans: "Montserrat", system-ui, -apple-system, "Segoe UI", sans-serif;
+      --tech: "Oxanium", "Montserrat", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+
+    body {
+      margin: 0;
+      font-family: var(--sans);
+      color: var(--white);
+      background: var(--navy-900);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection { color: var(--navy-900); background: var(--sky-200); }
+    :focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+
+    /* Same jersey as the home page: navy shoulders fading into sky blue, halftone dots, diagonal panels */
+    .jersey {
+      position: relative;
+      overflow: hidden;
+      min-height: 100vh;
+      background: linear-gradient(180deg, var(--navy-900) 0%, var(--navy-800) 18%, var(--navy-700) 40%, var(--blue-500) 68%, var(--sky-400) 100%);
+    }
+    .jersey::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(8, 16, 42, 0.75) 32%, transparent 34%);
+      background-size: 18px 18px;
+      -webkit-mask-image: linear-gradient(180deg, transparent 8%, #000 38%, #000 62%, transparent 94%);
+              mask-image: linear-gradient(180deg, transparent 8%, #000 38%, #000 62%, transparent 94%);
+      pointer-events: none;
+    }
+    .jersey::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(115deg, transparent 55%, rgba(255, 255, 255, 0.05) 55%, rgba(255, 255, 255, 0.05) 70%, transparent 70%),
+        linear-gradient(245deg, transparent 62%, rgba(255, 255, 255, 0.04) 62%, rgba(255, 255, 255, 0.04) 80%, transparent 80%);
+      pointer-events: none;
+    }
+
+    .wrap { position: relative; z-index: 1; width: 100%; max-width: 980px; margin: 0 auto; padding: 0 16px; }
+
+    header { padding: 40px 0 26px; text-align: center; }
+    .wordmark { margin: 0; font: 500 2.4rem/1 var(--serif); }
+    .club {
+      display: inline-block;
+      margin: 8px -0.42em 0 0;
+      padding-bottom: 7px;
+      font-size: 0.74rem;
+      font-weight: 500;
+      letter-spacing: 0.42em;
+      border-bottom: 2px solid var(--gold);
+    }
+    h1 {
+      margin: 22px 0 0;
+      font: 800 clamp(2.4rem, 9vw, 4rem)/1 var(--tech);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-style: italic;
+    }
+    h1 span { color: var(--gold); }
+    .lede { max-width: 520px; margin: 12px auto 0; font-size: 0.95rem; color: var(--muted); text-wrap: pretty; }
+
+    /* ---------- Live page ---------- */
+    .status {
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px 14px;
+      margin: 18px auto 0; font-size: 0.82rem; color: var(--white);
+    }
+    .dot { display: inline-block; width: 9px; height: 9px; margin-right: 7px; border-radius: 50%; background: #5fe08a; box-shadow: 0 0 0 0 rgba(95, 224, 138, 0.6); animation: pulse 2s infinite; vertical-align: 1px; }
+    .status.stale .dot { background: var(--gold); animation: none; }
+    @keyframes pulse { to { box-shadow: 0 0 0 10px rgba(95, 224, 138, 0); } }
+    .status button { min-height: 36px; padding: 6px 14px; font: 700 0.72rem var(--sans); letter-spacing: 0.08em; text-transform: uppercase; color: var(--white); background: rgba(11, 21, 51, 0.82); border: 1px solid var(--line); border-radius: 999px; cursor: pointer; }
+    .status button:hover { background: var(--navy-900); }
+
+    .tabs { position: sticky; top: 0; z-index: 5; display: flex; justify-content: center; gap: 6px; margin: 0 -16px 22px; padding: 10px 16px; background: rgba(11, 21, 51, 0.9); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border-block: 1px solid var(--line); }
+    .tabs a { min-height: 40px; display: inline-flex; align-items: center; padding: 8px 16px; font: 700 0.76rem var(--sans); letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; color: var(--white); border: 1px solid var(--line); border-radius: 999px; }
+    .tabs a:hover { background: rgba(255, 255, 255, 0.08); }
+
+    main section { margin: 0 0 40px; scroll-margin-top: 76px; }
+    main h2 { display: flex; align-items: center; gap: 14px; margin: 0 0 16px; font: 800 1.4rem var(--tech); letter-spacing: 0.12em; text-transform: uppercase; }
+    main h2::before, main h2::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+    main h2 b { font-weight: inherit; }
+    main h2 span { color: var(--gold); }
+
+    .notice { max-width: 620px; margin: 0 auto 24px; padding: 14px 16px; font-size: 0.9rem; text-align: center; background: var(--panel); border: 1px dashed var(--line); border-radius: 14px; }
+    .notice a { color: var(--sky-200); }
+
+    .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; }
+
+    /* Standings: one table per pool */
+    .pools { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
+    .pool-card { padding: 14px 14px 8px; }
+    .pool-card h3 { margin: 0 0 8px; font: 800 1rem var(--tech); letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); }
+    table { width: 100%; border-collapse: collapse; font-size: 0.86rem; font-variant-numeric: tabular-nums; }
+    th { padding: 6px 4px; font: 700 0.66rem var(--tech); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); text-align: center; border-bottom: 1px solid var(--line); }
+    th:nth-child(2) { text-align: left; }
+    td { padding: 9px 4px; text-align: center; border-bottom: 1px solid rgba(169, 222, 250, 0.1); }
+    tr:last-child td { border-bottom: 0; }
+    td.rank { width: 26px; font: 700 0.9rem var(--tech); color: var(--muted); }
+    td.team { text-align: left; font-weight: 600; line-height: 1.3; }
+    td.team span { display: block; }
+    td.pts { font: 800 1rem var(--tech); color: var(--white); }
+    tr.advance td.rank { color: var(--navy-900); }
+    tr.advance td.rank b { display: inline-grid; place-items: center; width: 22px; height: 22px; background: var(--gold); border-radius: 50%; }
+    .legend { margin: 10px 0 0; font-size: 0.78rem; color: var(--muted); text-align: center; }
+    .legend b { display: inline-grid; place-items: center; width: 18px; height: 18px; margin-right: 6px; font: 700 0.7rem var(--tech); color: var(--navy-900); background: var(--gold); border-radius: 50%; vertical-align: 1px; }
+
+    /* Games */
+    .find { display: block; width: 100%; max-width: 420px; min-height: 46px; margin: 0 auto 16px; padding: 10px 16px; font: 500 1rem var(--sans); color: var(--white); background: rgba(11, 21, 51, 0.82); border: 1px solid rgba(169, 222, 250, 0.45); border-radius: 999px; color-scheme: dark; }
+    .find::placeholder { color: rgba(185, 200, 230, 0.7); }
+    .games { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; }
+    .game { padding: 12px 14px; }
+    .game-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 8px; font: 700 0.7rem var(--tech); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+    .game-top .tag { padding: 2px 9px; border: 1px solid currentColor; border-radius: 999px; }
+    .game.done .tag { color: var(--sky-200); }
+    .game.playing { border-color: #5fe08a; }
+    .game.playing .tag { color: #5fe08a; }
+    .side { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 5px 0; }
+    .side + .side { border-top: 1px solid rgba(169, 222, 250, 0.1); }
+    .side .name { min-width: 0; font-size: 0.92rem; font-weight: 600; line-height: 1.3; overflow-wrap: anywhere; }
+    .side .name.tbd { font-weight: 500; color: var(--muted); }
+    .side .score { flex: none; min-width: 30px; font: 800 1.25rem var(--tech); text-align: right; color: var(--muted); }
+    .side.won .name { color: var(--gold); }
+    .side.won .score { color: var(--gold); }
+    .side.lost .name { color: var(--muted); }
+    .empty { grid-column: 1 / -1; padding: 22px 16px; text-align: center; font-size: 0.9rem; color: var(--muted); border: 1px dashed var(--line); border-radius: 14px; }
+
+    .btn-ghost { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 10px 18px; font: 700 0.78rem var(--sans); letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; color: var(--white); background: rgba(11, 21, 51, 0.82); border: 1px solid var(--line); border-radius: 999px; }
+    .btn-ghost:hover { background: var(--navy-900); }
+    footer { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; padding: 10px 16px calc(40px + env(safe-area-inset-bottom)); }
+    .credit { margin: 0 0 14px; font-size: 0.78rem; text-align: center; color: var(--white); }
+    .credit a { color: var(--white); }
+
+    @media (min-width: 720px) {
+      .pools, .games { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (prefers-reduced-motion: reduce) { .dot { animation: none; } }
+  </style>
+</head>
+
+<body>
+  <div class="jersey">
+    <header class="wrap">
+      <p class="wordmark">After 5</p>
+      <span class="club">PICKLEBALL CLUB</span>
+      <h1>Live <span>Scores</span></h1>
+      <p class="lede">Schedule, scores and standings for the 1st Official Mini Tournament. This page updates by itself.</p>
+      <p class="status" id="status" role="status"><span><span class="dot" aria-hidden="true"></span><span id="status-text">Loading…</span></span><button type="button" id="refresh">Refresh now</button></p>
+    </header>
+
+    <main class="wrap">
+      <nav class="tabs" aria-label="Sections">
+        <a href="#standings">Standings</a>
+        <a href="#schedule">Schedule</a>
+        <a href="#playoffs">Playoffs</a>
+      </nav>
+
+      <p class="notice" id="notice" hidden></p>
+
+      <section id="standings" aria-labelledby="h-standings">
+        <h2 id="h-standings"><b>Stand<span>ings</span></b></h2>
+        <div class="pools" id="pools"></div>
+        <p class="legend" id="legend" hidden></p>
+      </section>
+
+      <section id="schedule" aria-labelledby="h-schedule">
+        <h2 id="h-schedule"><b>Pool <span>Play</span></b></h2>
+        <input class="find" id="find" type="search" placeholder="Find your games: type a name…" aria-label="Find games by player name">
+        <div class="games" id="games"></div>
+      </section>
+
+      <section id="playoffs" aria-labelledby="h-playoffs">
+        <h2 id="h-playoffs"><b>Play<span>offs</span></b></h2>
+        <div class="games" id="finals"></div>
+      </section>
+
+      <p class="credit">Scores come from the officials' <a href="https://pdlstack.com/t/mweqtldbkz1exbl0rr/" target="_blank" rel="noopener">PDLStack tournament page</a>.</p>
+    </main>
+
+    <footer class="wrap">
+      <a class="btn-ghost" href="pairings.html">Pairings</a>
+      <a class="btn-ghost" href="./">Tournament page</a>
+    </footer>
+  </div>
+
+  <script>
+    // The officials run the tournament on PDLStack, which publishes its data here for anyone to read.
+    // This page reads that feed in the visitor's browser and redraws itself; nothing on this site needs updating.
+    const TOURNAMENT = "mweqtldbkz1exbl0rr";
+    const FEED = "https://pdlstack.com/public-tournaments/" + TOURNAMENT + "/snapshot.json";
+    const SOURCE = "https://pdlstack.com/t/" + TOURNAMENT + "/";
+    const EVERY = 30000; // refresh every 30 seconds while the page is open and visible
+
+    const $ = (id) => document.getElementById(id);
+    function el(tag, props, ...children) { // text only, never HTML: names come from outside this site
+      const node = document.createElement(tag);
+      Object.assign(node, props || {});
+      node.append(...children.filter((c) => c != null));
+      return node;
+    }
+
+    const fmtTime = (t) => {
+      const p = /^(\d{1,2}):(\d{2})/.exec(t || "");
+      return p ? (+p[1] % 12 || 12) + ":" + p[2] + (+p[1] < 12 ? " AM" : " PM") : "";
+    };
+    const num = (v) => (typeof v === "number" && isFinite(v)) ? v : 0;
+    // A score may be one number, or one number per game of a longer match.
+    const showScore = (s) => Array.isArray(s) ? s.filter((x) => x != null).join(" · ") : (s == null ? "" : String(s));
+    const total = (s) => Array.isArray(s) ? s.reduce((a, b) => a + num(b), 0) : num(s);
+    const hasScore = (m) => showScore(m.s1) !== "" || showScore(m.s2) !== "";
+
+    // Which side won: the feed names the winner; if it doesn't say in a way we recognise, don't guess.
+    function winnerSide(m) {
+      const w = m.winner;
+      if (w == null || w === "") return 0;
+      if (w === m.p1 || w === 1 || w === "p1" || w === "1") return 1;
+      if (w === m.p2 || w === 2 || w === "p2" || w === "2") return 2;
+      return 0;
+    }
+
+    function seedLabel(seed) {
+      if (!seed || !seed.poolName) return "To be decided";
+      const rank = seed.rank === 1 ? "Winner" : seed.rank === 2 ? "Runner-up" : "#" + seed.rank;
+      return rank + " of " + seed.poolName;
+    }
+
+    function gameCard(m, label, names) {
+      const side = winnerSide(m), scored = hasScore(m);
+      const state = side ? "done" : scored ? "playing" : "";
+      const row = (id, seed, score, n) => {
+        const name = id && names[id];
+        return el("div", { className: "side" + (side ? (side === n ? " won" : " lost") : "") },
+          el("span", { className: "name" + (name ? "" : " tbd"), textContent: name || seedLabel(seed) }),
+          el("span", { className: "score", textContent: showScore(score) }));
+      };
+      const when = [fmtTime(m.scheduledStartTime), m.scheduledCourt].filter(Boolean).join(" · ");
+      const card = el("article", { className: "panel game " + state },
+        el("div", { className: "game-top" },
+          el("span", { textContent: "G" + (m.game || m.matchNumber) + " · " + label }),
+          el("span", { className: "tag", textContent: side ? "Final" : scored ? "In play" : when || "Scheduled" })),
+        row(m.p1, m.p1Seed, m.s1, 1),
+        row(m.p2, m.p2Seed, m.s2, 2));
+      if (state && when) card.querySelector(".game-top span").textContent += " · " + when;
+      card.dataset.names = [names[m.p1], names[m.p2]].filter(Boolean).join(" ").toLowerCase();
+      return card;
+    }
+
+    const byTime = (a, b) => String(a.m.scheduledStartTime || "").localeCompare(String(b.m.scheduledStartTime || "")) || a.order - b.order;
+
+    function render(data) {
+      const cats = Array.isArray(data.categories) ? data.categories : [];
+      const pools = [], games = [], finals = [];
+      let advance = 0;
+      cats.forEach((c) => {
+        const names = {};
+        (c.teams || []).forEach((t) => { names[t.id] = t.name; });
+        advance = Math.max(advance, num(c.groupSettings && c.groupSettings.advancePerPool));
+        (c.pools || []).forEach((p) => {
+          // Rank as the officials' page does: points, then wins, then point difference.
+          const rows = (p.standings || []).slice().sort((a, b) => num(b.pts) - num(a.pts) || num(b.w) - num(a.w) || num(b.pd) - num(a.pd));
+          const played = rows.some((r) => num(r.gp) > 0);
+          const body = el("tbody", null, ...rows.map((r, i) => {
+            const pair = String(names[r.name] || "").split(" / ");
+            const pd = num(r.pd);
+            return el("tr", { className: played && i < advance ? "advance" : "" },
+              el("td", { className: "rank" }, el("b", { textContent: String(i + 1) })),
+              el("td", { className: "team" }, ...pair.map((n) => el("span", { textContent: n }))),
+              el("td", { className: "pts", textContent: String(num(r.pts)) }),
+              el("td", { textContent: String(num(r.gp)) }),
+              el("td", { textContent: String(num(r.w)) }),
+              el("td", { textContent: String(num(r.l)) }),
+              el("td", { textContent: (pd > 0 ? "+" : "") + pd }));
+          }));
+          const head = el("thead", null, el("tr", null,
+            el("th", { textContent: "#" }), el("th", { textContent: "Pair" }),
+            el("th", { textContent: "Pts", title: "Points" }), el("th", { textContent: "GP", title: "Games played" }),
+            el("th", { textContent: "W", title: "Wins" }), el("th", { textContent: "L", title: "Losses" }),
+            el("th", { textContent: "+/−", title: "Point difference" })));
+          pools.push(el("div", { className: "panel pool-card" }, el("h3", { textContent: p.name || "Pool" }), el("table", null, head, body)));
+          (p.rounds || []).forEach((round) => (round || []).forEach((m) => games.push({ m, label: p.name || "Pool play", names, order: pools.length })));
+        });
+        const rounds = c.playoffRounds || [];
+        rounds.forEach((round, i) => {
+          const left = rounds.length - i; // 1 = final, 2 = semifinals, 3 = quarterfinals
+          const label = left === 1 ? "Final" : left === 2 ? "Semifinal" : left === 3 ? "Quarterfinal" : "Round of " + (round || []).length * 2;
+          (round || []).forEach((m) => finals.push({ m, label, names, order: num(m.matchNumber) }));
+        });
+        if (c.thirdPlaceMatch) finals.push({ m: c.thirdPlaceMatch, label: "Match for 3rd", names, order: num(c.thirdPlaceMatch.matchNumber) });
+      });
+
+      $("pools").replaceChildren(...(pools.length ? pools : [el("p", { className: "empty", textContent: "Standings will appear here once the pools are set." })]));
+      $("legend").hidden = !advance || !pools.length;
+      $("legend").replaceChildren(el("b", { textContent: "1" }), "Gold numbers mark the top " + advance + " of each pool, who advance to the playoffs.");
+      games.sort(byTime); finals.sort(byTime);
+      // Number the pool games in playing order (same time: pools in order), as the officials' schedule does.
+      games.forEach((g, i) => { g.m = Object.assign({}, g.m, { game: i + 1 }); });
+      $("games").replaceChildren(...(games.length ? games.map((g) => gameCard(g.m, g.label, g.names)) : [el("p", { className: "empty", textContent: "The schedule will appear here once it is published." })]));
+      $("finals").replaceChildren(...(finals.length ? finals.map((g) => gameCard(g.m, g.label, g.names)) : [el("p", { className: "empty", textContent: "The playoff games will appear here." })]));
+      filter();
+    }
+
+    function filter() {
+      const q = $("find").value.trim().toLowerCase();
+      let shown = 0;
+      $("games").querySelectorAll(".game").forEach((g) => { g.hidden = !!q && !g.dataset.names.includes(q); if (!g.hidden) shown++; });
+      const none = $("games").querySelector(".none");
+      if (none) none.remove();
+      if (q && !shown) $("games").append(el("p", { className: "empty none", textContent: "No pool games match that name." }));
+    }
+    $("find").addEventListener("input", filter);
+
+    const clock = new Intl.DateTimeFormat("en-PH", { hour: "numeric", minute: "2-digit", second: "2-digit" });
+    let timer = null, loaded = false, busy = false;
+
+    async function load() {
+      if (busy) return;
+      busy = true;
+      try {
+        const res = await fetch(FEED, { cache: "no-store" });
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        render(await res.json());
+        loaded = true;
+        $("notice").hidden = true;
+        $("status").classList.remove("stale");
+        $("status-text").textContent = "Live · updated " + clock.format(new Date());
+      } catch (err) {
+        console.error(err);
+        $("status").classList.add("stale");
+        $("status-text").textContent = loaded ? "Couldn't refresh. Showing the last results loaded." : "Couldn't load the scores.";
+        if (!loaded) {
+          $("notice").hidden = false;
+          $("notice").replaceChildren("The live scores couldn't be loaded. Check your connection, or open the ",
+            el("a", { href: SOURCE, target: "_blank", rel: "noopener", textContent: "officials' tournament page" }), ".");
+        }
+      } finally {
+        busy = false;
+      }
+    }
+
+    function schedule() {
+      clearInterval(timer);
+      if (!document.hidden) { load(); timer = setInterval(load, EVERY); }
+    }
+    document.addEventListener("visibilitychange", schedule);
+    $("refresh").addEventListener("click", load);
+    schedule();
+  </script>
+</body>
+
+</html>

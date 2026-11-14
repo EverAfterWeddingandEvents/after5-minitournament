@@ -7,6 +7,7 @@ A one-page site for the 1st Official Mini Tournament. "Join the Club" opens the 
 - `assets/share.jpg` — the picture shown when the link is shared in Messenger, Facebook, etc.
 - `pairings.html` — the Pairings posters, one per doubles pair, grouped by pool
 - The **Tournament Partners poster** (all sponsors by tier) lives on `admin.html`, under **Partners poster** in the sidebar, with a **Save image** button — visitors don't see it. Its sponsor list is in the script of `admin.html`; when you add, remove or rename a sponsor in `index.html`, make the same change there
+- `live.html` — live schedule, scores and standings, read from the officials' PDLStack tournament page (see "Live scores" below)
 - `admin.html` — the officers' page: registrations and the partners poster
 - `supabase/setup.sql` — creates the members table and the team logo storage
 
@@ -48,6 +49,12 @@ You can also see the raw data in Supabase under **Table Editor → members** and
 `pairings.html` shows a poster for each doubles pair, grouped by pool: the two partners' photos and names, their pool, the date and the venue. Each poster has a **Save image** button that downloads it as a picture (1080 × 1350, ready for Facebook or Messenger). The home page links to it under the Join button and in the footer.
 
 Each poster follows the site branding (navy, sky blue and gold) with a "Match Pairing" title. The pairs are typed into the `POOLS` list near the top of the script in `pairings.html`. To change a pair or a pool, edit that list. To give a player a photo, put the picture in `assets/players/` and add its file name after their name, e.g. `["Riza Vergara", "riza-vergara.jpg"]`; a player with no photo gets their initials instead.
+
+## Live scores
+
+`live.html` shows the standings for each pool, every pool game and the playoff games, with scores as they are entered. The officials run the tournament on PDLStack; this page reads PDLStack's public data for the tournament in the visitor's browser and refreshes every 30 seconds, so nothing on this site needs updating during the event.
+
+The tournament it reads is set by `TOURNAMENT` near the top of the script in `live.html` (the code in the PDLStack link, `pdlstack.com/t/<code>/`). If PDLStack is unreachable, the page says so and links to the officials' page instead.
 
 ## Background music
 
