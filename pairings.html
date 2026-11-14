@@ -4,8 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Match Day — After 5 Pickleball Club Mini Tournament</title>
-  <meta name="description" content="Match Day posters for the After 5 Pickleball Club 1st Official Mini Tournament.">
+  <title>Pairings — After 5 Pickleball Club Mini Tournament</title>
+  <meta name="description" content="Doubles pairings and pools for the After 5 Pickleball Club 1st Official Mini Tournament.">
   <meta name="theme-color" content="#0b1533">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="icon" href="assets/favicon-48.png" sizes="48x48" type="image/png">
@@ -96,17 +96,18 @@
     h1 span { color: var(--gold); }
     .lede { max-width: 520px; margin: 12px auto 0; font-size: 0.95rem; color: var(--muted); text-wrap: pretty; }
 
-    .notice {
-      max-width: 620px;
-      margin: 0 auto 20px;
-      padding: 12px 16px;
-      font-size: 0.88rem;
-      text-align: center;
-      color: var(--sky-200);
-      background: var(--panel);
-      border: 1px dashed var(--line);
-      border-radius: 14px;
+    .pool { margin: 0 0 44px; }
+    .pool h2 {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin: 0 0 20px;
+      font: 800 1.5rem var(--tech);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
     }
+    .pool h2 span { color: var(--gold); }
+    .pool h2::before, .pool h2::after { content: ""; flex: 1; height: 1px; background: var(--line); }
 
     /* Flex-wrap keeps every row centred, so an odd last poster sits in the middle */
     .posters { display: flex; flex-wrap: wrap; justify-content: center; gap: 28px; }
@@ -164,36 +165,49 @@
     <header class="wrap">
       <p class="wordmark">After 5</p>
       <span class="club">PICKLEBALL CLUB</span>
-      <h1>Match <span>Day</span></h1>
-      <p class="lede">Doubles match-ups for the 1st Official Mini Tournament. Save a poster and share it with your team.</p>
+      <h1>Pair<span>ings</span></h1>
+      <p class="lede">The doubles pairs and pools for the 1st Official Mini Tournament. Find your poster, save it and share it with your partner.</p>
     </header>
 
-    <main class="wrap">
-      <p class="notice" id="notice" role="status">Loading matches…</p>
-      <div class="posters" id="posters"></div>
-    </main>
+    <main class="wrap" id="pools"></main>
 
     <footer class="wrap">
       <a class="btn-ghost" href="./">Back to the tournament page</a>
     </footer>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
   <script>
-    // Same project as index.html. This key is public; the database rules only let it read the matches.
-    const SUPABASE_URL = "https://ouofkowntnzqbtxkjznj.supabase.co";
-    const SUPABASE_KEY = "sb_publishable_OEPogZwyoCkAHxeek8Oj-A_K2BamcUV";
-    const LOGO_PREFIX = SUPABASE_URL + "/storage/v1/object/public/team-logos/";
-
-    // Shown until officers add real matches on admin.html.
-    const SAMPLE = [{
-      label: "Sample match",
-      match_date: "2026-11-15",
-      match_time: "13:00:00",
-      court: "Pickleboy, Highway Turno, Dipolog City",
-      team_a_name: "Team Sunset", team_a_player1: "Miguel", team_a_player2: "Andrea",
-      team_b_name: "Team Dink", team_b_player1: "Paolo", team_b_player2: "Bea",
-    }];
+    // The pairs, by pool. To give a player a photo, put the picture in assets/players/ and
+    // add its file name, e.g. ["Riza Vergara", "riza-vergara.jpg"]. Without one the poster shows their initials.
+    const PHOTO_DIR = "assets/players/";
+    const POOLS = {
+      A: [
+        [["Mc Donald Villaver"], ["Mary Rose Sumalpong"]],
+        [["Angelita Onido"], ["Stephanie Saraosos"]],
+        [["Riza Vergara"], ["Eza Labrador"]],
+        [["Claire Dingcong"], ["Sharon Joy Donguines"]],
+      ],
+      B: [
+        [["Adonis Rabor"], ["Chenix Vergara"]],
+        [["Stephanie Mae Lomoljio"], ["Vanessa Paez"]],
+        [["Nixon Tomaclas"], ["Cheerly Rosal"]],
+        [["Rommel Torralba"], ["Giovanna Dingal"]],
+      ],
+      C: [
+        [["Alvs Carreon"], ["Annalyn Reguya"]],
+        [["Joseph Vergara"], ["Lady Marvelou Genon"]],
+        [["John Dave Labita"], ["Mart Lemmor Torralba"]],
+        [["Archie Opulentisima"], ["Cherry Ann Gallepo"]],
+      ],
+      D: [
+        [["Oliver Paez"], ["Mary Lyn Torralba"]],
+        [["Jacob Magno"], ["Hydie Deopita"]],
+        [["Alfie Donguines"], ["April Mae Diesmo"]],
+        [["Landon Vergara"], ["Lynly Ibay"]],
+      ],
+    };
+    const EVENT_DATE = "15 NOVEMBER, 2026   |   SUNDAY";
+    const EVENT_VENUE = "PICKLEBOY, HIGHWAY TURNO, DIPOLOG CITY";
 
     const W = 1080, H = 1350; // portrait 4:5, the size Facebook and Instagram like
     const C = { navy900: "#0b1533", navy800: "#101d45", navy700: "#16295c", blue: "#1f6fae", sky: "#45b4e8", sky200: "#a9defa", gold: "#d9a441", goldDeep: "#8f6a1f", white: "#ffffff" };
@@ -201,30 +215,16 @@
     const SANS = '"Montserrat", system-ui, sans-serif';
     const SERIF = '"Playfair Display", Georgia, serif';
 
-    /* ---------- Formatting ---------- */
-    const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    function dateParts(iso) {
-      const p = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso || "");
-      if (!p) return null;
-      const d = new Date(Date.UTC(+p[1], +p[2] - 1, +p[3]));
-      return { date: +p[3] + " " + MONTHS[+p[2] - 1] + ", " + p[1], day: DAYS[d.getUTCDay()] };
+    // "Stephanie Mae Lomoljio" -> "SL": first and last initial
+    function initials(name) {
+      const parts = name.trim().split(/\s+/);
+      return ((parts[0][0] || "") + (parts.length > 1 ? parts[parts.length - 1][0] : "")).toUpperCase();
     }
-    function fmtTime(t) {
-      const p = /^(\d{1,2}):(\d{2})/.exec(t || "");
-      if (!p) return null;
-      const h = +p[1];
-      return String(h % 12 || 12).padStart(2, "0") + ":" + p[2] + " " + (h < 12 ? "AM" : "PM");
-    }
-    const firstName = (s) => String(s || "").trim();
-    // Only load photos that live in our own storage bucket.
-    const safeLogo = (u) => (typeof u === "string" && u.startsWith(LOGO_PREFIX)) ? u : null;
 
     function loadImage(url) {
       return new Promise((resolve) => {
         if (!url) return resolve(null);
         const img = new Image();
-        img.crossOrigin = "anonymous"; // so the poster can still be saved as a picture
         img.onload = () => resolve(img);
         img.onerror = () => resolve(null);
         img.src = url;
@@ -315,30 +315,22 @@
       ctx.beginPath(); ctx.arc(cx, cy, r, 0, 6.2832); ctx.stroke();
     }
 
-    function team(ctx, x, w, name, p1, p2, img1, img2, accent) {
-      const mid = x + w / 2, inner = w - 64;
-      badge(ctx, mid - 104, 400, 98, img1, (firstName(p1)[0] || "?").toUpperCase(), accent);
-      badge(ctx, mid + 104, 400, 98, img2, (firstName(p2)[0] || "?").toUpperCase(), accent);
-      ctx.textAlign = "center"; ctx.textBaseline = "alphabetic";
-
-      if (name) {
-        ctx.fillStyle = accent === C.gold ? "#ffe3a6" : C.sky200;
-        fitText(ctx, name.toUpperCase(), inner - 20, 30, 700, TECH, 18);
-        spaced(ctx, name.toUpperCase(), mid, 592, 4);
-      }
-      ctx.fillStyle = C.white;
+    // One partner: photo (or initials) with the name underneath, given names over surname.
+    function partner(ctx, x, w, name, img, accent) {
+      const mid = x + w / 2, inner = w - 56;
+      badge(ctx, mid, 452, 158, img, initials(name), accent);
+      const parts = name.trim().split(/\s+/);
+      const lines = parts.length > 1 ? [parts.slice(0, -1).join(" "), parts[parts.length - 1]] : [name];
+      ctx.textAlign = "center"; ctx.textBaseline = "alphabetic"; ctx.fillStyle = C.white;
       ctx.shadowColor = "rgba(2, 6, 20, 0.6)"; ctx.shadowBlur = 14; ctx.shadowOffsetY = 4;
-      fitText(ctx, firstName(p1).toUpperCase(), inner, 64, 800, TECH, 26);
-      ctx.fillText(firstName(p1).toUpperCase(), mid, 668);
-      fitText(ctx, firstName(p2).toUpperCase(), inner, 64, 800, TECH, 26);
-      ctx.fillText(firstName(p2).toUpperCase(), mid, 778);
+      lines.forEach((line, i) => {
+        fitText(ctx, line.toUpperCase(), inner, 54, 800, TECH, 24);
+        ctx.fillText(line.toUpperCase(), mid, (lines.length > 1 ? 706 : 738) + i * 64);
+      });
       ctx.shadowColor = "transparent"; ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
-      ctx.fillStyle = accent;
-      ctx.font = "500 40px " + SERIF;
-      ctx.fillText("&", mid, 722);
     }
 
-    function draw(canvas, m, photos) {
+    function draw(canvas, pool, pair, photos) {
       const ctx = canvas.getContext("2d");
       ctx.clearRect(0, 0, W, H);
       background(ctx);
@@ -353,79 +345,60 @@
       ctx.fillStyle = C.sky200; ctx.font = "700 22px " + TECH;
       spaced(ctx, "1ST OFFICIAL MINI TOURNAMENT", W / 2, 204, 6);
 
-      // The two sides
+      // The two partners, side by side in the same colours: they are one team
       pennant(ctx, 60, 440, 236, 900, C.sky, C.blue);
-      pennant(ctx, 580, 440, 236, 900, C.gold, C.goldDeep);
-      team(ctx, 60, 440, m.team_a_name, m.team_a_player1, m.team_a_player2, photos[0], photos[1], C.sky200);
-      team(ctx, 580, 440, m.team_b_name, m.team_b_player1, m.team_b_player2, photos[2], photos[3], C.gold);
+      pennant(ctx, 580, 440, 236, 900, C.sky, C.blue);
+      partner(ctx, 60, 440, pair[0][0], photos[0], C.gold);
+      partner(ctx, 580, 440, pair[1][0], photos[1], C.gold);
 
-      // VS
+      // The "&" that joins them
       ctx.save();
       ctx.shadowColor = "rgba(2, 6, 20, 0.6)"; ctx.shadowBlur = 24; ctx.shadowOffsetY = 8;
       ctx.fillStyle = C.navy900;
-      ctx.beginPath(); ctx.arc(W / 2, 560, 62, 0, 6.2832); ctx.fill();
+      ctx.beginPath(); ctx.arc(W / 2, 452, 62, 0, 6.2832); ctx.fill();
       ctx.restore();
-      ctx.lineWidth = 5; ctx.strokeStyle = C.white;
-      ctx.beginPath(); ctx.arc(W / 2, 560, 62, 0, 6.2832); ctx.stroke();
-      ctx.fillStyle = C.white; ctx.textBaseline = "middle"; ctx.font = "800 54px " + TECH;
-      ctx.fillText("VS", W / 2, 564);
+      ctx.lineWidth = 5; ctx.strokeStyle = C.gold;
+      ctx.beginPath(); ctx.arc(W / 2, 452, 62, 0, 6.2832); ctx.stroke();
+      ctx.fillStyle = C.white; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.font = "500 70px " + SERIF;
+      ctx.fillText("&", W / 2, 456);
 
-      // MATCH DAY, slanted like a sports poster
+      // POOL A, slanted like a sports poster
       ctx.save();
       ctx.translate(W / 2, 0);
       ctx.transform(1, 0, -0.18, 1, 0, 0);
-      ctx.textBaseline = "alphabetic";
+      ctx.textBaseline = "alphabetic"; ctx.textAlign = "left";
       ctx.lineJoin = "round";
       ctx.shadowColor = "rgba(2, 6, 20, 0.65)"; ctx.shadowBlur = 22; ctx.shadowOffsetY = 10;
-      ctx.font = "800 170px " + TECH;
+      ctx.font = "800 190px " + TECH;
+      const pw = ctx.measureText("POOL ").width, lw = ctx.measureText(pool).width;
+      const x0 = -(pw + lw) / 2 + 190;
       ctx.lineWidth = 14; ctx.strokeStyle = C.navy900;
-      ctx.strokeText("MATCH", 178, 1010);
-      ctx.fillStyle = C.white; ctx.fillText("MATCH", 178, 1010);
-      ctx.strokeText("DAY", 198, 1148);
-      ctx.fillStyle = C.gold; ctx.fillText("DAY", 198, 1148);
+      ctx.strokeText("POOL", x0, 1090);
+      ctx.fillStyle = C.white; ctx.fillText("POOL", x0, 1090);
+      ctx.strokeText(pool, x0 + pw, 1090);
+      ctx.fillStyle = C.gold; ctx.fillText(pool, x0 + pw, 1090);
       ctx.restore();
 
-      // Round / label
       ctx.textAlign = "center"; ctx.textBaseline = "alphabetic";
-      let y = 1206;
-      if (m.label) {
-        ctx.fillStyle = C.sky200;
-        fitText(ctx, m.label.toUpperCase(), 800, 26, 700, TECH, 18);
-        spaced(ctx, m.label.toUpperCase(), W / 2, y, 6);
-      }
-
-      // Date | time | day
-      const d = dateParts(m.match_date);
-      const bits = [d && d.date, fmtTime(m.match_time), d && d.day].filter(Boolean).map((s) => s.toUpperCase());
-      y = 1256;
+      ctx.fillStyle = C.sky200; ctx.font = "700 26px " + TECH;
+      spaced(ctx, "OFFICIAL DOUBLES PAIRING", W / 2, 1168, 6);
       ctx.fillStyle = C.white;
-      fitText(ctx, bits.join("   |   "), 940, 34, 700, TECH, 20);
-      ctx.fillText(bits.join("   |   "), W / 2, y);
-
-      if (m.court) {
-        ctx.fillStyle = C.white;
-        fitText(ctx, m.court.toUpperCase(), 940, 24, 600, SANS, 16);
-        ctx.fillText(m.court.toUpperCase(), W / 2, 1302);
-      }
+      fitText(ctx, EVENT_DATE, 940, 34, 700, TECH, 20);
+      ctx.fillText(EVENT_DATE, W / 2, 1238);
+      fitText(ctx, EVENT_VENUE, 940, 24, 600, SANS, 16);
+      ctx.fillText(EVENT_VENUE, W / 2, 1288);
     }
 
     /* ---------- Page ---------- */
-    const fileSafe = (s) => String(s || "").trim().replace(/[^\w-]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 40);
+    const fileSafe = (s) => String(s || "").trim().replace(/[^\w-]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 60);
     const DOWNLOAD_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 11l5 5 5-5M5 20h14" /></svg>';
 
-    async function poster(m) {
-      const a = [m.team_a_player1, m.team_a_player2].join(" & ");
-      const b = [m.team_b_player1, m.team_b_player2].join(" & ");
-      const d = dateParts(m.match_date);
-      const summary = a + " vs " + b;
-
+    function poster(pool, pair) {
+      const names = pair[0][0] + " & " + pair[1][0];
       const canvas = document.createElement("canvas");
       canvas.width = W; canvas.height = H;
       canvas.setAttribute("role", "img");
-      canvas.setAttribute("aria-label", "Match Day poster: " + summary
-        + (d ? ", " + d.day + " " + d.date : "") + (fmtTime(m.match_time) ? ", " + fmtTime(m.match_time) : "")
-        + (m.court ? ", " + m.court : ""));
-
+      canvas.setAttribute("aria-label", "Pairing poster, Pool " + pool + ": " + names);
 
       const btn = document.createElement("button");
       btn.type = "button";
@@ -433,19 +406,13 @@
       btn.innerHTML = DOWNLOAD_ICON + "<span>Save image</span>";
 
       const cap = document.createElement("figcaption");
-      if (m.label) {
-        const text = document.createElement("p");
-        text.textContent = m.label;
-        cap.append(text);
-      }
       cap.append(btn);
       const fig = document.createElement("figure");
       fig.className = "poster";
       fig.append(canvas, cap);
 
-      const photos = await Promise.all(["team_a_player1", "team_a_player2", "team_b_player1", "team_b_player2"]
-        .map((k) => loadImage(safeLogo(m[k + "_photo_url"]))));
-      draw(canvas, m, photos);
+      Promise.all(pair.map((p) => loadImage(p[1] ? PHOTO_DIR + p[1] : null)))
+        .then((photos) => draw(canvas, pool, pair, photos));
 
       btn.addEventListener("click", () => {
         btn.disabled = true;
@@ -454,7 +421,7 @@
           if (!blob) return;
           const link = document.createElement("a");
           link.href = URL.createObjectURL(blob);
-          link.download = "after5-match-day-" + (fileSafe(a + "-vs-" + b) || "poster") + ".png";
+          link.download = "after5-pool-" + pool.toLowerCase() + "-" + (fileSafe(pair[0][0] + "-and-" + pair[1][0]) || "pairing") + ".png";
           document.body.append(link);
           link.click();
           link.remove();
@@ -464,31 +431,26 @@
       return fig;
     }
 
-    async function loadMatches() {
-      if (!window.supabase) return null;
-      const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { persistSession: false } });
-      const { data, error } = await db.from("matches").select("*")
-        .order("match_date").order("match_time", { nullsFirst: false }).order("created_at");
-      if (error) { console.error(error); return null; }
-      return data;
-    }
-
     (async () => {
-      const notice = document.getElementById("notice");
-      const list = document.getElementById("posters");
       // Canvas text needs the fonts in hand before drawing.
       const fonts = ['800 60px "Oxanium"', '700 30px "Oxanium"', '500 40px "Playfair Display"', '500 22px "Montserrat"', '600 24px "Montserrat"'];
-      const [rows] = await Promise.all([
-        loadMatches(),
-        document.fonts ? Promise.all(fonts.map((f) => document.fonts.load(f))).catch(() => { }) : null,
-      ]);
+      if (document.fonts) await Promise.all(fonts.map((f) => document.fonts.load(f))).catch(() => { });
 
-      const real = rows && rows.length;
-      const matches = real ? rows : SAMPLE;
-      if (real) notice.hidden = true;
-      else notice.textContent = "Match-ups will be posted here after the blind pairing. Until then, here's a sample poster.";
-
-      list.replaceChildren(...await Promise.all(matches.map(poster)));
+      const main = document.getElementById("pools");
+      for (const [pool, pairs] of Object.entries(POOLS)) {
+        const section = document.createElement("section");
+        section.className = "pool";
+        const h = document.createElement("h2");
+        h.append("Pool ");
+        const letter = document.createElement("span");
+        letter.textContent = pool;
+        h.append(letter);
+        const list = document.createElement("div");
+        list.className = "posters";
+        list.append(...pairs.map((pair) => poster(pool, pair)));
+        section.append(h, list);
+        main.append(section);
+      }
     })();
   </script>
 </body>

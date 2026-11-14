@@ -5,10 +5,10 @@ A one-page site for the 1st Official Mini Tournament. "Join the Club" opens the 
 - `index.html` — the whole site (styles and script are inside it)
 - `assets/poster.png` — the event poster (linked in the footer)
 - `assets/share.jpg` — the picture shown when the link is shared in Messenger, Facebook, etc.
-- `matchday.html` — the Match Day posters, one per doubles match (2 vs 2)
+- `pairings.html` — the Pairings posters, one per doubles pair, grouped by pool
 - The **Tournament Partners poster** (all sponsors by tier) lives on `admin.html`, under **Partners poster** in the sidebar, with a **Save image** button — visitors don't see it. Its sponsor list is in the script of `admin.html`; when you add, remove or rename a sponsor in `index.html`, make the same change there
-- `admin.html` — the officers' page: registrations and the Match Day match-ups
-- `supabase/setup.sql` — creates the members table, the team logo storage and the matches table
+- `admin.html` — the officers' page: registrations and the partners poster
+- `supabase/setup.sql` — creates the members table and the team logo storage
 
 ## Connect the form to Supabase
 
@@ -43,18 +43,11 @@ Repeat steps 2–3 for each officer. To remove someone, delete their user under 
 
 You can also see the raw data in Supabase under **Table Editor → members** and **Storage → team-logos**.
 
-## Match Day posters
+## Pairings posters
 
-`matchday.html` shows a poster for every match: the photos and names of the two players on each side, the date, time and court. Each poster has a **Save image** button that downloads it as a picture (1080 × 1350, ready for Facebook or Messenger). The home page links to it under the Join button and in the footer.
+`pairings.html` shows a poster for each doubles pair, grouped by pool: the two partners' photos and names, their pool, the date and the venue. Each poster has a **Save image** button that downloads it as a picture (1080 × 1350, ready for Facebook or Messenger). The home page links to it under the Join button and in the footer.
 
-To put real matches on it:
-
-1. Run `supabase/setup.sql` again in the **SQL Editor** (safe to re-run; it adds the `matches` table).
-2. Sign in to `admin.html` and open **Match Day posters**.
-3. Choose two players for Team A and two for Team B. **Name on poster** starts as the player's full name — shorten it to a first name or nickname if you like. Each player's photo is the image they uploaded when they registered; a player with no image gets their initial instead.
-4. Set the date, time, round and court, then press **Add match**. **Delete** takes a poster off the page.
-
-Until the first match is added, the page shows one sample poster with made-up names.
+The pairs are typed into the `POOLS` list near the top of the script in `pairings.html`. To change a pair or a pool, edit that list. To give a player a photo, put the picture in `assets/players/` and add its file name after their name, e.g. `["Riza Vergara", "riza-vergara.jpg"]`; a player with no photo gets their initials instead.
 
 ## Background music
 
