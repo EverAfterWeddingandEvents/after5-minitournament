@@ -416,29 +416,106 @@
       const { top, bottom, splitTop, splitBottom } = BAND;
       half(ctx, "left", photos[0], pair[0][0], "69, 180, 232");
       half(ctx, "right", photos[1], pair[1][0], "217, 164, 65");
-      // Top edge: sky over the left half, gold over the right
-      ctx.fillStyle = C.sky; ctx.fillRect(0, top - 5, splitTop, 5);
-      ctx.fillStyle = C.gold; ctx.fillRect(splitTop, top - 5, W - splitTop, 5);
-      // The split: a gold bar with a white core, fading out at the bottom under the title
-      const g = ctx.createLinearGradient(0, top, 0, bottom);
-      g.addColorStop(0, C.gold); g.addColorStop(0.8, C.gold); g.addColorStop(1, "rgba(217, 164, 65, 0)");
+      // Glowing edges: sky over the left half, gold over the right, and a bright split between them
+      glow(ctx, [[0, top - 3], [splitTop, top - 3]], "69, 180, 232", 5);
+      glow(ctx, [[splitTop, top - 3], [W, top - 3]], "217, 164, 65", 5);
+      glow(ctx, [[W - 330, bottom - 4], [W, bottom - 4]], "217, 164, 65", 3);
+      glow(ctx, [[0, bottom - 4], [250, bottom - 4]], "69, 180, 232", 3);
+      glow(ctx, [[splitTop, top - 3], [splitBottom + 14, bottom - 110]], "240, 170, 50", 10);
+      flare(ctx, splitTop, top - 3, 90, "255, 200, 110");
+    }
+
+    // A line of light: soft wide glow, tighter glow, white-hot core. Added to what is underneath, like real light.
+    function glow(ctx, pts, rgb, width) {
       ctx.save();
-      ctx.shadowColor = "rgba(2, 6, 20, 0.6)"; ctx.shadowBlur = 16;
-      ctx.lineCap = "butt"; ctx.strokeStyle = g; ctx.lineWidth = 12;
-      ctx.beginPath(); ctx.moveTo(splitTop, top - 5); ctx.lineTo(splitBottom, bottom); ctx.stroke();
-      ctx.shadowBlur = 0; ctx.strokeStyle = "rgba(255, 255, 255, 0.75)"; ctx.lineWidth = 2.5;
-      ctx.beginPath(); ctx.moveTo(splitTop, top - 5); ctx.lineTo(splitBottom + 6, bottom - 60); ctx.stroke();
+      ctx.globalCompositeOperation = "lighter";
+      ctx.lineCap = "round";
+      const line = () => { ctx.beginPath(); ctx.moveTo(pts[0][0], pts[0][1]); ctx.lineTo(pts[1][0], pts[1][1]); ctx.stroke(); };
+      ctx.shadowColor = "rgba(" + rgb + ", 0.9)";
+      ctx.shadowBlur = width * 5; ctx.strokeStyle = "rgba(" + rgb + ", 0.55)"; ctx.lineWidth = width; line();
+      ctx.shadowBlur = width * 2; ctx.strokeStyle = "rgba(" + rgb + ", 0.9)"; ctx.lineWidth = width * 0.6; line();
+      ctx.shadowBlur = 0; ctx.strokeStyle = "rgba(255, 240, 200, 0.75)"; ctx.lineWidth = Math.max(1.5, width * 0.22); line();
+      ctx.restore();
+    }
+
+    function flare(ctx, x, y, r, rgb) { // a soft burst of light with a thin horizontal streak
+      ctx.save();
+      ctx.globalCompositeOperation = "lighter";
+      let g = ctx.createRadialGradient(x, y, 0, x, y, r);
+      g.addColorStop(0, "rgba(255, 255, 255, 0.7)"); g.addColorStop(0.15, "rgba(" + rgb + ", 0.4)"); g.addColorStop(1, "rgba(" + rgb + ", 0)");
+      ctx.fillStyle = g; ctx.fillRect(x - r, y - r, r * 2, r * 2);
+      g = ctx.createLinearGradient(x - r * 2.2, 0, x + r * 2.2, 0);
+      g.addColorStop(0, "rgba(" + rgb + ", 0)"); g.addColorStop(0.5, "rgba(255, 255, 255, 0.8)"); g.addColorStop(1, "rgba(" + rgb + ", 0)");
+      ctx.fillStyle = g; ctx.fillRect(x - r * 2.2, y - 1.5, r * 4.4, 3);
+      ctx.restore();
+    }
+
+    // Sparks and dust thrown off the split. The same seed every time, so a poster always looks the same.
+    function sparks(ctx, seed) {
+      let t = seed >>> 0;
+      const rnd = () => { t += 0x6D2B79F5; let r = Math.imul(t ^ (t >>> 15), 1 | t); r ^= r + Math.imul(r ^ (r >>> 7), 61 | r); return ((r ^ (r >>> 14)) >>> 0) / 4294967296; };
+      const { top, bottom, splitTop, splitBottom } = BAND;
+      const onSplit = (v) => splitTop + (splitBottom - splitTop) * v;
+
+      // dark dust hugging the split
+      ctx.save();
+      for (let i = 0; i < 260; i++) {
+        const v = rnd(), spread = (rnd() - 0.5) * (rnd() < 0.75 ? 110 : 220);
+        ctx.fillStyle = "rgba(6, 12, 32, " + (0.35 + rnd() * 0.5).toFixed(2) + ")";
+        ctx.beginPath(); ctx.arc(onSplit(v) + spread, top + (bottom - top) * v + (rnd() - 0.5) * 30, 0.8 + rnd() * 2.6, 0, 6.2832); ctx.fill();
+      }
+      ctx.restore();
+
+      // bright shards, kept off the faces: along the split, down the outer edges and across the bottom of the band
+      ctx.save();
+      ctx.globalCompositeOperation = "lighter";
+      for (let i = 0; i < 170; i++) {
+        const zone = rnd();
+        let x, y, side;
+        if (zone < 0.4) { // hugging the split
+          const v = 0.1 + rnd() * 0.9; side = rnd() < 0.6 ? 1 : -1;
+          x = onSplit(v) + side * (8 + Math.pow(rnd(), 2) * 120); y = top + (bottom - top) * v;
+        } else if (zone < 0.8) { // rising from the bottom of the band
+          x = rnd() * W; side = x > splitBottom ? 1 : -1;
+          y = bottom - Math.pow(rnd(), 2.2) * 230 + 20;
+        } else { // the outer edges and the header
+          side = rnd() < 0.5 ? 1 : -1;
+          x = side > 0 ? W - rnd() * 130 : rnd() * 130; y = 30 + rnd() * (bottom - 30);
+        }
+        const gold = side > 0 ? rnd() < 0.9 : rnd() < 0.3;
+        const rgb = gold ? "255, " + Math.round(165 + rnd() * 60) + ", " + Math.round(50 + rnd() * 60) : "110, 200, 255";
+        const len = 3 + rnd() * rnd() * 20, w = 0.8 + rnd() * 2.2, ang = -0.9 + rnd() * 1.1;
+        ctx.save();
+        ctx.translate(x, y); ctx.rotate(ang);
+        ctx.shadowColor = "rgba(" + rgb + ", 0.95)"; ctx.shadowBlur = 8 + w * 3;
+        ctx.fillStyle = "rgba(" + rgb + ", " + (0.5 + rnd() * 0.45).toFixed(2) + ")";
+        ctx.beginPath(); ctx.moveTo(-len / 2, 0); ctx.lineTo(0, -w); ctx.lineTo(len / 2, 0); ctx.lineTo(0, w); ctx.closePath(); ctx.fill();
+        ctx.restore();
+      }
       ctx.restore();
     }
 
     function ball(ctx, cx, cy, r) {
+      // motion trail: streaks of light behind the ball, then a glow around it
+      ctx.save();
+      ctx.globalCompositeOperation = "lighter";
+      [[-0.55, 250, 0.55], [-0.15, 300, 0.75], [0.3, 230, 0.5]].forEach(([dy, len, a]) => {
+        const y = cy + dy * r, g = ctx.createLinearGradient(cx - len, 0, cx, 0);
+        g.addColorStop(0, "rgba(255, 200, 90, 0)"); g.addColorStop(1, "rgba(255, 215, 120, " + a + ")");
+        ctx.fillStyle = g;
+        ctx.beginPath(); ctx.moveTo(cx - len, y + 10); ctx.lineTo(cx, y - r * 0.28); ctx.lineTo(cx, y + r * 0.28); ctx.closePath(); ctx.fill();
+      });
+      const halo = ctx.createRadialGradient(cx, cy, r * 0.6, cx, cy, r * 2.3);
+      halo.addColorStop(0, "rgba(255, 215, 120, 0.6)"); halo.addColorStop(1, "rgba(255, 200, 90, 0)");
+      ctx.fillStyle = halo; ctx.fillRect(cx - r * 2.3, cy - r * 2.3, r * 4.6, r * 4.6);
+      ctx.restore();
       ctx.save();
       ctx.shadowColor = "rgba(2, 6, 20, 0.6)"; ctx.shadowBlur = 20; ctx.shadowOffsetY = 8;
       const g = ctx.createRadialGradient(cx - r * 0.35, cy - r * 0.4, r * 0.1, cx, cy, r);
-      g.addColorStop(0, "#f6d58a"); g.addColorStop(0.6, C.gold); g.addColorStop(1, "#8f6a1f");
+      g.addColorStop(0, "#fff3c4"); g.addColorStop(0.5, "#f2c14e"); g.addColorStop(1, "#a8791f");
       ctx.fillStyle = g; ctx.beginPath(); ctx.arc(cx, cy, r, 0, 6.2832); ctx.fill();
       ctx.restore();
-      ctx.fillStyle = C.navy900;
+      ctx.fillStyle = "#6b4a10";
       [[-0.45, -0.3], [0.1, -0.5], [0.5, -0.1], [-0.15, 0.05], [0.3, 0.4], [-0.5, 0.35], [-0.1, 0.6]].forEach(([dx, dy]) => {
         ctx.beginPath(); ctx.ellipse(cx + dx * r, cy + dy * r, r * 0.13, r * 0.11, 0, 0, 6.2832); ctx.fill();
       });
@@ -447,10 +524,14 @@
     // Name plate: a slanted outlined box with the name inside
     function plate(ctx, x, y, w, h, name, color) {
       ctx.save();
-      ctx.shadowColor = "rgba(2, 6, 20, 0.5)"; ctx.shadowBlur = 18; ctx.shadowOffsetY = 6;
-      ctx.fillStyle = "rgba(11, 21, 51, 0.88)";
+      const fill = ctx.createLinearGradient(0, y, 0, y + h);
+      fill.addColorStop(0, "#1c2f66"); fill.addColorStop(0.5, "#0e1a3f"); fill.addColorStop(1, "#0a1330");
+      ctx.shadowColor = color; ctx.shadowBlur = 26;
+      ctx.fillStyle = fill;
       slant(ctx, x, y, w, h, 12); ctx.fill();
       ctx.lineWidth = 4; ctx.strokeStyle = color; ctx.lineJoin = "round";
+      slant(ctx, x, y, w, h, 12); ctx.stroke();
+      ctx.shadowBlur = 0; ctx.lineWidth = 1.5; ctx.strokeStyle = "rgba(255, 255, 255, 0.7)";
       slant(ctx, x, y, w, h, 12); ctx.stroke();
       ctx.restore();
       ctx.save();
@@ -494,14 +575,18 @@
 
       // The two partners
       band(ctx, pair, photos);
+      sparks(ctx, 20261115);
 
       // Title: MATCH over a PAIRING plate, with the ball above and two swooshes around
+      ctx.save();
       ctx.lineWidth = 4;
-      ctx.strokeStyle = C.sky;
+      ctx.shadowBlur = 18;
+      ctx.shadowColor = C.sky; ctx.strokeStyle = C.sky;
       ctx.beginPath(); ctx.ellipse(W / 2 - 20, 880, 420, 92, -0.08, 2.2, 5.2); ctx.stroke();
-      ctx.strokeStyle = C.gold;
+      ctx.shadowColor = C.gold; ctx.strokeStyle = C.gold;
       ctx.beginPath(); ctx.ellipse(W / 2 + 20, 880, 420, 92, -0.08, 5.6, 8.2); ctx.stroke();
-      ball(ctx, W / 2, 748, 52);
+      ctx.restore();
+      ball(ctx, W / 2 + 6, 752, 50);
 
       ctx.save();
       ctx.translate(W / 2, 0);
@@ -513,8 +598,15 @@
       const mg = ctx.createLinearGradient(0, 780, 0, 900);
       mg.addColorStop(0, "#ffffff"); mg.addColorStop(1, C.sky200);
       ctx.fillStyle = mg; ctx.fillText("MATCH", 178, 900);
-      ctx.fillStyle = C.gold; ctx.fillRect(-60, 912, 500, 108);
-      ctx.shadowColor = "transparent"; ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
+      // PAIRING plate: polished gold with a bright top edge
+      const pg = ctx.createLinearGradient(0, 912, 0, 1020);
+      pg.addColorStop(0, "#fff0b8"); pg.addColorStop(0.18, "#f3c552"); pg.addColorStop(0.55, "#d9a441"); pg.addColorStop(1, "#9c6f1c");
+      ctx.shadowColor = "rgba(255, 200, 90, 0.55)"; ctx.shadowBlur = 34; ctx.shadowOffsetY = 0;
+      ctx.fillStyle = pg; ctx.fillRect(-60, 912, 500, 108);
+      ctx.shadowColor = "transparent"; ctx.shadowBlur = 0;
+      ctx.strokeStyle = "rgba(255, 250, 225, 0.9)"; ctx.lineWidth = 3; ctx.lineJoin = "miter";
+      ctx.strokeRect(-54, 918, 488, 96);
+      ctx.fillStyle = "rgba(255, 255, 255, 0.28)"; ctx.fillRect(-54, 918, 488, 30);
       ctx.fillStyle = C.navy900; ctx.font = "800 104px " + TECH;
       ctx.fillText("PAIRING", 192, 1003);
       ctx.restore();
@@ -523,7 +615,11 @@
       ctx.textAlign = "center"; ctx.textBaseline = "alphabetic";
       ctx.fillStyle = C.gold; ctx.font = "800 30px " + TECH;
       spaced(ctx, "POOL " + pool, W / 2, 1066, 10);
-      ctx.fillRect(W / 2 - 250, 1055, 130, 2); ctx.fillRect(W / 2 + 120, 1055, 130, 2);
+      [[W / 2 - 300, W / 2 - 120], [W / 2 + 300, W / 2 + 120]].forEach(([from, to]) => {
+        const lg = ctx.createLinearGradient(from, 0, to, 0);
+        lg.addColorStop(0, "rgba(217, 164, 65, 0)"); lg.addColorStop(1, C.gold);
+        ctx.fillStyle = lg; ctx.fillRect(Math.min(from, to), 1055, 180, 2);
+      });
 
       // Names
       plate(ctx, 96, 1092, 390, 74, pair[0][0], C.sky);
@@ -547,7 +643,7 @@
       // Venue
       ctx.font = "800 28px " + TECH; ctx.textAlign = "center"; ctx.textBaseline = "alphabetic";
       icon(ctx, "pin", W / 2 - ctx.measureText(EVENT.venue).width / 2 - 30, 1272);
-      ctx.fillStyle = C.white;
+      ctx.fillStyle = C.gold;
       ctx.fillText(EVENT.venue, W / 2, 1283);
       ctx.fillStyle = C.sky200; ctx.font = "600 19px " + SANS;
       spaced(ctx, EVENT.address, W / 2, 1318, 2);
