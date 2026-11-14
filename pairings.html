@@ -377,49 +377,57 @@
       ctx.beginPath(); ctx.moveTo(x + k, y); ctx.lineTo(x + w + k, y); ctx.lineTo(x + w - k, y + h); ctx.lineTo(x - k, y + h); ctx.closePath();
     }
 
-    // A player's photo in a slanted frame (their initials if there is no photo).
-    function portrait(ctx, x, y, w, h, img, name, color) {
-      const k = 26;
+    // The photo band: each partner fills one half, edge to edge, meeting at a slanted gold line.
+    const BAND = { top: 232, bottom: 806, splitTop: 578, splitBottom: 502 };
+
+    // One partner's half of the band (their initials if there is no photo), graded towards the poster's colours.
+    function half(ctx, side, img, name, rgb) {
+      const { top, bottom, splitTop, splitBottom } = BAND;
+      const left = side === "left";
+      const x0 = left ? 0 : splitBottom, x1 = left ? splitTop : W, bw = x1 - x0, bh = bottom - top;
       ctx.save();
-      ctx.shadowColor = "rgba(2, 6, 20, 0.6)"; ctx.shadowBlur = 40; ctx.shadowOffsetY = 16;
-      ctx.fillStyle = C.navy800;
-      slant(ctx, x, y, w, h, k); ctx.fill();
-      ctx.restore();
-      ctx.save();
-      slant(ctx, x, y, w, h, k); ctx.clip();
+      ctx.beginPath();
+      if (left) { ctx.moveTo(0, top); ctx.lineTo(splitTop, top); ctx.lineTo(splitBottom, bottom); ctx.lineTo(0, bottom); }
+      else { ctx.moveTo(splitTop, top); ctx.lineTo(W, top); ctx.lineTo(W, bottom); ctx.lineTo(splitBottom, bottom); }
+      ctx.closePath(); ctx.clip();
+      ctx.fillStyle = C.navy800; ctx.fillRect(x0, top, bw, bh);
       if (img) {
-        const s = Math.max((w + k * 2) / img.naturalWidth, h / img.naturalHeight);
-        const iw = img.naturalWidth * s, ih = img.naturalHeight * s;
-        ctx.drawImage(img, x + w / 2 - iw / 2, y + h / 2 - ih / 2, iw, ih);
+        const k = Math.max(bw / img.naturalWidth, bh / img.naturalHeight);
+        const iw = img.naturalWidth * k, ih = img.naturalHeight * k;
+        ctx.drawImage(img, x0 + (bw - iw) / 2, top - (ih - bh) * 0.3, iw, ih); // keep the top of the photo, where the face is
       } else {
         ctx.fillStyle = C.white; ctx.textAlign = "center"; ctx.textBaseline = "middle";
-        ctx.font = "800 190px " + TECH;
-        ctx.fillText(initials(name), x + w / 2, y + h / 2);
+        ctx.font = "800 210px " + TECH;
+        ctx.fillText(initials(name), x0 + bw / 2, top + bh * 0.42);
       }
-      // fade the bottom of the photo into the poster, where the title sits over it
-      const g = ctx.createLinearGradient(0, y + h * 0.62, 0, y + h);
-      g.addColorStop(0, "rgba(11, 21, 51, 0)"); g.addColorStop(1, "rgba(11, 21, 51, 0.85)");
-      ctx.fillStyle = g; ctx.fillRect(x - k, y, w + k * 2, h);
+      // Grade: a little navy over everything, a wash of the side's colour from the outer edge, darker top and bottom
+      ctx.fillStyle = "rgba(11, 21, 51, 0.16)"; ctx.fillRect(x0, top, bw, bh);
+      let g = ctx.createLinearGradient(left ? 0 : W, 0, left ? splitTop : splitBottom, 0);
+      g.addColorStop(0, "rgba(" + rgb + ", 0.42)"); g.addColorStop(0.55, "rgba(" + rgb + ", 0.1)"); g.addColorStop(1, "rgba(" + rgb + ", 0)");
+      ctx.fillStyle = g; ctx.fillRect(x0, top, bw, bh);
+      g = ctx.createLinearGradient(0, top, 0, bottom);
+      g.addColorStop(0, "rgba(11, 21, 51, 0.5)"); g.addColorStop(0.16, "rgba(11, 21, 51, 0)");
+      g.addColorStop(0.6, "rgba(11, 21, 51, 0)"); g.addColorStop(1, "rgba(11, 21, 51, 0.96)");
+      ctx.fillStyle = g; ctx.fillRect(x0, top, bw, bh);
       ctx.restore();
-      // Border: a polished gradient line, a thin inner line, and corner brackets in the other accent colour
-      const deep = color === C.gold ? "#8f6a1f" : C.blue, accent = color === C.gold ? C.sky200 : C.gold;
-      const bg = ctx.createLinearGradient(x - k, y, x + w + k, y + h);
-      bg.addColorStop(0, "#ffffff"); bg.addColorStop(0.22, color); bg.addColorStop(0.7, color); bg.addColorStop(1, deep);
-      ctx.lineJoin = "miter";
-      ctx.lineWidth = 10; ctx.strokeStyle = bg;
-      slant(ctx, x, y, w, h, k); ctx.stroke();
-      ctx.lineWidth = 2; ctx.strokeStyle = "rgba(255, 255, 255, 0.55)";
-      slant(ctx, x + 15, y + 15, w - 30, h - 30, k * (h - 30) / h); ctx.stroke();
+    }
 
-      const ux = -2 * k / Math.hypot(2 * k, h), uy = h / Math.hypot(2 * k, h); // direction of the slanted sides, going down
-      const d = 20, len = 92;
+    function band(ctx, pair, photos) {
+      const { top, bottom, splitTop, splitBottom } = BAND;
+      half(ctx, "left", photos[0], pair[0][0], "69, 180, 232");
+      half(ctx, "right", photos[1], pair[1][0], "217, 164, 65");
+      // Top edge: sky over the left half, gold over the right
+      ctx.fillStyle = C.sky; ctx.fillRect(0, top - 5, splitTop, 5);
+      ctx.fillStyle = C.gold; ctx.fillRect(splitTop, top - 5, W - splitTop, 5);
+      // The split: a gold bar with a white core, fading out at the bottom under the title
+      const g = ctx.createLinearGradient(0, top, 0, bottom);
+      g.addColorStop(0, C.gold); g.addColorStop(0.8, C.gold); g.addColorStop(1, "rgba(217, 164, 65, 0)");
       ctx.save();
-      ctx.shadowColor = "rgba(2, 6, 20, 0.5)"; ctx.shadowBlur = 10; ctx.shadowOffsetY = 4;
-      ctx.lineWidth = 9; ctx.strokeStyle = accent; ctx.lineCap = "butt";
-      let cx = x + k - d, cy = y - d; // top-left bracket
-      ctx.beginPath(); ctx.moveTo(cx + ux * len, cy + uy * len); ctx.lineTo(cx, cy); ctx.lineTo(cx + len, cy); ctx.stroke();
-      cx = x + w - k + d; cy = y + h + d; // bottom-right bracket
-      ctx.beginPath(); ctx.moveTo(cx - ux * len, cy - uy * len); ctx.lineTo(cx, cy); ctx.lineTo(cx - len, cy); ctx.stroke();
+      ctx.shadowColor = "rgba(2, 6, 20, 0.6)"; ctx.shadowBlur = 16;
+      ctx.lineCap = "butt"; ctx.strokeStyle = g; ctx.lineWidth = 12;
+      ctx.beginPath(); ctx.moveTo(splitTop, top - 5); ctx.lineTo(splitBottom, bottom); ctx.stroke();
+      ctx.shadowBlur = 0; ctx.strokeStyle = "rgba(255, 255, 255, 0.75)"; ctx.lineWidth = 2.5;
+      ctx.beginPath(); ctx.moveTo(splitTop, top - 5); ctx.lineTo(splitBottom + 6, bottom - 60); ctx.stroke();
       ctx.restore();
     }
 
@@ -485,8 +493,7 @@
       ctx.shadowBlur = 0;
 
       // The two partners
-      portrait(ctx, 76, 244, 424, 500, photos[0], pair[0][0], C.sky);
-      portrait(ctx, 580, 244, 424, 500, photos[1], pair[1][0], C.gold);
+      band(ctx, pair, photos);
 
       // Title: MATCH over a PAIRING plate, with the ball above and two swooshes around
       ctx.lineWidth = 4;
