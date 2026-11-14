@@ -206,11 +206,10 @@
         [["Landon Vergara", "landon-vergara.jpg"], ["Lynlie Ibay", "lynlie-ibay.jpg"]],
       ],
     };
-    const EVENT_DATE = "15 NOVEMBER, 2026   |   SUNDAY";
-    const EVENT_VENUE = "PICKLEBOY, HIGHWAY TURNO, DIPOLOG CITY";
+    const EVENT = { date: "15 NOVEMBER, 2026", time: "12:00 NN", day: "SUNDAY", venue: "PICKLEBOY", address: "HIGHWAY TURNO, DIPOLOG CITY, ZAMBOANGA DEL NORTE" };
 
     const W = 1080, H = 1350; // portrait 4:5, the size Facebook and Instagram like
-    const C = { navy900: "#0b1533", navy800: "#101d45", navy700: "#16295c", blue: "#1f6fae", sky: "#45b4e8", sky200: "#a9defa", gold: "#d9a441", goldDeep: "#8f6a1f", white: "#ffffff" };
+    const C = { navy900: "#0b1533", navy800: "#101d45", navy700: "#16295c", blue: "#1f6fae", sky: "#45b4e8", sky200: "#a9defa", gold: "#d9a441", white: "#ffffff" };
     const TECH = '"Oxanium", "Montserrat", sans-serif';
     const SANS = '"Montserrat", system-ui, sans-serif';
     const SERIF = '"Playfair Display", Georgia, serif';
@@ -245,14 +244,27 @@
       } else ctx.fillText(text, x, y);
     }
 
+    // The club emblem from the home page: crossed paddles behind the 5 o'clock clock, with the gold ball.
+    const PADDLE = '<rect x="-4.5" y="-24" width="9" height="52" rx="3" fill="#101d45"/><path d="M-4.5 6h9M-4.5 13h9M-4.5 20h9"/>'
+      + '<rect x="-22" y="-90" width="44" height="64" rx="19" fill="#101d45"/><rect x="-15.5" y="-83.5" width="31" height="51" rx="13" opacity="0.45"/>';
+    const EMBLEM = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(
+      '<svg xmlns="http://www.w3.org/2000/svg" width="424" height="300" viewBox="-6 -4 212 150" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round">'
+      + '<g stroke-width="2.4" transform="translate(100 108) rotate(-54)">' + PADDLE + '</g>'
+      + '<g stroke-width="2.4" transform="translate(100 108) rotate(54)">' + PADDLE + '</g>'
+      + '<g transform="translate(57 8) scale(0.86)"><circle cx="50" cy="50" r="49" fill="#0b1533" stroke="none"/><circle cx="50" cy="50" r="46" stroke-width="2.5"/>'
+      + '<circle cx="50" cy="50" r="38" stroke-width="5" stroke-linecap="butt" stroke-dasharray="1.4 18.497" stroke-dashoffset="0.7"/>'
+      + '<line x1="50" y1="50" x2="50" y2="22" stroke-width="2.5"/><line x1="50" y1="50" x2="60.5" y2="68.2" stroke-width="3.5"/><circle cx="50" cy="50" r="2.5" fill="#fff" stroke="none"/></g>'
+      + '<g transform="translate(158 124) scale(1.15)"><circle r="10" fill="#d9a441" stroke="none"/><g fill="#0b1533" stroke="none">'
+      + '<circle cx="-4" cy="-3.5" r="1.6"/><circle cx="3" cy="-5" r="1.6"/><circle cx="5" cy="2" r="1.6"/><circle cx="-2" cy="4.5" r="1.6"/><circle cx="-6" cy="2.5" r="1.3"/><circle cx="0.5" cy="-0.5" r="1.6"/></g></g></svg>');
+    const emblemReady = loadImage(EMBLEM);
+
+    // The site's jersey: navy shoulders fading into sky blue, halftone dots, and diagonal panels that split the two partners.
     function background(ctx) {
       const g = ctx.createLinearGradient(0, 0, 0, H);
       g.addColorStop(0, C.navy900); g.addColorStop(0.18, C.navy800); g.addColorStop(0.4, C.navy700);
       g.addColorStop(0.68, C.blue); g.addColorStop(1, C.sky);
-      ctx.fillStyle = g;
-      ctx.fillRect(0, 0, W, H);
+      ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
 
-      // Halftone dots through the middle, fading out at both ends
       for (let y = 12; y < H; y += 24) {
         const t = y / H;
         const a = t < 0.38 ? (t - 0.08) / 0.3 : t > 0.62 ? (0.94 - t) / 0.32 : 1;
@@ -261,132 +273,176 @@
         for (let x = 12; x < W; x += 24) { ctx.beginPath(); ctx.arc(x, y, 4.6, 0, 6.2832); ctx.fill(); }
       }
 
-      // The jersey's diagonal panels
-      ctx.fillStyle = "rgba(255, 255, 255, 0.05)";
-      ctx.beginPath(); ctx.moveTo(760, 0); ctx.lineTo(940, 0); ctx.lineTo(310, H); ctx.lineTo(130, H); ctx.fill();
-      ctx.fillStyle = "rgba(255, 255, 255, 0.04)";
-      ctx.beginPath(); ctx.moveTo(150, 0); ctx.lineTo(360, 0); ctx.lineTo(990, H); ctx.lineTo(780, H); ctx.fill();
+      // Diagonal panels: sky on the left, gold on the right, crossing behind the photos
+      ctx.fillStyle = "rgba(69, 180, 232, 0.16)";
+      ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(430, 0); ctx.lineTo(640, 520); ctx.lineTo(300, H); ctx.lineTo(0, H); ctx.fill();
+      ctx.fillStyle = "rgba(217, 164, 65, 0.07)";
+      ctx.beginPath(); ctx.moveTo(W, 0); ctx.lineTo(650, 0); ctx.lineTo(440, 520); ctx.lineTo(780, H); ctx.lineTo(W, H); ctx.fill();
+      ctx.lineWidth = 3; ctx.lineJoin = "round";
+      ctx.strokeStyle = "rgba(169, 222, 250, 0.4)";
+      ctx.beginPath(); ctx.moveTo(-20, 150); ctx.lineTo(300, 700); ctx.lineTo(-20, 1250); ctx.stroke();
+      ctx.strokeStyle = "rgba(217, 164, 65, 0.45)";
+      ctx.beginPath(); ctx.moveTo(W + 20, 150); ctx.lineTo(W - 300, 700); ctx.lineTo(W + 20, 1250); ctx.stroke();
 
-      // Darken the bottom so the details stay readable on the sky blue
-      const d = ctx.createLinearGradient(0, 820, 0, H);
-      d.addColorStop(0, "rgba(11, 21, 51, 0)"); d.addColorStop(0.45, "rgba(11, 21, 51, 0.72)"); d.addColorStop(1, "rgba(11, 21, 51, 0.9)");
-      ctx.fillStyle = d;
-      ctx.fillRect(0, 820, W, H - 820);
+      // Darken the bottom so the title and details stay readable on the sky blue
+      const d = ctx.createLinearGradient(0, 740, 0, H);
+      d.addColorStop(0, "rgba(11, 21, 51, 0)"); d.addColorStop(0.35, "rgba(11, 21, 51, 0.8)"); d.addColorStop(1, "rgba(11, 21, 51, 0.93)");
+      ctx.fillStyle = d; ctx.fillRect(0, 740, W, H - 740);
     }
 
-    function pennant(ctx, x, w, top, bottom, light, deep) {
-      const tip = 86, mid = x + w / 2;
-      const shape = () => {
-        ctx.beginPath();
-        ctx.moveTo(x, top); ctx.lineTo(x + w, top); ctx.lineTo(x + w, bottom - tip);
-        ctx.lineTo(mid, bottom); ctx.lineTo(x, bottom - tip); ctx.closePath();
-      };
-      ctx.save();
-      ctx.shadowColor = "rgba(2, 6, 20, 0.55)"; ctx.shadowBlur = 40; ctx.shadowOffsetY = 18;
-      const g = ctx.createLinearGradient(0, top, 0, bottom);
-      g.addColorStop(0, light); g.addColorStop(0.42, deep); g.addColorStop(1, C.navy900);
-      ctx.fillStyle = g;
-      shape(); ctx.fill();
-      ctx.restore();
-      ctx.lineWidth = 3; ctx.strokeStyle = "rgba(255, 255, 255, 0.28)";
-      shape(); ctx.stroke();
+    function slant(ctx, x, y, w, h, k) { // a box leaning to the right by k pixels
+      ctx.beginPath(); ctx.moveTo(x + k, y); ctx.lineTo(x + w + k, y); ctx.lineTo(x + w - k, y + h); ctx.lineTo(x - k, y + h); ctx.closePath();
     }
 
-    function badge(ctx, cx, cy, r, img, fallback, ring) {
+    // A player's photo in a slanted frame (their initials if there is no photo).
+    function portrait(ctx, x, y, w, h, img, name, color) {
+      const k = 26;
       ctx.save();
-      ctx.shadowColor = "rgba(2, 6, 20, 0.5)"; ctx.shadowBlur = 26; ctx.shadowOffsetY = 10;
-      ctx.fillStyle = img ? C.white : C.navy900;
-      ctx.beginPath(); ctx.arc(cx, cy, r, 0, 6.2832); ctx.fill();
+      ctx.shadowColor = "rgba(2, 6, 20, 0.6)"; ctx.shadowBlur = 40; ctx.shadowOffsetY = 16;
+      ctx.fillStyle = C.navy800;
+      slant(ctx, x, y, w, h, k); ctx.fill();
       ctx.restore();
+      ctx.save();
+      slant(ctx, x, y, w, h, k); ctx.clip();
       if (img) {
-        ctx.save();
-        ctx.beginPath(); ctx.arc(cx, cy, r - 6, 0, 6.2832); ctx.clip();
-        const box = (r - 6) * 2; // the photo fills the circle; tall photos keep the top, where the face is
-        const k = Math.max(box / img.naturalWidth, box / img.naturalHeight);
-        const w = img.naturalWidth * k, h = img.naturalHeight * k;
-        ctx.drawImage(img, cx - w / 2, cy - box / 2 - (h - box) * 0.25, w, h);
-        ctx.restore();
+        const s = Math.max((w + k * 2) / img.naturalWidth, h / img.naturalHeight);
+        const iw = img.naturalWidth * s, ih = img.naturalHeight * s;
+        ctx.drawImage(img, x + w / 2 - iw / 2, y + h / 2 - ih / 2, iw, ih);
       } else {
         ctx.fillStyle = C.white; ctx.textAlign = "center"; ctx.textBaseline = "middle";
-        fitText(ctx, fallback, r * 1.3, r * 0.95, 800, TECH);
-        ctx.fillText(fallback, cx, cy + r * 0.04);
+        ctx.font = "800 190px " + TECH;
+        ctx.fillText(initials(name), x + w / 2, y + h / 2);
       }
-      ctx.lineWidth = 8; ctx.strokeStyle = ring;
-      ctx.beginPath(); ctx.arc(cx, cy, r, 0, 6.2832); ctx.stroke();
+      // fade the bottom of the photo into the poster, where the title sits over it
+      const g = ctx.createLinearGradient(0, y + h * 0.62, 0, y + h);
+      g.addColorStop(0, "rgba(11, 21, 51, 0)"); g.addColorStop(1, "rgba(11, 21, 51, 0.85)");
+      ctx.fillStyle = g; ctx.fillRect(x - k, y, w + k * 2, h);
+      ctx.restore();
+      ctx.lineWidth = 8; ctx.strokeStyle = color; ctx.lineJoin = "round";
+      slant(ctx, x, y, w, h, k); ctx.stroke();
     }
 
-    // One partner: photo (or initials) with the name underneath, given names over surname.
-    function partner(ctx, x, w, name, img, accent) {
-      const mid = x + w / 2, inner = w - 56;
-      badge(ctx, mid, 452, 158, img, initials(name), accent);
-      const parts = name.trim().split(/\s+/);
-      const lines = parts.length > 1 ? [parts.slice(0, -1).join(" "), parts[parts.length - 1]] : [name];
-      ctx.textAlign = "center"; ctx.textBaseline = "alphabetic"; ctx.fillStyle = C.white;
-      ctx.shadowColor = "rgba(2, 6, 20, 0.6)"; ctx.shadowBlur = 14; ctx.shadowOffsetY = 4;
-      lines.forEach((line, i) => {
-        fitText(ctx, line.toUpperCase(), inner, 54, 800, TECH, 24);
-        ctx.fillText(line.toUpperCase(), mid, (lines.length > 1 ? 706 : 738) + i * 64);
+    function ball(ctx, cx, cy, r) {
+      ctx.save();
+      ctx.shadowColor = "rgba(2, 6, 20, 0.6)"; ctx.shadowBlur = 20; ctx.shadowOffsetY = 8;
+      const g = ctx.createRadialGradient(cx - r * 0.35, cy - r * 0.4, r * 0.1, cx, cy, r);
+      g.addColorStop(0, "#f6d58a"); g.addColorStop(0.6, C.gold); g.addColorStop(1, "#8f6a1f");
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(cx, cy, r, 0, 6.2832); ctx.fill();
+      ctx.restore();
+      ctx.fillStyle = C.navy900;
+      [[-0.45, -0.3], [0.1, -0.5], [0.5, -0.1], [-0.15, 0.05], [0.3, 0.4], [-0.5, 0.35], [-0.1, 0.6]].forEach(([dx, dy]) => {
+        ctx.beginPath(); ctx.ellipse(cx + dx * r, cy + dy * r, r * 0.13, r * 0.11, 0, 0, 6.2832); ctx.fill();
       });
-      ctx.shadowColor = "transparent"; ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
     }
 
-    function draw(canvas, pool, pair, photos) {
+    // Name plate: a slanted outlined box with the name inside
+    function plate(ctx, x, y, w, h, name, color) {
+      ctx.save();
+      ctx.shadowColor = "rgba(2, 6, 20, 0.5)"; ctx.shadowBlur = 18; ctx.shadowOffsetY = 6;
+      ctx.fillStyle = "rgba(11, 21, 51, 0.88)";
+      slant(ctx, x, y, w, h, 12); ctx.fill();
+      ctx.lineWidth = 4; ctx.strokeStyle = color; ctx.lineJoin = "round";
+      slant(ctx, x, y, w, h, 12); ctx.stroke();
+      ctx.restore();
+      ctx.save();
+      ctx.transform(1, 0, -0.14, 1, (y + h / 2) * 0.14, 0);
+      ctx.fillStyle = C.white; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+      fitText(ctx, name.toUpperCase(), w - 40, 40, 800, TECH, 20);
+      ctx.fillText(name.toUpperCase(), x + w / 2, y + h / 2 + 2);
+      ctx.restore();
+    }
+
+    // Small gold line icons for the details row; (x, y) is the icon's centre
+    function icon(ctx, kind, x, y) {
+      ctx.save();
+      ctx.strokeStyle = C.gold; ctx.fillStyle = C.gold; ctx.lineWidth = 3.4; ctx.lineJoin = "round"; ctx.lineCap = "round";
+      if (kind === "calendar") {
+        ctx.strokeRect(x - 16, y - 12, 32, 27);
+        ctx.beginPath(); ctx.moveTo(x - 16, y - 3); ctx.lineTo(x + 16, y - 3); ctx.moveTo(x - 8, y - 17); ctx.lineTo(x - 8, y - 9); ctx.moveTo(x + 8, y - 17); ctx.lineTo(x + 8, y - 9); ctx.stroke();
+      } else if (kind === "clock") {
+        ctx.beginPath(); ctx.arc(x, y, 16, 0, 6.2832); ctx.moveTo(x, y - 9); ctx.lineTo(x, y); ctx.lineTo(x + 7, y + 4); ctx.stroke();
+      } else { // pin
+        ctx.beginPath(); ctx.moveTo(x, y + 18); ctx.bezierCurveTo(x - 18, y - 2, x - 14, y - 18, x, y - 18); ctx.bezierCurveTo(x + 14, y - 18, x + 18, y - 2, x, y + 18); ctx.fill();
+        ctx.fillStyle = C.navy900; ctx.beginPath(); ctx.arc(x, y - 5, 5, 0, 6.2832); ctx.fill();
+      }
+      ctx.restore();
+    }
+
+    function draw(canvas, pool, pair, photos, emblem) {
       const ctx = canvas.getContext("2d");
       ctx.clearRect(0, 0, W, H);
       background(ctx);
 
-      // Club name
+      // Club emblem and name
+      if (emblem) ctx.drawImage(emblem, W / 2 - 78, 14, 156, 110);
       ctx.textAlign = "center"; ctx.textBaseline = "alphabetic"; ctx.fillStyle = C.white;
-      ctx.font = "500 76px " + SERIF;
-      ctx.fillText("After 5", W / 2, 108);
-      ctx.font = "500 22px " + SANS;
-      spaced(ctx, "PICKLEBALL CLUB", W / 2, 150, 10);
-      ctx.fillStyle = C.gold; ctx.fillRect(W / 2 - 150, 164, 300, 3);
-      ctx.fillStyle = C.sky200; ctx.font = "700 22px " + TECH;
-      spaced(ctx, "1ST OFFICIAL MINI TOURNAMENT", W / 2, 204, 6);
+      ctx.shadowColor = "rgba(2, 6, 20, 0.7)"; ctx.shadowBlur = 16;
+      ctx.font = "500 66px " + SERIF;
+      ctx.fillText("After 5", W / 2, 178);
+      ctx.font = "600 19px " + SANS;
+      spaced(ctx, "PICKLEBALL CLUB", W / 2, 210, 10);
+      ctx.shadowBlur = 0;
 
-      // The two partners, side by side in the same colours: they are one team
-      pennant(ctx, 60, 440, 236, 900, C.sky, C.blue);
-      pennant(ctx, 580, 440, 236, 900, C.sky, C.blue);
-      partner(ctx, 60, 440, pair[0][0], photos[0], C.gold);
-      partner(ctx, 580, 440, pair[1][0], photos[1], C.gold);
+      // The two partners
+      portrait(ctx, 76, 244, 424, 500, photos[0], pair[0][0], C.sky);
+      portrait(ctx, 580, 244, 424, 500, photos[1], pair[1][0], C.gold);
 
-      // The "&" that joins them
-      ctx.save();
-      ctx.shadowColor = "rgba(2, 6, 20, 0.6)"; ctx.shadowBlur = 24; ctx.shadowOffsetY = 8;
-      ctx.fillStyle = C.navy900;
-      ctx.beginPath(); ctx.arc(W / 2, 452, 62, 0, 6.2832); ctx.fill();
-      ctx.restore();
-      ctx.lineWidth = 5; ctx.strokeStyle = C.gold;
-      ctx.beginPath(); ctx.arc(W / 2, 452, 62, 0, 6.2832); ctx.stroke();
-      ctx.fillStyle = C.white; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.font = "500 70px " + SERIF;
-      ctx.fillText("&", W / 2, 456);
+      // Title: MATCH over a PAIRING plate, with the ball above and two swooshes around
+      ctx.lineWidth = 4;
+      ctx.strokeStyle = C.sky;
+      ctx.beginPath(); ctx.ellipse(W / 2 - 20, 880, 420, 92, -0.08, 2.2, 5.2); ctx.stroke();
+      ctx.strokeStyle = C.gold;
+      ctx.beginPath(); ctx.ellipse(W / 2 + 20, 880, 420, 92, -0.08, 5.6, 8.2); ctx.stroke();
+      ball(ctx, W / 2, 748, 52);
 
-      // POOL A, slanted like a sports poster
       ctx.save();
       ctx.translate(W / 2, 0);
-      ctx.transform(1, 0, -0.18, 1, 0, 0);
-      ctx.textBaseline = "alphabetic"; ctx.textAlign = "left";
-      ctx.lineJoin = "round";
-      ctx.shadowColor = "rgba(2, 6, 20, 0.65)"; ctx.shadowBlur = 22; ctx.shadowOffsetY = 10;
-      ctx.font = "800 190px " + TECH;
-      const pw = ctx.measureText("POOL ").width, lw = ctx.measureText(pool).width;
-      const x0 = -(pw + lw) / 2 + 190;
-      ctx.lineWidth = 14; ctx.strokeStyle = C.navy900;
-      ctx.strokeText("POOL", x0, 1090);
-      ctx.fillStyle = C.white; ctx.fillText("POOL", x0, 1090);
-      ctx.strokeText(pool, x0 + pw, 1090);
-      ctx.fillStyle = C.gold; ctx.fillText(pool, x0 + pw, 1090);
+      ctx.transform(1, 0, -0.2, 1, 0, 0);
+      ctx.textAlign = "center"; ctx.textBaseline = "alphabetic"; ctx.lineJoin = "round";
+      ctx.font = "800 172px " + TECH;
+      ctx.shadowColor = "rgba(2, 6, 20, 0.8)"; ctx.shadowBlur = 20; ctx.shadowOffsetY = 10;
+      ctx.lineWidth = 16; ctx.strokeStyle = C.navy900; ctx.strokeText("MATCH", 178, 900);
+      const mg = ctx.createLinearGradient(0, 780, 0, 900);
+      mg.addColorStop(0, "#ffffff"); mg.addColorStop(1, C.sky200);
+      ctx.fillStyle = mg; ctx.fillText("MATCH", 178, 900);
+      ctx.fillStyle = C.gold; ctx.fillRect(-60, 912, 500, 108);
+      ctx.shadowColor = "transparent"; ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
+      ctx.fillStyle = C.navy900; ctx.font = "800 104px " + TECH;
+      ctx.fillText("PAIRING", 192, 1003);
       ctx.restore();
 
+      // Pool
       ctx.textAlign = "center"; ctx.textBaseline = "alphabetic";
-      ctx.fillStyle = C.sky200; ctx.font = "700 26px " + TECH;
-      spaced(ctx, "OFFICIAL DOUBLES PAIRING", W / 2, 1168, 6);
+      ctx.fillStyle = C.gold; ctx.font = "800 30px " + TECH;
+      spaced(ctx, "POOL " + pool, W / 2, 1066, 10);
+      ctx.fillRect(W / 2 - 250, 1055, 130, 2); ctx.fillRect(W / 2 + 120, 1055, 130, 2);
+
+      // Names
+      plate(ctx, 96, 1092, 390, 74, pair[0][0], C.sky);
+      plate(ctx, 594, 1092, 390, 74, pair[1][0], C.gold);
+      ctx.fillStyle = C.white; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.font = "500 56px " + SERIF;
+      ctx.fillText("&", W / 2, 1131);
+
+      // Date | call time | day
+      ctx.font = "700 27px " + TECH; ctx.textBaseline = "middle"; ctx.textAlign = "left";
+      const bits = [["calendar", EVENT.date], ["clock", EVENT.time], ["calendar", EVENT.day]];
+      const gap = 44, iw = 50;
+      const widths = bits.map((b) => iw + ctx.measureText(b[1]).width);
+      let x = (W - widths.reduce((a, b) => a + b, 0) - gap * 2 * (bits.length - 1)) / 2;
+      bits.forEach((b, i) => {
+        icon(ctx, b[0], x + 17, 1218);
+        ctx.fillStyle = C.white; ctx.fillText(b[1], x + iw, 1220);
+        x += widths[i] + gap;
+        if (i < bits.length - 1) { ctx.fillStyle = "rgba(255, 255, 255, 0.6)"; ctx.fillRect(x, 1202, 2, 34); x += gap; }
+      });
+
+      // Venue
+      ctx.font = "800 28px " + TECH; ctx.textAlign = "center"; ctx.textBaseline = "alphabetic";
+      icon(ctx, "pin", W / 2 - ctx.measureText(EVENT.venue).width / 2 - 30, 1272);
       ctx.fillStyle = C.white;
-      fitText(ctx, EVENT_DATE, 940, 34, 700, TECH, 20);
-      ctx.fillText(EVENT_DATE, W / 2, 1238);
-      fitText(ctx, EVENT_VENUE, 940, 24, 600, SANS, 16);
-      ctx.fillText(EVENT_VENUE, W / 2, 1288);
+      ctx.fillText(EVENT.venue, W / 2, 1283);
+      ctx.fillStyle = C.sky200; ctx.font = "600 19px " + SANS;
+      spaced(ctx, EVENT.address, W / 2, 1318, 2);
     }
 
     /* ---------- Page ---------- */
@@ -411,8 +467,8 @@
       fig.className = "poster";
       fig.append(canvas, cap);
 
-      Promise.all(pair.map((p) => loadImage(p[1] ? PHOTO_DIR + p[1] : null)))
-        .then((photos) => draw(canvas, pool, pair, photos));
+      Promise.all([emblemReady, ...pair.map((p) => loadImage(p[1] ? PHOTO_DIR + p[1] : null))])
+        .then(([emblem, ...photos]) => draw(canvas, pool, pair, photos, emblem));
 
       btn.addEventListener("click", () => {
         btn.disabled = true;

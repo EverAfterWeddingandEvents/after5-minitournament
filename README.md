@@ -47,7 +47,7 @@ You can also see the raw data in Supabase under **Table Editor → members** and
 
 `pairings.html` shows a poster for each doubles pair, grouped by pool: the two partners' photos and names, their pool, the date and the venue. Each poster has a **Save image** button that downloads it as a picture (1080 × 1350, ready for Facebook or Messenger). The home page links to it under the Join button and in the footer.
 
-The pairs are typed into the `POOLS` list near the top of the script in `pairings.html`. To change a pair or a pool, edit that list. To give a player a photo, put the picture in `assets/players/` and add its file name after their name, e.g. `["Riza Vergara", "riza-vergara.jpg"]`; a player with no photo gets their initials instead.
+Each poster follows the site branding (navy, sky blue and gold) with a "Match Pairing" title. The pairs are typed into the `POOLS` list near the top of the script in `pairings.html`. To change a pair or a pool, edit that list. To give a player a photo, put the picture in `assets/players/` and add its file name after their name, e.g. `["Riza Vergara", "riza-vergara.jpg"]`; a player with no photo gets their initials instead.
 
 ## Background music
 
