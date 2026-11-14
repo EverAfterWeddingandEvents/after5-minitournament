@@ -234,6 +234,19 @@
     const SANS = '"Montserrat", system-ui, sans-serif';
     const SERIF = '"Playfair Display", Georgia, serif';
 
+    // The club emblem from the home page: crossed paddles behind the 5 o'clock clock, with the gold ball.
+    const PADDLE = '<rect x="-4.5" y="-24" width="9" height="52" rx="3" fill="#101d45"/><path d="M-4.5 6h9M-4.5 13h9M-4.5 20h9"/>'
+      + '<rect x="-22" y="-90" width="44" height="64" rx="19" fill="#101d45"/><rect x="-15.5" y="-83.5" width="31" height="51" rx="13" opacity="0.45"/>';
+    const EMBLEM = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(
+      '<svg xmlns="http://www.w3.org/2000/svg" width="424" height="300" viewBox="-6 -4 212 150" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round">'
+      + '<g stroke-width="2.4" transform="translate(100 108) rotate(-54)">' + PADDLE + '</g>'
+      + '<g stroke-width="2.4" transform="translate(100 108) rotate(54)">' + PADDLE + '</g>'
+      + '<g transform="translate(57 8) scale(0.86)"><circle cx="50" cy="50" r="49" fill="#0b1533" stroke="none"/><circle cx="50" cy="50" r="46" stroke-width="2.5"/>'
+      + '<circle cx="50" cy="50" r="38" stroke-width="5" stroke-linecap="butt" stroke-dasharray="1.4 18.497" stroke-dashoffset="0.7"/>'
+      + '<line x1="50" y1="50" x2="50" y2="22" stroke-width="2.5"/><line x1="50" y1="50" x2="60.5" y2="68.2" stroke-width="3.5"/><circle cx="50" cy="50" r="2.5" fill="#fff" stroke="none"/></g>'
+      + '<g transform="translate(158 124) scale(1.15)"><circle r="10" fill="#d9a441" stroke="none"/><g fill="#0b1533" stroke="none">'
+      + '<circle cx="-4" cy="-3.5" r="1.6"/><circle cx="3" cy="-5" r="1.6"/><circle cx="5" cy="2" r="1.6"/><circle cx="-2" cy="4.5" r="1.6"/><circle cx="-6" cy="2.5" r="1.3"/><circle cx="0.5" cy="-0.5" r="1.6"/></g></g></svg>');
+
     function loadImage(src) {
       return new Promise((resolve) => {
         const img = new Image();
@@ -362,28 +375,29 @@
       ctx.fillRect(90, y, W - 180, 1.5);
     }
 
-    function draw(canvas) {
+    function draw(canvas, emblem) {
       const ctx = canvas.getContext("2d");
       background(ctx);
 
       // Club and event
+      if (emblem) ctx.drawImage(emblem, W / 2 - 75, 4, 150, 106);
       ctx.textAlign = "center"; ctx.textBaseline = "alphabetic"; ctx.fillStyle = C.white;
-      ctx.font = "500 64px " + SERIF;
-      ctx.fillText("After 5", W / 2, 84);
-      ctx.font = "500 19px " + SANS;
-      spaced(ctx, "PICKLEBALL CLUB", W / 2, 118, 9);
-      ctx.fillStyle = C.gold; ctx.fillRect(W / 2 - 132, 130, 264, 3);
-      ctx.fillStyle = C.white; ctx.font = "700 28px " + TECH;
-      spaced(ctx, "1ST OFFICIAL MINI TOURNAMENT", W / 2, 174, 4);
-      ctx.fillStyle = C.sky200; ctx.font = "600 18px " + SANS;
-      spaced(ctx, "NOVEMBER 15, 2026  •  SUNDAY  •  PICKLEBOY, DIPOLOG CITY", W / 2, 204, 2);
+      ctx.font = "500 58px " + SERIF;
+      ctx.fillText("After 5", W / 2, 160);
+      ctx.font = "500 18px " + SANS;
+      spaced(ctx, "PICKLEBALL CLUB", W / 2, 190, 9);
+      ctx.fillStyle = C.gold; ctx.fillRect(W / 2 - 126, 201, 252, 3);
+      ctx.fillStyle = C.white; ctx.font = "700 27px " + TECH;
+      spaced(ctx, "1ST OFFICIAL MINI TOURNAMENT", W / 2, 240, 4);
+      ctx.fillStyle = C.sky200; ctx.font = "600 17px " + SANS;
+      spaced(ctx, "NOVEMBER 15, 2026  •  SUNDAY  •  PICKLEBOY, DIPOLOG CITY", W / 2, 268, 2);
 
       // Section title
-      ctx.fillStyle = C.sky200; ctx.font = "700 36px " + TECH;
-      spaced(ctx, "TOURNAMENT PARTNERS", W / 2, 268, 9);
-      ctx.fillStyle = C.gold; ctx.fillRect(W / 2 - 34, 282, 68, 3);
+      ctx.fillStyle = C.sky200; ctx.font = "700 34px " + TECH;
+      spaced(ctx, "TOURNAMENT PARTNERS", W / 2, 322, 9);
+      ctx.fillStyle = C.gold; ctx.fillRect(W / 2 - 34, 335, 68, 3);
 
-      let y = 330;
+      let y = 376;
       heading(ctx, "Title Tournament Partner", "PLATINUM", C.white, y);
       y = row(ctx, TIERS.platinum, y + 24, 146, 420, "600 21px " + SANS, 26, "rgba(255, 255, 255, 0.85)");
 
@@ -417,7 +431,7 @@
 
       // Powered By: label, wide logo and name on one line
       divider(ctx, y + 20);
-      y += 40;
+      y += 36;
       const pb = TIERS.poweredBy[0], th = 84, tw = th * 2.4;
       ctx.font = "700 25px " + SANS;
       const lw = ctx.measureText("Powered By").width;
@@ -437,11 +451,12 @@
       const save = document.getElementById("save");
       const all = Object.values(TIERS).flat();
       const fonts = ['700 30px "Oxanium"', '500 70px "Playfair Display"', '500 20px "Montserrat"', '600 20px "Montserrat"', '700 25px "Montserrat"'];
-      await Promise.all([
+      const [emblem] = await Promise.all([
+        loadImage(EMBLEM),
         ...all.filter((s) => s.img).map(async (s) => { s.image = await loadImage(DIR + s.img); }),
         document.fonts ? Promise.all(fonts.map((f) => document.fonts.load(f))).catch(() => { }) : null,
       ]);
-      draw(canvas);
+      draw(canvas, emblem);
       save.disabled = false;
 
       save.addEventListener("click", () => {
