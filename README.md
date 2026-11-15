@@ -8,6 +8,7 @@ A one-page site for the 1st Official Mini Tournament. "Join the Club" opens the 
 - `pairings.html` — the Pairings posters, one per doubles pair, grouped by pool
 - The **Tournament Partners poster** (all sponsors by tier) lives on `admin.html`, under **Partners poster** in the sidebar, with a **Save image** button — visitors don't see it. Its sponsor list is in the script of `admin.html`; when you add, remove or rename a sponsor in `index.html`, make the same change there
 - `live.html` — live schedule, scores and standings (with small player photos from `assets/players/thumbs/`), read from the officials' PDLStack tournament page (see "Live scores" below)
+- `rules.html` — the tournament house rules (plain text in the page; edit it there)
 - `admin.html` — the officers' page: registrations and the partners poster
 - `supabase/setup.sql` — creates the members table and the team logo storage
 
@@ -58,7 +59,7 @@ The tournament it reads is set by `TOURNAMENT` near the top of the script in `li
 
 ## Background music
 
-`assets/music.mp3` plays on the home, Pairings and Live pages (not the admin page). It starts the first time a visitor clicks, taps or presses a key (browsers don't allow music to start before that), and carries on from the same point in the song when they move to another page. The music button in the bottom-right corner pauses and resumes it; once paused it stays paused on the other pages too. To change the song, replace that file and keep the name. If the file is removed, the button disappears. The player is `assets/music.js`.
+`assets/music.mp3` plays on the home, Pairings, Live and House Rules pages (not the admin page). It starts the first time a visitor clicks, taps or presses a key (browsers don't allow music to start before that), and carries on from the same point in the song when they move to another page. The music button in the bottom-right corner pauses and resumes it; once paused it stays paused on the other pages too. To change the song, replace that file and keep the name. If the file is removed, the button disappears. The player is `assets/music.js`.
 
 ## Share a link that opens the form
 

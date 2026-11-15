@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>House Rules — After 5 Pickleball Club Mini Tournament</title>
+  <meta name="description" content="House rules for the After 5 Pickleball Club 1st Official Mini Tournament.">
+  <meta name="theme-color" content="#0b1533">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/favicon-48.png" sizes="48x48" type="image/png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Oxanium:wght@500;700;800&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy-900: #0b1533;
+      --navy-800: #101d45;
+      --navy-700: #16295c;
+      --blue-500: #1f6fae;
+      --sky-400: #45b4e8;
+      --sky-200: #a9defa;
+      --white: #ffffff;
+      --muted: #b9c8e6;
+      --gold: #d9a441;
+      --panel: rgba(9, 18, 46, 0.78);
+      --line: rgba(169, 222, 250, 0.22);
+      --serif: "Playfair Display", Georgia, serif;
+      --sans: "Montserrat", system-ui, -apple-system, "Segoe UI", sans-serif;
+      --tech: "Oxanium", "Montserrat", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+
+    body {
+      margin: 0;
+      font-family: var(--sans);
+      color: var(--white);
+      background: var(--navy-900);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection { color: var(--navy-900); background: var(--sky-200); }
+    :focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+
+    /* Same jersey as the home page: navy shoulders fading into sky blue, halftone dots, diagonal panels */
+    .jersey {
+      position: relative;
+      overflow: clip; /* clip, not hidden, so the navigation bar can stay stuck to the top */
+      min-height: 100vh;
+      background: linear-gradient(180deg, var(--navy-900) 0%, var(--navy-800) 18%, var(--navy-700) 40%, var(--blue-500) 68%, var(--sky-400) 100%);
+    }
+    .jersey::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(8, 16, 42, 0.75) 32%, transparent 34%);
+      background-size: 18px 18px;
+      -webkit-mask-image: linear-gradient(180deg, transparent 8%, #000 38%, #000 62%, transparent 94%);
+              mask-image: linear-gradient(180deg, transparent 8%, #000 38%, #000 62%, transparent 94%);
+      pointer-events: none;
+    }
+    .jersey::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(115deg, transparent 55%, rgba(255, 255, 255, 0.05) 55%, rgba(255, 255, 255, 0.05) 70%, transparent 70%),
+        linear-gradient(245deg, transparent 62%, rgba(255, 255, 255, 0.04) 62%, rgba(255, 255, 255, 0.04) 80%, transparent 80%);
+      pointer-events: none;
+    }
+
+    .wrap { position: relative; z-index: 1; width: 100%; max-width: 980px; margin: 0 auto; padding: 0 16px; }
+
+    header { padding: 40px 0 26px; text-align: center; }
+    .wordmark { margin: 0; font: 500 2.4rem/1 var(--serif); }
+    .club {
+      display: inline-block;
+      margin: 8px -0.42em 0 0;
+      padding-bottom: 7px;
+      font-size: 0.74rem;
+      font-weight: 500;
+      letter-spacing: 0.42em;
+      border-bottom: 2px solid var(--gold);
+    }
+    h1 {
+      margin: 22px 0 0;
+      font: 800 clamp(2.4rem, 9vw, 4rem)/1 var(--tech);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-style: italic;
+    }
+    h1 span { color: var(--gold); }
+    .lede { max-width: 520px; margin: 12px auto 0; font-size: 0.95rem; color: var(--muted); text-wrap: pretty; }
+
+    /* ---------- House Rules page ---------- */
+    header { padding: 26px 0 30px; }
+    .emblem { display: block; width: 150px; height: auto; margin: 0 auto 6px; overflow: visible; }
+    .emblem .paddle rect, .emblem .paddle path { stroke-width: 2.4; }
+    .emblem .paddle > rect:first-child, .emblem .paddle > rect:nth-of-type(2) { fill: #101d45; }
+    .emblem .ball { transform-box: fill-box; transform-origin: center; }
+    body.music-on .emblem .ball { animation: bounce 0.6s cubic-bezier(0.33, 0, 0.2, 1) infinite alternate; }
+    @keyframes bounce { from { translate: 0 0; } to { translate: 0 -9px; } }
+
+    main.wrap { max-width: 760px; }
+    .rules { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
+    .rule { display: flex; gap: 16px; padding: 18px; background: var(--panel); border: 1px solid var(--line); border-radius: 16px; }
+    .num { flex: none; display: grid; place-items: center; width: 44px; height: 44px; font: 800 1.3rem var(--tech); color: var(--navy-900); background: linear-gradient(180deg, #f3c552, var(--gold)); border-radius: 50%; }
+    .rule h2 { margin: 0 0 6px; font: 800 1.02rem/1.3 var(--tech); letter-spacing: 0.08em; text-transform: uppercase; color: var(--sky-200); }
+    .rule p { margin: 0; font-size: 0.96rem; text-wrap: pretty; }
+
+    .closing { margin: 28px 0 0; padding: 26px 18px; text-align: center; background: var(--panel); border: 1px solid rgba(217, 164, 65, 0.6); border-radius: 16px; }
+    .closing .creed { margin: 0; font: 500 1.35rem/1.4 var(--serif); }
+    .closing .luck { margin: 12px 0 0; font-size: 0.96rem; }
+    .closing .motto { margin: 18px 0 0; font: 800 1.15rem/1.3 var(--tech); letter-spacing: 0.1em; color: var(--gold); }
+
+    .btn-ghost { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 10px 18px; font: 700 0.78rem var(--sans); letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; color: var(--white); background: rgba(11, 21, 51, 0.82); border: 1px solid var(--line); border-radius: 999px; }
+    .btn-ghost:hover { background: var(--navy-900); }
+    footer { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; padding: 30px 16px calc(40px + env(safe-area-inset-bottom)); }
+    @media (prefers-reduced-motion: reduce) { body.music-on .emblem .ball { animation: none; } }
+    /* ---------- Navigation bar (the same on the Pairings and Live pages) ---------- */
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 6;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      min-height: 56px;
+      padding: 6px max(14px, calc((100% - 1100px) / 2));
+      padding-top: calc(6px + env(safe-area-inset-top));
+      background: rgba(11, 21, 51, 0.92);
+      -webkit-backdrop-filter: blur(10px);
+              backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+    .site-nav .brand { display: inline-flex; align-items: center; min-height: 44px; font: 500 1.35rem/1 var(--serif); color: var(--white); text-decoration: none; white-space: nowrap; }
+    .site-nav .links { display: flex; gap: 2px; }
+    .site-nav .links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      min-height: 44px;
+      padding: 8px 10px;
+      font: 700 0.72rem var(--sans);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--white);
+      border-radius: 999px;
+    }
+    .site-nav .links a:hover { background: rgba(255, 255, 255, 0.1); }
+    .site-nav .links a[aria-current="page"] { color: var(--navy-900); background: linear-gradient(180deg, #ffffff, var(--sky-200)); }
+    @media (min-width: 560px) { .site-nav .links a { padding: 8px 16px; font-size: 0.78rem; } }
+  </style>
+</head>
+
+<body>
+  <div class="jersey">
+    <nav class="site-nav" aria-label="Site">
+      <a class="brand" href="./" aria-label="After 5 Pickleball Club, home">After 5</a>
+      <div class="links">
+        <a href="./">Home</a>
+        <a href="pairings.html">Pairings</a>
+        <a href="live.html">Live</a>
+        <a href="rules.html" aria-current="page">Rules</a>
+      </div>
+    </nav>
+    <header class="wrap">
+      <svg class="emblem" viewBox="0 0 200 142" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <!-- Crossed paddles behind the club clock, as on the poster -->
+        <g class="paddle" transform="translate(100 108) rotate(-54)">
+          <rect x="-4.5" y="-24" width="9" height="52" rx="3" />
+          <path d="M-4.5 6h9M-4.5 13h9M-4.5 20h9" stroke-width="1.4" />
+          <rect x="-22" y="-90" width="44" height="64" rx="19" />
+          <rect x="-15.5" y="-83.5" width="31" height="51" rx="13" stroke-width="1.2" opacity="0.45" />
+        </g>
+        <g class="paddle" transform="translate(100 108) rotate(54)">
+          <rect x="-4.5" y="-24" width="9" height="52" rx="3" />
+          <path d="M-4.5 6h9M-4.5 13h9M-4.5 20h9" stroke-width="1.4" />
+          <rect x="-22" y="-90" width="44" height="64" rx="19" />
+          <rect x="-15.5" y="-83.5" width="31" height="51" rx="13" stroke-width="1.2" opacity="0.45" />
+        </g>
+        <g transform="translate(57 8) scale(0.86)">
+          <circle cx="50" cy="50" r="49" fill="#0b1533" stroke="none" />
+          <circle cx="50" cy="50" r="46" stroke-width="2.5" />
+          <circle cx="50" cy="50" r="38" stroke-width="5" stroke-linecap="butt" stroke-dasharray="1.4 18.497" stroke-dashoffset="0.7" />
+          <line x1="50" y1="50" x2="50" y2="22" stroke-width="2.5" />
+          <line x1="50" y1="50" x2="60.5" y2="68.2" stroke-width="3.5" />
+          <circle cx="50" cy="50" r="2.5" fill="#fff" stroke="none" />
+        </g>
+        <g class="ball" transform="translate(158 124) scale(1.15)">
+          <circle r="10" fill="#d9a441" stroke="none" />
+          <g fill="#0b1533" stroke="none">
+            <circle cx="-4" cy="-3.5" r="1.6" /><circle cx="3" cy="-5" r="1.6" /><circle cx="5" cy="2" r="1.6" />
+            <circle cx="-2" cy="4.5" r="1.6" /><circle cx="-6" cy="2.5" r="1.3" /><circle cx="0.5" cy="-0.5" r="1.6" />
+          </g>
+        </g>
+      </svg>
+      <p class="wordmark">After 5</p>
+      <span class="club">PICKLEBALL CLUB</span>
+      <h1>House <span>Rules</span></h1>
+      <p class="lede">For every player in the 1st Official Mini Tournament. Please read them before your first game.</p>
+    </header>
+
+    <main class="wrap">
+      <ol class="rules">
+        <li class="rule">
+          <span class="num" aria-hidden="true">1</span>
+          <div>
+            <h2>Official Pairing &amp; Game Schedule</h2>
+            <p>All players must follow their assigned partners, match schedules, and court assignments. Please be ready when your names are called to avoid delays.</p>
+          </div>
+        </li>
+        <li class="rule">
+          <span class="num" aria-hidden="true">2</span>
+          <div>
+            <h2>Game Rules &amp; Scoring</h2>
+            <p>All matches shall follow the tournament mechanics and scoring system established by our Games &amp; Tournament Committee. The assigned umpires will guide and officiate each match.</p>
+          </div>
+        </li>
+        <li class="rule">
+          <span class="num" aria-hidden="true">3</span>
+          <div>
+            <h2>Respect the Umpires</h2>
+            <p>Please respect the umpires’ decisions. Any concerns or clarifications should be raised respectfully through the proper tournament officials. Let’s avoid unnecessary arguments.</p>
+          </div>
+        </li>
+        <li class="rule">
+          <span class="num" aria-hidden="true">4</span>
+          <div>
+            <h2>Fair Play &amp; Sportsmanship</h2>
+            <p>No intentional distractions, offensive language, or unsportsmanlike behavior. Whether winning or losing, always treat your partners, opponents, and officials with respect.</p>
+          </div>
+        </li>
+        <li class="rule">
+          <span class="num" aria-hidden="true">5</span>
+          <div>
+            <h2>One Player, One Paddle</h2>
+            <p>In accordance with our club policy, we strictly observe one (1) paddle per player.</p>
+          </div>
+        </li>
+        <li class="rule">
+          <span class="num" aria-hidden="true">6</span>
+          <div>
+            <h2>Safety &amp; Hydration</h2>
+            <p>Stay hydrated, be mindful of your surroundings, and report any injuries or discomfort immediately. Water is available for everyone through our official water sponsor, Nature’s Spring.</p>
+          </div>
+        </li>
+        <li class="rule">
+          <span class="num" aria-hidden="true">7</span>
+          <div>
+            <h2>Enjoy the Game!</h2>
+            <p>Remember, this is our very first official club tournament. Winning is exciting, but friendship, teamwork, and sportsmanship are what make After 5 special.</p>
+          </div>
+        </li>
+      </ol>
+
+      <div class="closing">
+        <p class="creed">Compete with passion. Play with respect. Celebrate as one club.</p>
+        <p class="luck">Good luck to all our players, and may the best teams win!</p>
+        <p class="motto">ONE CLUB. ONE PASSION. ONE AFTER 5!</p>
+      </div>
+    </main>
+
+    <footer class="wrap">
+      <a class="btn-ghost" href="pairings.html">Pairings</a>
+      <a class="btn-ghost" href="live.html">Live scores</a>
+      <a class="btn-ghost" href="./">Tournament page</a>
+    </footer>
+  </div>
+
+  <script src="assets/music.js" defer></script>
+</body>
+
+</html>
