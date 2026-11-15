@@ -53,7 +53,7 @@ Each poster follows the site branding (navy, sky blue and gold) with a "Match Pa
 
 ## Live scores
 
-`live.html` shows the standings for each pool, every pool game and the playoff games, with scores as they are entered. The officials run the tournament on PDLStack; this page reads PDLStack's public data for the tournament in the visitor's browser and refreshes every 30 seconds, so nothing on this site needs updating during the event.
+`live.html` shows the standings for each pool, every pool game and the playoff bracket (quarterfinals to final, plus the match for 3rd), with scores as they are entered. Once the final and the match for 3rd are decided it names the Champion and the two runners-up. The officials run the tournament on PDLStack; this page reads PDLStack's public data for the tournament in the visitor's browser and refreshes every 30 seconds, so nothing on this site needs updating during the event.
 
 The tournament it reads is set by `TOURNAMENT` near the top of the script in `live.html` (the code in the PDLStack link, `pdlstack.com/t/<code>/`). If PDLStack is unreachable, the page says so and links to the officials' page instead.
 

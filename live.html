@@ -175,6 +175,37 @@
     .side.lost .name { color: var(--muted); }
     .empty { grid-column: 1 / -1; padding: 22px 16px; text-align: center; font-size: 0.9rem; color: var(--muted); border: 1px dashed var(--line); border-radius: 14px; }
 
+    /* Playoff bracket: one column per round; scrolls sideways on phones */
+    .bracket-scroll { overflow-x: auto; margin: 0 -16px; padding: 4px 16px 14px; -webkit-overflow-scrolling: touch; }
+    .bracket { position: relative; display: grid; grid-template-columns: repeat(var(--rounds, 3), minmax(250px, 1fr)); gap: 0 44px; min-width: calc(var(--rounds, 3) * 250px + (var(--rounds, 3) - 1) * 44px); }
+    .bracket svg.lines { position: absolute; inset: 0; pointer-events: none; overflow: visible; }
+    .bracket svg.lines path { fill: none; stroke: rgba(169, 222, 250, 0.45); stroke-width: 2; }
+    .bracket svg.lines path.on { stroke: var(--gold); stroke-width: 2.5; }
+    .round { display: flex; flex-direction: column; min-width: 0; }
+    .round > h3, .third h3 { margin: 0 0 10px; font: 800 0.82rem var(--tech); letter-spacing: 0.16em; text-transform: uppercase; text-align: center; color: var(--gold); }
+    .slots { flex: 1; display: flex; flex-direction: column; justify-content: space-around; gap: 14px; }
+    .slots.with-third { display: grid; grid-template-rows: 1fr auto 1fr; }
+    .third { align-self: end; }
+    .third h3 { margin-top: 14px; color: var(--sky-200); }
+    .bm { position: relative; padding: 10px 12px; }
+    .bm .side .name { font-size: 0.84rem; }
+    .bm .side .score { font-size: 1.15rem; }
+    .bm .faces img { width: 28px; height: 28px; }
+    .swipe { display: none; margin: 0 0 8px; font-size: 0.78rem; text-align: center; color: var(--white); }
+    @media (max-width: 859px) { .swipe { display: block; } }
+
+    .podium { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; margin: 0 0 20px; }
+    .place { padding: 14px; text-align: center; }
+    .place:only-child { grid-column: 1 / -1; width: 100%; max-width: 340px; justify-self: center; }
+    .place.champ { border-color: var(--gold); background: linear-gradient(180deg, rgba(217, 164, 65, 0.22), var(--panel)); }
+    .place-title { margin: 0 0 8px; font: 800 0.8rem var(--tech); letter-spacing: 0.18em; text-transform: uppercase; color: var(--sky-200); }
+    .place.champ .place-title { color: var(--gold); font-size: 0.95rem; }
+    .place .faces img { width: 46px; height: 46px; }
+    .place.champ .faces img { width: 58px; height: 58px; }
+    .place-names { margin: 8px 0 0; font-weight: 700; line-height: 1.35; }
+    .place-names span { display: block; }
+    @media (min-width: 720px) { .podium { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: end; } .place.champ { order: 2; } .place:not(.champ):first-of-type, .place.champ + .place { order: 1; } .place:last-child:not(.champ) { order: 3; } }
+
     .btn-ghost { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 10px 18px; font: 700 0.78rem var(--sans); letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; color: var(--white); background: rgba(11, 21, 51, 0.82); border: 1px solid var(--line); border-radius: 999px; }
     .btn-ghost:hover { background: var(--navy-900); }
     footer { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; padding: 10px 16px calc(40px + env(safe-area-inset-bottom)); }
@@ -296,7 +327,9 @@
 
       <section id="playoffs" aria-labelledby="h-playoffs">
         <h2 id="h-playoffs"><b>Play<span>offs</span></b></h2>
-        <div class="games" id="finals"></div>
+        <div id="podium"></div>
+        <p class="swipe">Swipe sideways to see the whole bracket.</p>
+        <div id="finals"></div>
       </section>
 
       <p class="credit">Scores come from the officials' <a href="https://pdlstack.com/t/mweqtldbkz1exbl0rr/" target="_blank" rel="noopener">PDLStack tournament page</a>.</p>
@@ -386,6 +419,107 @@
       return card;
     }
 
+    /* ---------- Playoff bracket ---------- */
+    const roundName = (left, size) => left === 1 ? "Final" : left === 2 ? "Semifinals" : left === 3 ? "Quarterfinals" : "Round of " + size * 2;
+
+    function bracketMatch(m, names, feeders) {
+      const side = winnerSide(m), scored = hasScore(m);
+      const row = (id, seed, score, n, from) => {
+        const name = id && names[id];
+        const waiting = from ? "Winner of G" + from : seedLabel(seed);
+        return el("div", { className: "side" + (side ? (side === n ? " won" : " lost") : "") },
+          el("span", { className: "who" }, name ? faces(name) : null,
+            el("span", { className: "name" + (name ? "" : " tbd"), textContent: name || waiting })),
+          el("span", { className: "score", textContent: showScore(score) }));
+      };
+      const when = [fmtTime(m.scheduledStartTime), m.scheduledCourt].filter(Boolean).join(" · ");
+      const box = el("article", { className: "panel game bm " + (side ? "done" : scored ? "playing" : "") },
+        el("div", { className: "game-top" },
+          el("span", { textContent: "G" + m.matchNumber + (when ? " · " + when : "") }),
+          el("span", { className: "tag", textContent: side ? "Final" : scored ? "In play" : "Up next" })),
+        row(m.p1, m.p1Seed, m.s1, 1, feeders[0]),
+        row(m.p2, m.p2Seed, m.s2, 2, feeders[1]));
+      box.dataset.g = String(m.matchNumber);
+      box.dataset.from = feeders.filter(Boolean).join(",");
+      return box;
+    }
+
+    // One bracket: a column per round, the match for 3rd under the final, and lines drawn between the boxes.
+    function bracket(f) {
+      const cols = f.rounds.map((round, i) => {
+        const last = i === f.rounds.length - 1;
+        const boxes = round.map((m, j) => {
+          const prev = f.rounds[i - 1];
+          const feeders = prev ? [m.p1SourceMatchNumber || (prev[j * 2] && prev[j * 2].matchNumber), m.p2SourceMatchNumber || (prev[j * 2 + 1] && prev[j * 2 + 1].matchNumber)] : [];
+          return bracketMatch(m, f.names, feeders);
+        });
+        const slots = el("div", { className: "slots" }, ...boxes);
+        if (last && f.third) {
+          const semis = f.rounds[i - 1] || [];
+          const third = bracketMatch(f.third, f.names, []);
+          third.dataset.from = "";
+          // the match for 3rd is between the two semifinal losers
+          third.querySelectorAll(".name.tbd").forEach((n, k) => { if (semis[k]) n.textContent = "Loser of G" + semis[k].matchNumber; });
+          slots.classList.add("with-third");
+          slots.prepend(el("div"));
+          slots.append(el("div", { className: "third" }, el("h3", { textContent: "Match for 3rd" }), third));
+        }
+        return el("div", { className: "round" }, el("h3", { textContent: roundName(f.rounds.length - i, round.length) }), slots);
+      });
+      const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      svg.setAttribute("class", "lines"); svg.setAttribute("aria-hidden", "true");
+      const grid = el("div", { className: "bracket" }, ...cols);
+      grid.style.setProperty("--rounds", String(cols.length));
+      grid.prepend(svg);
+      return el("div", { className: "bracket-scroll", tabIndex: 0 }, grid);
+    }
+    $("finals").setAttribute("role", "group");
+    $("finals").setAttribute("aria-label", "Playoff bracket");
+
+    // Elbow lines from each match to the one its winner plays in. Redrawn whenever the layout changes.
+    function drawLines() {
+      document.querySelectorAll(".bracket").forEach((grid) => {
+        const svg = grid.querySelector("svg.lines");
+        const base = grid.getBoundingClientRect();
+        svg.setAttribute("width", grid.scrollWidth); svg.setAttribute("height", grid.scrollHeight);
+        const parts = [];
+        grid.querySelectorAll(".bm[data-from]").forEach((to) => {
+          const t = to.getBoundingClientRect();
+          to.dataset.from.split(",").filter(Boolean).forEach((g) => {
+            const from = grid.querySelector('.bm[data-g="' + g + '"]');
+            if (!from) return;
+            const f = from.getBoundingClientRect();
+            const x1 = f.right - base.left, y1 = f.top + f.height / 2 - base.top, x2 = t.left - base.left, y2 = t.top + t.height / 2 - base.top, mid = (x1 + x2) / 2;
+            const won = from.classList.contains("done");
+            parts.push('<path d="M' + x1 + " " + y1 + " H" + mid + " V" + y2 + " H" + x2 + '" class="' + (won ? "on" : "") + '"/>');
+          });
+        });
+        svg.innerHTML = parts.join(""); // built only from numbers measured above
+      });
+    }
+    addEventListener("resize", drawLines);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(drawLines);
+
+    // Champion, 1st and 2nd runner-up, as each becomes known.
+    function podium(f) {
+      const final = f.rounds[f.rounds.length - 1][0];
+      const fw = final ? winnerSide(final) : 0, tw = f.third ? winnerSide(f.third) : 0;
+      const places = [];
+      if (fw) {
+        places.push(["Champion", fw === 1 ? final.p1 : final.p2, "champ"]);
+        places.push(["1st Runner-up", fw === 1 ? final.p2 : final.p1, ""]);
+      }
+      if (tw) places.push(["2nd Runner-up", tw === 1 ? f.third.p1 : f.third.p2, ""]);
+      if (!places.length) return null;
+      return el("div", { className: "podium" }, ...places.map(([title, id, cls]) => {
+        const pair = String(f.names[id] || "").split(" / ");
+        return el("div", { className: "panel place " + cls },
+          el("p", { className: "place-title", textContent: title }),
+          faces(f.names[id]),
+          el("p", { className: "place-names" }, ...pair.map((n) => el("span", { textContent: n }))));
+      }));
+    }
+
     const byTime = (a, b) => String(a.m.scheduledStartTime || "").localeCompare(String(b.m.scheduledStartTime || "")) || a.order - b.order;
 
     function render(data) {
@@ -421,23 +555,20 @@
           pools.push(el("div", { className: "panel pool-card" }, el("h3", { textContent: p.name || "Pool" }), el("table", null, head, body)));
           (p.rounds || []).forEach((round) => (round || []).forEach((m) => games.push({ m, label: p.name || "Pool play", names, order: pools.length })));
         });
-        const rounds = c.playoffRounds || [];
-        rounds.forEach((round, i) => {
-          const left = rounds.length - i; // 1 = final, 2 = semifinals, 3 = quarterfinals
-          const label = left === 1 ? "Final" : left === 2 ? "Semifinal" : left === 3 ? "Quarterfinal" : "Round of " + (round || []).length * 2;
-          (round || []).forEach((m) => finals.push({ m, label, names, order: num(m.matchNumber) }));
-        });
-        if (c.thirdPlaceMatch) finals.push({ m: c.thirdPlaceMatch, label: "Match for 3rd", names, order: num(c.thirdPlaceMatch.matchNumber) });
+        const rounds = (c.playoffRounds || []).filter((r) => r && r.length);
+        if (rounds.length) finals.push({ rounds, third: c.thirdPlaceMatch || null, names });
       });
 
       $("pools").replaceChildren(...(pools.length ? pools : [el("p", { className: "empty", textContent: "Standings will appear here once the pools are set." })]));
       $("legend").hidden = !advance || !pools.length;
       $("legend").replaceChildren(el("b", { textContent: "1" }), "Gold numbers mark the top " + advance + " of each pool, who advance to the playoffs.");
-      games.sort(byTime); finals.sort(byTime);
+      games.sort(byTime);
       // Number the pool games in playing order (same time: pools in order), as the officials' schedule does.
       games.forEach((g, i) => { g.m = Object.assign({}, g.m, { game: i + 1 }); });
       $("games").replaceChildren(...(games.length ? games.map((g) => gameCard(g.m, g.label, g.names)) : [el("p", { className: "empty", textContent: "The schedule will appear here once it is published." })]));
-      $("finals").replaceChildren(...(finals.length ? finals.map((g) => gameCard(g.m, g.label, g.names)) : [el("p", { className: "empty", textContent: "The playoff games will appear here." })]));
+      $("finals").replaceChildren(...(finals.length ? finals.map(bracket) : [el("p", { className: "empty", textContent: "The playoff bracket will appear here." })]));
+      $("podium").replaceChildren(...finals.map(podium).filter(Boolean));
+      drawLines();
       filter();
     }
 
